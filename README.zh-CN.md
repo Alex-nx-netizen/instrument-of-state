@@ -71,34 +71,14 @@
 ## 快速安装
 
 ```text
-# 把 GitHub 仓库加成 marketplace
-/plugin marketplace add <github-user>/instrument-of-state
-
-# 安装插件
+/plugin marketplace add Dick1109/instrument-of-state
 /plugin install instrument-of-state
+```
 
-# 运行主流程
+然后运行主流程：
+
+```text
 /instrument-of-state:shangshu-dispatch 重构 auth 模块，并保持可视化阶段看板。
-```
-
-终端等价写法：
-
-```powershell
-claude plugin marketplace add "<github-user>/instrument-of-state"
-claude plugin install instrument-of-state
-```
-
-如果名字冲突：
-
-```powershell
-claude plugin install instrument-of-state@<marketplace>
-```
-
-本地开发时也可以这样：
-
-```powershell
-claude plugin marketplace add "E:\ai\study\instrument-of-state"
-claude plugin install instrument-of-state
 ```
 
 ---

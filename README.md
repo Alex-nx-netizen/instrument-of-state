@@ -71,34 +71,14 @@ Decree -> Intake -> Recon -> Draft -> Review -> Dispatch -> Ministries -> Return
 ## Quick Start
 
 ```text
-# Add the GitHub repo as a marketplace
-/plugin marketplace add <github-user>/instrument-of-state
-
-# Install the plugin
+/plugin marketplace add Dick1109/instrument-of-state
 /plugin install instrument-of-state
+```
 
-# Run the governed workflow
+Then run:
+
+```text
 /instrument-of-state:shangshu-dispatch Refactor auth and keep a visible stage board.
-```
-
-Terminal equivalent:
-
-```powershell
-claude plugin marketplace add "<github-user>/instrument-of-state"
-claude plugin install instrument-of-state
-```
-
-If the name is ambiguous:
-
-```powershell
-claude plugin install instrument-of-state@<marketplace>
-```
-
-For local development only:
-
-```powershell
-claude plugin marketplace add "E:\ai\study\instrument-of-state"
-claude plugin install instrument-of-state
 ```
 
 ---
