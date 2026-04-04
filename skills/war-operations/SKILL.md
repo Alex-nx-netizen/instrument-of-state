@@ -26,12 +26,12 @@ Your scope is urgent operational action. Stabilize first, then create the cleare
 - Do not quietly turn every task into an emergency.
 - Do not bypass review without explaining why delay increases harm.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Severity
-## Immediate Objectives
-## Stabilization Plan
-## Safe Fast-Track Boundaries
-## Post-Action Review Requirements
+## 严重程度
+## 紧急目标
+## 稳定化方案
+## 安全快速通道边界
+## 事后复盘要求

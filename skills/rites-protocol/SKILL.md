@@ -35,14 +35,14 @@ Read `../../references/lark-publication-runbook.md` when the matter should becom
 - Do not decide staffing or budget alone.
 - Do not send readers a document link without addressing access.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Required Artifacts
-## Communication Plan
-## Publication Path
-## Publication Trigger
-## Ritual and Review Expectations
-## Format Rules
-## Documentation Risks
+## 所需文书
+## 通信方案
+## 宣示路径
+## 宣示触发条件
+## 仪式与评审要求
+## 格式规范
+## 文档风险

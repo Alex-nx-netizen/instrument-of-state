@@ -51,78 +51,78 @@ $ARGUMENTS
 - Capture any file references that materially justify scope, risk, or ministry routing.
 - For frontend-visible work, inspect design-system files, style tokens, component libraries, layout shells, or representative screens when they materially ground the memorial.
 
-## Required memorial structure
+## 奏折结构要求
 
-Return exactly these sections:
+必须返回以下章节（所有内容使用中文）：
 
-## Petition Summary
+## 请示摘要
 
-Summarize the request in one short paragraph.
+用一小段概述用户的请求。
 
-## Objective
+## 目标
 
-State the intended outcome as a concrete operational goal.
+以具体的操作目标说明预期成果。
 
-## Scope
+## 范围
 
-List what is included.
+列出本次任务包含的内容。
 
-## Out of Scope
+## 范围外
 
-List what should not be treated as part of this order.
+列出不在本次任务范围内的内容。
 
-## Constraints
+## 约束条件
 
-List technical, organizational, temporal, or policy constraints.
+列出技术、组织、时间或政策约束。
 
-## Planning State
+## 规划状态
 
-State whether planning artifacts were used. If they exist, note which of `task_plan.md`, `findings.md`, or `progress.md` informed the memorial. If none were used, say "No planning artifacts used."
+说明是否使用了规划文件。如有，注明 `task_plan.md`、`findings.md` 或 `progress.md` 中哪些文件为奏折提供了依据。如未使用，写"未使用规划文件"。
 
-## Risks
+## 风险
 
-List the most important execution risks or uncertainty points.
+列出最重要的执行风险或不确定因素。
 
-## Recommended Ministries
+## 建议调度部门
 
-Select from:
-- Personnel Routing
-- Revenue Budgeting
-- Rites Protocol
-- War Operations
-- Justice Compliance
-- Works Delivery
+从以下部门中选择：
+- 吏部（人事分工）
+- 户部（预算评估）
+- 礼部（文书规范）
+- 兵部（应急处理）
+- 刑部（合规校验）
+- 工部（代码交付）
 
-For each selected ministry, give one sentence explaining why it is needed.
+为每个选中的部门写一句话说明原因。
 
-## Recommended Mode
+## 建议模式
 
-Choose one:
-- Standard
-- Strict
-- Emergency
+选择一个：
+- 标准
+- 严格
+- 紧急
 
-Give a brief reason.
+简要说明原因。
 
-## Deliverables
+## 交付物
 
-List the outputs or outcomes expected from successful execution.
+列出成功执行后预期的产出或成果。
 
-## Capability Gaps
+## 能力缺口
 
-List missing skills, plugins, or specialist capabilities if they appear necessary. For each gap, say whether local capability appears available, external discovery is needed, or marketplace acquisition is likely. If none, say "None."
+列出可能缺少的技能、插件或专业能力。对每个缺口说明是否有本地能力可用、是否需要外部发现、或是否需要市场获取。如无缺口，写"无"。
 
-## Open Questions
+## 待解决问题
 
-List only the questions that materially affect approval or execution. If none, say "None."
+仅列出实质影响审批或执行的问题。如无，写"无"。
 
-## File Evidence
+## 文件证据
 
-If you inspected repository files, list the most relevant file paths and why they matter. If you did not inspect files, say "No file evidence used."
+如已检查代码库文件，列出最相关的文件路径及其重要性。如未检查，写"未使用文件证据"。
 
-## Style
+## 风格
 
-- Write like an imperial memorial translated into modern engineering governance.
-- Be crisp, formal, and actionable.
-- Prefer structure over prose.
-- Use modern technical vocabulary, not historical cosplay.
+- 正式、简练、可执行。
+- 以结构化格式为主，避免冗长叙述。
+- 使用现代技术术语。
+- 所有内容必须使用中文。

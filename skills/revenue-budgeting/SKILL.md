@@ -28,13 +28,13 @@ Your scope is resourcing. Measure how expensive the task is in time, complexity,
 - Do not approve quality gates.
 - Do not implement delivery work.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Cost Profile
-## Time and Dependency Load
-## Priority Recommendation
-## Scope Tradeoffs
-## Budget Risks
-## Docket Notes
+## 成本概况
+## 时间与依赖负担
+## 优先级建议
+## 范围取舍
+## 预算风险
+## 案卷备注

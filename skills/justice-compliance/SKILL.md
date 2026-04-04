@@ -30,13 +30,13 @@ Read `../../references/frontend-governance.md` when the task affects a frontend 
 - Do not implement the solution.
 - Do not change the goal to make passing easier.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Acceptance Gates
-## Evidence Required
-## Test Plan
-## Security and Compliance Risks
-## Final Legal Position
-## Docket Notes
+## 验收标准
+## 所需证据
+## 测试计划
+## 安全与合规风险
+## 最终法律立场
+## 案卷备注

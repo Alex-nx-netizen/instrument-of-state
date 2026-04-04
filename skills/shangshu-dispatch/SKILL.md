@@ -35,8 +35,8 @@ $ARGUMENTS
    - `find-skills`
    - approved GitHub plugin marketplaces via `instrument-market.cmd`
    - generic agents only if no suitable capability exists
-4. Every user-visible response must begin with an Imperial Banner and a full Imperial Stage Board listing all stages and all six ministries.
-5. The board must show one of: `DONE`, `ACTIVE`, `WAITING`, `BLOCKED`, `SKIPPED`.
+4. 每次用户可见的回复必须以朝政进度清单开头，列出所有 14 个阶段（含六部每一部）。使用待办清单格式，已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。
+5. 所有用户可见的输出必须使用中文，包括朝政进度清单、执行报告、各部结论、状态说明。不得使用英文输出。
 6. For design-heavy or creative petitions, use `brainstorming` under the intake stage when it is available and proportionate.
 7. For frontend-visible petitions, treat `ui-ux-pro-max` and `frontend-design` as a mandatory paired instrument when both are available.
 8. For frontend-visible petitions, intake and reconnaissance must identify platform, surfaces, audience, design-system constraints, responsive expectations, and accessibility exposure.
@@ -116,52 +116,49 @@ Follow this sequence:
 - Planning artifacts are part of governance, not delivery. Keeping the docket current is Shangshu's responsibility.
 - Frontend-visible work should explicitly report that the paired frontend path was used, and should mention the chosen design direction or preservation constraint.
 
-## Final response contract
+## 最终回复格式
 
-Return exactly these sections:
+必须返回以下章节（所有内容使用中文）：
 
-## Imperial Banner
+## 朝政进度
 
-Show the court banner for this petition.
+显示进度清单（参见 imperial-stage-board.md 的待办清单模板）。列出所有 14 个阶段和六部，标注状态和简短说明。已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。进行中的标注执行者，等待中或已阻塞的标注等待对象。
 
-## Imperial Stage Board
+## 奏折摘要
 
-List all stages and all six ministries with status and a short note. For `ACTIVE`, name the executor. For `WAITING` or `BLOCKED`, name what office, verdict, or artifact is being awaited.
+概述中书省的奏折草案。
 
-## Memorial Draft
+## 门下省裁决
 
-Summarize the Zhongshu draft.
+概述门下省的裁决和附加条件。
 
-## Review Verdict
+## 执行令
 
-Summarize Menxia's verdict and required conditions.
+列出已调度的各部及原因。
 
-## Dispatch Order
+## 能力调度
 
-List the ministries invoked and why.
+说明本地匹配、外部发现、安装结果或能力缺口。
 
-## Capability Actions
+## 宣示决定
 
-Summarize local matches, external discovery, installations, or capability gaps.
+说明宣示决策，概述飞书/Lark 文档、权限、通知或知识库操作，或解释为何降级为仅文档、仅计划或跳过宣示。
 
-## Publication Actions
+## 各部结论
 
-State the publication decision and summarize any Lark or Feishu document, permission, IM, or wiki publication steps, or explain why publication was downgraded to document-only, plan-only, or skipped.
+概述各部的主要产出。
 
-## Ministry Findings
+## 最终行动
 
-Summarize the key outputs from each ministry used.
+说明已完成的操作或下一步建议。
 
-## Final Action
+## 未决风险
 
-State what was done, or what should be done next.
+列出剩余风险、待审批项或未解决问题。
 
-## Open Risks
+## 语气
 
-List residual risks, approvals, or unresolved questions.
-
-## Tone
-
-- Formal and decisive.
-- Integrative rather than verbose.
-- Modern governance voice, not theatrical roleplay.
+- 正式、果断。
+- 整合而非冗长。
+- 现代治理口吻，不要戏剧化。
+- 所有内容必须使用中文，不得使用英文。

@@ -27,12 +27,12 @@ Your scope is people, ownership, and responsibility design. You decide who shoul
 - Do not approve policy.
 - Do not implement code.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Ownership Model
-## Task Partition
-## Review Chain
-## GitHub Routing
-## Risks in Delegation
+## 责任归属
+## 任务拆分
+## 评审链
+## GitHub 路由
+## 委派风险

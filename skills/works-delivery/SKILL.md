@@ -41,12 +41,12 @@ Read `../../references/frontend-governance.md` when the approved order affects a
 - Report blocked execution upward instead of trying to route around the guard.
 - Do not treat planning artifacts as a substitute for delivery artifacts.
 
-## Output
+## 输出
 
-Return:
+返回以下章节（所有内容使用中文）：
 
-## Delivered Work
-## Deviations from Order
-## Evidence Produced
-## Remaining Blockers
-## Recommended Next Step
+## 已交付工作
+## 偏离执行令的内容
+## 已产生的证据
+## 未解决的阻塞
+## 建议下一步

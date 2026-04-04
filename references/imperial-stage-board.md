@@ -1,106 +1,119 @@
-# Imperial Stage Board
+# 朝政进度
 
-Use this file when `shangshu-dispatch` prepares a user-visible response.
+当 `shangshu-dispatch` 准备用户可见的回复时，使用此文件。
 
-Every governed task should begin with a visible stage banner and a full court board so the user can see:
+每个受治理的任务都应以可见的进度清单开始，让用户一目了然地看到：
 
-- which stage is active
-- which stages are waiting
-- which stages are complete
-- which stages were skipped
-- which stage is blocked and by what
+- 哪些阶段已完成
+- 哪些阶段正在执行
+- 哪些阶段正在等待
+- 哪些阶段被阻塞以及原因
+- 哪些阶段已跳过
 
-## Status vocabulary
+## 状态标记
 
-Use exactly one of these status markers per stage:
+使用以下中文状态词：
 
-- `DONE`
-- `ACTIVE`
-- `WAITING`
-- `BLOCKED`
-- `SKIPPED`
+- `已完成`：该阶段已执行完毕
+- `进行中`：该阶段正在执行
+- `等待中`：该阶段尚未开始，正在等待前置条件
+- `已阻塞`：该阶段因依赖未满足而无法推进
+- `已跳过`：该阶段本次任务不需要
 
-## Banner format
+## 显示格式
 
-Return this before the board:
+使用待办清单（todolist）格式，用 markdown 复选框表示状态：
 
-```markdown
-## Imperial Banner
+- 已完成的阶段：`- [x] 阶段名：说明`（打勾表示已完成）
+- 已跳过的阶段：`- [x] 阶段名（已跳过）：原因`（打勾表示已处理）
+- 进行中的阶段：`- [ ] 阶段名（进行中）：说明`
+- 等待中的阶段：`- [ ] 阶段名（等待中）：说明`
+- 已阻塞的阶段：`- [ ] 阶段名（已阻塞）：说明`
 
-国之重器 | <petition summary> | Mode: <Standard|Strict|Emergency>
+## 标题格式
+
+在进度清单之前显示标题行：
+
+> 国之重器 ｜ <请示摘要> ｜ 模式：<标准/严格/紧急>
+
+## 阶段顺序
+
+必须按以下固定顺序列出所有 14 个阶段：
+
+1. 皇上下旨
+2. 太子承旨
+3. 锦衣卫侦察
+4. 中书省起草
+5. 门下省封驳
+6. 尚书省发令
+7. 吏部
+8. 户部
+9. 礼部
+10. 兵部
+11. 刑部
+12. 工部
+13. 奏折回呈
+14. 礼部宣示
+
+## 规则
+
+1. 必须列出完整的进度清单，即使某些阶段被跳过。
+2. 必须单独列出六部中的每一部。
+3. 清单必须反映当前实际进展，不能虚构理想流程。
+4. 尚未启动的阶段标记为"等待中"并注明等待什么。
+5. 不需要的阶段标记为"已跳过"并简要说明原因（打勾处理）。
+6. 被阻塞的阶段标记为"已阻塞"并说明等待什么。
+7. 正在执行的阶段说明谁在做什么。
+8. 等待或阻塞的阶段指明等待的机构、裁决、卷宗或产物。
+
+## 进度清单模板
+
+```
+## 朝政进度
+
+> 国之重器 ｜ <请示摘要> ｜ 模式：标准
+
+- [x] 皇上下旨：用户已提交请示"<请示摘要>"
+- [ ] 太子承旨（进行中）：`shangshu-agent` 正在判定模式、风险与是否立案
+- [ ] 锦衣卫侦察（等待中）：等待太子承旨完成
+- [ ] 中书省起草（等待中）：等待锦衣卫侦察结果
+- [ ] 门下省封驳（等待中）：等待中书省返回奏折
+- [ ] 尚书省发令（等待中）：等待门下省裁决
+- [x] 吏部（已跳过）：本案无额外分工需求
+- [ ] 户部（等待中）：等待尚书省决定是否需要成本评估
+- [ ] 礼部（等待中）：等待尚书省决定是否需要正式文书
+- [x] 兵部（已跳过）：本案非紧急事件
+- [ ] 刑部（等待中）：等待尚书省决定是否需要合规校验
+- [ ] 工部（已阻塞）：等待门下省批准
+- [ ] 奏折回呈（等待中）：等待各部完成
+- [ ] 礼部宣示（等待中）：等待尚书省宣示决定
 ```
 
-## Board law
+## 说明要求
 
-1. Always list the full board, even if some stages are skipped.
-2. Always list all six ministries individually.
-3. The board must reflect the actual current proceeding, not an imagined ideal flow.
-4. If a stage is not yet in motion, mark it `WAITING` and name the dependency.
-5. If a stage is not needed, mark it `SKIPPED` and give a short reason.
-6. If a stage is blocked, mark it `BLOCKED` and state exactly what it is waiting on.
-7. If a stage is active, say who is working and on what.
-8. If a stage is waiting or blocked, name the office, verdict, dossier, or artifact it is waiting for.
+每行说明应简短但具体。须提及以下之一：
 
-## Stage order
+- 当前执行者是谁，在做什么
+- 正在等待什么前置条件
+- 被什么阻塞
+- 为什么跳过
 
-Use this exact order:
+好的示例：
 
-1. 皇上以下旨 / Emperor Decree
-2. 太子承旨 / Crown Prince Intake
-3. 锦衣卫侦察 / Jinyiwei Recon
-4. 中书省起草 / Zhongshu Draft
-5. 门下省封驳 / Menxia Review
-6. 尚书省发令 / Shangshu Dispatch
-7. 吏部 / Personnel
-8. 户部 / Revenue
-9. 礼部 / Rites
-10. 兵部 / War
-11. 刑部 / Justice
-12. 工部 / Works
-13. 奏折回呈 / Memorial Return
-14. 礼部宣示 / Rites Publication
-
-## Board template
-
-```markdown
-## Imperial Stage Board
-
-1. [DONE] 皇上以下旨 / Emperor Decree：用户已提交请示“<petition summary>”
-2. [ACTIVE] 太子承旨 / Crown Prince Intake：`shangshu-agent` 正在判定模式、风险与是否立案
-3. [WAITING] 锦衣卫侦察 / Jinyiwei Recon：等待太子承旨返回 intake 结论
-4. [WAITING] 中书省起草 / Zhongshu Draft：等待锦衣卫卷宗与能力侦察结果
-5. [WAITING] 门下省封驳 / Menxia Review：等待中书省返回 memorial
-6. [WAITING] 尚书省发令 / Shangshu Dispatch：等待门下省 verdict
-7. [SKIPPED] 吏部 / Personnel：本案无额外分工设计需求
-8. [WAITING] 户部 / Revenue：等待尚书省决定是否需要成本评估
-9. [WAITING] 礼部 / Rites：等待尚书省决定是否需要正式文书或对外通报
-10. [SKIPPED] 兵部 / War：本案不是应急或事故任务
-11. [WAITING] 刑部 / Justice：等待尚书省决定是否需要高风险校验
-12. [BLOCKED] 工部 / Works：等待门下省 `APPROVE`
-13. [WAITING] 奏折回呈 / Memorial Return：等待各部 findings 与交付结果
-14. [WAITING] 礼部宣示 / Rites Publication：等待尚书省 close-out publication 决议
-```
-
-## Notes style
-
-Each line should be short but concrete. Mention either:
-
-- the active executor
-- the blocking dependency
-- the reason the stage was skipped
-
-Good examples:
-
-- ``shangshu-agent` 正在审查代码逻辑与风险边界`
-- `等待中书省返回 memorial`
-- `等待门下省 APPROVE`
+- `尚书省正在审查代码逻辑与风险边界`
+- `等待中书省返回奏折`
+- `等待门下省批准`
 - `已完成收件人解析与权限授予`
 - `本案无需兵部介入`
 
-Avoid vague notes like:
+避免模糊说明：
 
 - `处理中`
 - `分析中`
 - `待定`
 
-Say what is actually happening or actually missing.
+说明必须写清楚具体在做什么或缺少什么。
+
+## 语言规则
+
+所有进度清单内容必须使用中文，不得使用英文。阶段名称、状态标记、说明文字全部使用中文。

@@ -21,8 +21,9 @@ function Get-ObjectProperty($Object, [string]$Name, $Default = $null) {
     return $Default
   }
 
-  if ($Object.PSObject.Properties.Name -contains $Name) {
-    return $Object.$Name
+  $property = $Object.PSObject.Properties.Match($Name)
+  if ($property.Count -gt 0) {
+    return $property[0].Value
   }
 
   return $Default
@@ -85,15 +86,27 @@ function Get-Verdict([string]$Message) {
     return "NONE"
   }
 
+  $chineseVerdictMap = @{
+    '批准' = 'APPROVE'
+    '附条件批准' = 'CONDITIONAL'
+    '退回' = 'RETURN'
+    '驳回' = 'REJECT'
+  }
+
   $patterns = @(
-    '(?ms)^## Verdict\s+([A-Z]+)\b',
-    '\b(APPROVE|CONDITIONAL|RETURN|REJECT)\b'
+    '(?ms)^## (?:Verdict|裁决)\s+([A-Z]+)\b',
+    '\b(APPROVE|CONDITIONAL|RETURN|REJECT)\b',
+    '(附条件批准|批准|退回|驳回)'
   )
 
   foreach ($pattern in $patterns) {
     $match = [regex]::Match($Message, $pattern)
     if ($match.Success) {
-      return $match.Groups[1].Value.ToUpperInvariant()
+      $value = $match.Groups[1].Value
+      if ($chineseVerdictMap.ContainsKey($value)) {
+        return $chineseVerdictMap[$value]
+      }
+      return $value.ToUpperInvariant()
     }
   }
 
@@ -105,14 +118,22 @@ function Get-MemorialReady([string]$Message) {
     return $false
   }
 
+  # Support both English and Chinese section headers
   $requiredSections = @(
-    "## Objective",
-    "## Recommended Mode",
-    "## Deliverables"
+    @("## Objective", "## 目标"),
+    @("## Recommended Mode", "## 建议模式"),
+    @("## Deliverables", "## 交付物")
   )
 
-  foreach ($section in $requiredSections) {
-    if ($Message -notmatch [regex]::Escape($section)) {
+  foreach ($alternatives in $requiredSections) {
+    $found = $false
+    foreach ($section in $alternatives) {
+      if ($Message -match [regex]::Escape($section)) {
+        $found = $true
+        break
+      }
+    }
+    if (-not $found) {
       return $false
     }
   }
@@ -183,8 +204,9 @@ function Get-ToolFilePath($InputData) {
   )
 
   foreach ($name in $candidateNames) {
-    if ($toolInput.PSObject.Properties.Name -contains $name) {
-      $value = [string]$toolInput.$name
+    $property = $toolInput.PSObject.Properties.Match($name)
+    if ($property.Count -gt 0) {
+      $value = [string]$property[0].Value
       if ($value) {
         return $value
       }

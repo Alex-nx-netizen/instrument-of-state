@@ -76,42 +76,42 @@ lark-cli im +messages-send --as bot --user-id <open_id> --markdown "<message>"
 
 If the memorial authorizes a group chat instead, use `--chat-id`.
 
-## Required output
+## 输出要求
 
-Return exactly these sections:
+必须返回以下章节（所有内容使用中文）：
 
-## Publication Decision
+## 宣示决定
 
-One of:
-- `PUBLISH_NOW`
-- `PUBLISH_DOC_ONLY`
-- `PLAN_ONLY`
-- `SKIP_PUBLICATION`
+以下之一：
+- `PUBLISH_NOW`（立即宣示）
+- `PUBLISH_DOC_ONLY`（仅创建文档）
+- `PLAN_ONLY`（仅计划）
+- `SKIP_PUBLICATION`（跳过宣示）
 
-## Publication Rationale
+## 宣示理由
 
-Explain why that decision was chosen.
+说明为何做出该决定。
 
-## Document Plan
+## 文档方案
 
-State the title, artifact type, and content basis.
+说明标题、文书类型和内容来源。
 
-## Recipient Resolution
+## 收件人解析
 
-List resolved recipients, unresolved recipients, and how they were handled.
+列出已解析的收件人、未解析的收件人及处理方式。
 
-## Permission Actions
+## 权限操作
 
-List the granted permissions, or explain why permissioning was not executed.
+列出已授予的权限，或说明为何未执行权限授予。
 
-## Notification Actions
+## 通知操作
 
-List the IM actions performed, or explain why IM was not sent.
+列出已执行的 IM 操作，或说明为何未发送 IM。
 
-## Publication Outputs
+## 宣示产出
 
-If executed, list `doc_id`, `doc_url`, wiki placement if any, and message IDs if available.
+如已执行，列出 `doc_id`、`doc_url`、知识库位置（如有）和消息 ID（如可用）。
 
-## Remaining Gaps
+## 未解决的缺口
 
-List anything still blocking full publication.
+列出仍阻碍完整宣示的事项。

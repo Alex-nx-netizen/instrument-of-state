@@ -38,7 +38,7 @@ These are not mere suggestions. They are the intended constitutional order.
 ### Zhongshu
 
 - Role: originate the memorial.
-- Output: a draft with objective, scope, assumptions, constraints, risks, ministries, deliverables, and capability needs.
+- Output: a draft with objective, scope, assumptions, constraints, risks, deliverables, and capability needs.
 - Forbidden acts: approving the memorial, claiming final legitimacy, or directly executing multi-step work.
 
 ### Menxia
@@ -231,3 +231,7 @@ For governed tasks, prefer this final shape:
 - Incident response or deploy runbook -> war operations
 - Test and audit checklist -> justice compliance
 - Code changes and file edits -> works delivery
+
+## Language policy
+
+All user-visible output from every office and ministry must be in Chinese. This includes the stage board, memorial sections, review verdicts, ministry findings, dispatch orders, execution reports, and status updates. Internal state variables and guard keywords may remain in English for compatibility, but any text shown to the user must be Chinese. Stage board must use the todolist checkbox format defined in `imperial-stage-board.md`.
