@@ -1,0 +1,113 @@
+<svg width="1600" height="920" viewBox="0 0 1600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="40" x2="1490" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081422"/>
+      <stop offset="1" stop-color="#0C1728"/>
+    </linearGradient>
+    <linearGradient id="nodeA" x1="0" y1="0" x2="0" y2="138" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#133252"/>
+      <stop offset="1" stop-color="#0E2035"/>
+    </linearGradient>
+    <linearGradient id="nodeB" x1="0" y1="0" x2="0" y2="138" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17334F"/>
+      <stop offset="1" stop-color="#0E2131"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="920" rx="32" fill="url(#bg)"/>
+  <text x="105" y="120" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700">Imperial Workflow</text>
+  <text x="105" y="168" fill="#8FAECC" font-family="Segoe UI, Arial, sans-serif" font-size="24">From user decree to governed delivery, memorial return, and Lark publication.</text>
+
+  <g transform="translate(90 240)">
+    <g>
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#56D2FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">01</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Decree</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">User petition</text>
+    </g>
+    <g transform="translate(168 0)">
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#56D2FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">02</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Intake</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">Mode and scope</text>
+    </g>
+    <g transform="translate(336 0)">
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#56D2FF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">03</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Recon</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">Docket and skills</text>
+    </g>
+    <g transform="translate(504 0)">
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#59E3C1" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">04</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Draft</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">Memorial</text>
+    </g>
+    <g transform="translate(672 0)">
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#59E3C1" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">05</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Review</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">Verdict gate</text>
+    </g>
+    <g transform="translate(840 0)">
+      <rect x="0" y="0" width="150" height="138" rx="24" fill="url(#nodeA)" stroke="#3A648D"/>
+      <text x="22" y="44" fill="#F4B36B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">06</text>
+      <text x="22" y="78" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Dispatch</text>
+      <text x="22" y="110" fill="#9DB6D2" font-family="Segoe UI, Arial, sans-serif" font-size="18">Route ministries</text>
+    </g>
+  </g>
+
+  <g stroke="#426889" stroke-width="4">
+    <path d="M240 309H258"/>
+    <path d="M408 309H426"/>
+    <path d="M576 309H594"/>
+    <path d="M744 309H762"/>
+    <path d="M912 309H930"/>
+  </g>
+
+  <g transform="translate(160 465)">
+    <rect x="0" y="0" width="1280" height="185" rx="28" fill="#0D1D31" stroke="#35597A"/>
+    <text x="40" y="56" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700">Six Ministries</text>
+    <text x="40" y="92" fill="#91AFCC" font-family="Segoe UI, Arial, sans-serif" font-size="22">Shangshu dispatches the minimum lawful set. Works is blocked until Menxia APPROVE.</text>
+
+    <g transform="translate(44 118)">
+      <rect x="0" y="0" width="172" height="42" rx="14" fill="#123152" stroke="#325A80"/>
+      <text x="22" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">Personnel</text>
+
+      <rect x="192" y="0" width="172" height="42" rx="14" fill="#123152" stroke="#325A80"/>
+      <text x="226" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">Revenue</text>
+
+      <rect x="384" y="0" width="148" height="42" rx="14" fill="#123152" stroke="#325A80"/>
+      <text x="431" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">Rites</text>
+
+      <rect x="552" y="0" width="132" height="42" rx="14" fill="#123152" stroke="#325A80"/>
+      <text x="596" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">War</text>
+
+      <rect x="704" y="0" width="156" height="42" rx="14" fill="#123152" stroke="#325A80"/>
+      <text x="750" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">Justice</text>
+
+      <rect x="880" y="0" width="144" height="42" rx="14" fill="#193957" stroke="#59E3C1"/>
+      <text x="926" y="27" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="22">Works</text>
+      <text x="1044" y="27" fill="#59E3C1" font-family="Segoe UI, Arial, sans-serif" font-size="20">only after APPROVE</text>
+    </g>
+  </g>
+
+  <g transform="translate(304 718)">
+    <rect x="0" y="0" width="220" height="120" rx="24" fill="url(#nodeB)" stroke="#47698A"/>
+    <text x="28" y="48" fill="#F4B36B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">07</text>
+    <text x="28" y="84" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Memorial</text>
+  </g>
+  <g transform="translate(692 718)">
+    <rect x="0" y="0" width="220" height="120" rx="24" fill="url(#nodeB)" stroke="#47698A"/>
+    <text x="28" y="48" fill="#F4B36B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">08</text>
+    <text x="28" y="84" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Return</text>
+  </g>
+  <g transform="translate(1080 718)">
+    <rect x="0" y="0" width="220" height="120" rx="24" fill="url(#nodeB)" stroke="#47698A"/>
+    <text x="28" y="48" fill="#F4B36B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">09</text>
+    <text x="28" y="84" fill="#F2F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Publish</text>
+  </g>
+
+  <path d="M524 777H670" stroke="#466C8E" stroke-width="4"/>
+  <path d="M912 777H1058" stroke="#466C8E" stroke-width="4"/>
+</svg>

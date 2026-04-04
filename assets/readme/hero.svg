@@ -1,0 +1,92 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="140" y1="80" x2="1450" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081423"/>
+      <stop offset="0.5" stop-color="#0D1E33"/>
+      <stop offset="1" stop-color="#0A1220"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="320" y1="180" x2="1230" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#112844" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#0B1627" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="440" y1="265" x2="1010" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#56D2FF"/>
+      <stop offset="0.45" stop-color="#59E3C1"/>
+      <stop offset="1" stop-color="#F4B36B"/>
+    </linearGradient>
+    <filter id="glow" x="0" y="0" width="1600" height="900" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="50"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <circle cx="1340" cy="150" r="150" fill="#1B6FFF" fill-opacity="0.17" filter="url(#glow)"/>
+  <circle cx="270" cy="720" r="180" fill="#26D6C7" fill-opacity="0.14" filter="url(#glow)"/>
+  <circle cx="1220" cy="700" r="140" fill="#FF9A5B" fill-opacity="0.1" filter="url(#glow)"/>
+
+  <rect x="250" y="135" width="1100" height="630" rx="30" fill="url(#panel)" stroke="#35567A" stroke-opacity="0.8"/>
+  <rect x="250" y="135" width="1100" height="84" rx="30" fill="#0F233A"/>
+  <circle cx="296" cy="177" r="9" fill="#FF6E6E"/>
+  <circle cx="326" cy="177" r="9" fill="#F4C363"/>
+  <circle cx="356" cy="177" r="9" fill="#49D18A"/>
+
+  <text x="410" y="184" fill="#B8CAE0" font-family="Segoe UI, Arial, sans-serif" font-size="24" letter-spacing="3">GOVERNED AI COURT FOR CLAUDE CODE</text>
+
+  <g opacity="0.92">
+    <rect x="330" y="275" width="390" height="245" rx="26" fill="#0D1D31" stroke="#294968"/>
+    <rect x="760" y="275" width="500" height="245" rx="26" fill="#0D1D31" stroke="#294968"/>
+    <rect x="330" y="555" width="930" height="140" rx="26" fill="#0D1D31" stroke="#294968"/>
+  </g>
+
+  <text x="350" y="335" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="80" font-weight="700">Instrument</text>
+  <text x="350" y="425" fill="url(#accent)" font-family="Segoe UI, Arial, sans-serif" font-size="108" font-weight="800">of State</text>
+  <text x="350" y="478" fill="#93B2D4" font-family="Segoe UI, Arial, sans-serif" font-size="28">Draft - Review - Dispatch - Ministries - Publication</text>
+
+  <g transform="translate(790 305)">
+    <rect x="0" y="0" width="440" height="185" rx="24" fill="#0B1626" stroke="#2C4C6B"/>
+    <text x="34" y="46" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="700">Court Workflow</text>
+    <text x="34" y="86" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Decree -> Intake -> Recon -> Draft -> Review</text>
+    <text x="34" y="118" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Dispatch -> Six Ministries -> Memorial -> Publish</text>
+    <g>
+      <circle cx="60" cy="150" r="9" fill="#56D2FF"/>
+      <circle cx="126" cy="150" r="9" fill="#56D2FF"/>
+      <circle cx="192" cy="150" r="9" fill="#59E3C1"/>
+      <circle cx="258" cy="150" r="9" fill="#59E3C1"/>
+      <circle cx="324" cy="150" r="9" fill="#F4B36B"/>
+      <circle cx="390" cy="150" r="9" fill="#F4B36B"/>
+      <path d="M69 150H117" stroke="#4F7396" stroke-width="3"/>
+      <path d="M135 150H183" stroke="#4F7396" stroke-width="3"/>
+      <path d="M201 150H249" stroke="#4F7396" stroke-width="3"/>
+      <path d="M267 150H315" stroke="#4F7396" stroke-width="3"/>
+      <path d="M333 150H381" stroke="#4F7396" stroke-width="3"/>
+    </g>
+  </g>
+
+  <g transform="translate(350 578)">
+    <rect x="0" y="0" width="176" height="54" rx="16" fill="#123152" stroke="#325A80"/>
+    <text x="22" y="34" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">14 stages</text>
+    <rect x="198" y="0" width="188" height="54" rx="16" fill="#123152" stroke="#325A80"/>
+    <text x="220" y="34" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">6 ministries</text>
+    <rect x="408" y="0" width="162" height="54" rx="16" fill="#123152" stroke="#325A80"/>
+    <text x="430" y="34" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">9 agents</text>
+    <rect x="592" y="0" width="176" height="54" rx="16" fill="#123152" stroke="#325A80"/>
+    <text x="614" y="34" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">10 skills</text>
+    <rect x="790" y="0" width="220" height="54" rx="16" fill="#123152" stroke="#325A80"/>
+    <text x="812" y="34" fill="#EAF4FF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">Lark publication</text>
+  </g>
+
+  <g transform="translate(1170 585)">
+    <path d="M32 0L64 22V66C64 99 47 124 32 132C17 124 0 99 0 66V22L32 0Z" fill="#102843" stroke="#56D2FF" stroke-width="3"/>
+    <path d="M18 65L28 76L47 47" stroke="#56D2FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(1090 325)">
+    <path d="M40 0L80 28V84H0V28L40 0Z" fill="#123152" stroke="#F4B36B" stroke-width="3"/>
+    <rect x="17" y="36" width="46" height="10" rx="5" fill="#F4B36B" fill-opacity="0.8"/>
+  </g>
+
+  <g transform="translate(1100 388)">
+    <rect x="0" y="0" width="58" height="58" rx="14" fill="#123152" stroke="#59E3C1" stroke-width="3"/>
+    <path d="M17 20H41M17 30H41M17 40H33" stroke="#59E3C1" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

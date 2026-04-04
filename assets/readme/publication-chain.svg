@@ -1,0 +1,65 @@
+<svg width="1600" height="840" viewBox="0 0 1600 840" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="40" x2="1490" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081423"/>
+      <stop offset="1" stop-color="#0B1729"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123152"/>
+      <stop offset="1" stop-color="#0E2035"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="840" rx="30" fill="url(#bg)"/>
+  <text x="100" y="120" fill="#F1F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700">Lark Publication Chain</text>
+  <text x="100" y="168" fill="#8FAECC" font-family="Segoe UI, Arial, sans-serif" font-size="24">Rites executes document creation, permissioning, notification, and durable publication.</text>
+
+  <g transform="translate(100 280)">
+    <g>
+      <rect x="0" y="0" width="280" height="250" rx="28" fill="url(#card)" stroke="#35597A"/>
+      <text x="40" y="62" fill="#56D2FF" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">01</text>
+      <text x="40" y="104" fill="#F1F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700">Document</text>
+      <text x="40" y="148" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Create the official handoff,</text>
+      <text x="40" y="178" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">release note, or memorial.</text>
+      <rect x="40" y="198" width="108" height="8" rx="4" fill="#56D2FF"/>
+      <rect x="40" y="216" width="176" height="8" rx="4" fill="#365777"/>
+      <rect x="40" y="234" width="140" height="8" rx="4" fill="#365777"/>
+    </g>
+
+    <g transform="translate(360 0)">
+      <rect x="0" y="0" width="280" height="250" rx="28" fill="url(#card)" stroke="#35597A"/>
+      <text x="40" y="62" fill="#59E3C1" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">02</text>
+      <text x="40" y="104" fill="#F1F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700">Permission</text>
+      <text x="40" y="148" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Grant access before any</text>
+      <text x="40" y="178" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">link leaves the chamber.</text>
+      <path d="M120 208V192C120 172 136 156 156 156C176 156 192 172 192 192V208" stroke="#59E3C1" stroke-width="8" stroke-linecap="round"/>
+      <rect x="106" y="208" width="100" height="56" rx="16" fill="#0D1D31" stroke="#59E3C1" stroke-width="3"/>
+    </g>
+
+    <g transform="translate(720 0)">
+      <rect x="0" y="0" width="280" height="250" rx="28" fill="url(#card)" stroke="#35597A"/>
+      <text x="40" y="62" fill="#F4B36B" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">03</text>
+      <text x="40" y="104" fill="#F1F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700">Notify</text>
+      <text x="40" y="148" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Send IM only after access</text>
+      <text x="40" y="178" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">is safe or explicitly warned.</text>
+      <path d="M94 204H186C199 204 210 215 210 228V250H70V228C70 215 81 204 94 204Z" fill="#0D1D31" stroke="#F4B36B" stroke-width="3"/>
+      <path d="M96 206L140 234L184 206" stroke="#F4B36B" stroke-width="3"/>
+    </g>
+
+    <g transform="translate(1080 0)">
+      <rect x="0" y="0" width="280" height="250" rx="28" fill="url(#card)" stroke="#35597A"/>
+      <text x="40" y="62" fill="#DA8CFF" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="700">04</text>
+      <text x="40" y="104" fill="#F1F8FF" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700">Publish</text>
+      <text x="40" y="148" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Place durable records in</text>
+      <text x="40" y="178" fill="#9CB7D5" font-family="Segoe UI, Arial, sans-serif" font-size="22">Wiki when the case must live on.</text>
+      <rect x="96" y="196" width="88" height="68" rx="12" fill="#0D1D31" stroke="#DA8CFF" stroke-width="3"/>
+      <path d="M110 214H172M110 232H172M110 250H158" stroke="#DA8CFF" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g stroke="#496E91" stroke-width="5">
+    <path d="M381 405H443"/>
+    <path d="M741 405H803"/>
+    <path d="M1101 405H1163"/>
+  </g>
+</svg>

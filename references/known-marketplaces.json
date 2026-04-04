@@ -1,0 +1,16 @@
+{
+  "marketplaces": [
+    {
+      "repo": "anthropics/claude-code",
+      "notes": "Official examples and reference marketplace for Claude Code."
+    },
+    {
+      "repo": "daymade/claude-code-skills",
+      "notes": "Community skill marketplace."
+    },
+    {
+      "repo": "jeremylongshore/claude-code-plugins-plus-skills",
+      "notes": "Community plugin and skill marketplace."
+    }
+  ]
+}
