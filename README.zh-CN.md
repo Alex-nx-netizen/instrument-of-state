@@ -89,6 +89,13 @@
 | --- | --- |
 | `/instrument-of-state:shangshu-dispatch <任务>` | 主入口，启动完整治理流程 |
 
+用户也可以直接在任务里带控制语句：
+
+```text
+/instrument-of-state:shangshu-dispatch 调查登录故障，但先别改代码，只给我方案和风险。
+/instrument-of-state:shangshu-dispatch 完成 P3 剩余阶段，继续执行，但先跳过宣示。
+```
+
 示例：
 
 ```text
@@ -114,7 +121,8 @@
 
 ## 核心特点
 
-- **可视化阶段看板**：输出 `Imperial Banner` 和 `Imperial Stage Board`
+- **可视化阶段看板**：首屏与收口输出完整 `Imperial Stage Board`，中途改为紧凑进度简报，减少终端噪音
+- **结论优先**：每次先说现在在哪、能不能继续、下一步谁来做
 - **强制审批后落地**：门下未 `APPROVE`，工部不能写
 - **本地优先能力搜索**：本地 skill/plugin -> `find-skills` -> marketplace
 - **礼部发布链**：可生成文档、授权、发 IM、归档 Wiki
@@ -153,6 +161,10 @@
 - [治理手册](./references/governance-playbook.md)
 - [朝廷流程](./references/imperial-workflow.md)
 - [阶段看板规则](./references/imperial-stage-board.md)
+- [用户体验响应规范](./references/ux-response-guidelines.md)
+- [任务类型模板](./references/task-type-templates.md)
+- [首次使用与控制点](./references/first-use-and-controls.md)
+- [Hook 兼容与排障](./references/hook-compatibility.md)
 - [前端治理](./references/frontend-governance.md)
 - [Superpowers 集成](./references/superpowers-integration.md)
 

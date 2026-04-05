@@ -1,2 +1,4 @@
 @echo off
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0instrument-guard.ps1" %*
+setlocal
+powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0instrument-guard.ps1" %*
+exit /b %errorlevel%

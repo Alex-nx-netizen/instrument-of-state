@@ -114,7 +114,7 @@ Example petitions:
 
 ## Key Features
 
-- **Visible stage board**: governed responses start with `Imperial Banner` and `Imperial Stage Board`
+- **Visible stage board**: use a full `Imperial Stage Board` at kickoff and close-out, with compact progress digests in between to reduce terminal noise
 - **Guarded delivery**: Works is blocked until Menxia returns `APPROVE`
 - **Local-first capability search**: local skills/plugins -> `find-skills` -> marketplace
 - **Lark publication**: Rites can create docs, grant access, send IM, and publish to Wiki

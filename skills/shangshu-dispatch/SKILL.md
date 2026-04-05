@@ -15,6 +15,10 @@ Before acting, read `../../references/constitutional-rules.md` and follow it as 
 Read `../../references/governance-playbook.md` for the mandatory docket and capability ladder.
 Read `../../references/imperial-workflow.md` for the court-stage mapping.
 Read `../../references/imperial-stage-board.md` for the mandatory user-visible stage board.
+Read `../../references/menxia-verdict-card.md` for the compact review summary format that should be surfaced when Menxia returns a verdict.
+Read `../../references/ux-response-guidelines.md` for the user-first output order, plain-language naming, and degraded error wording.
+Read `../../references/task-type-templates.md` to choose the right output skeleton for incidents, frontend work, publication work, and documentation work.
+Read `../../references/first-use-and-controls.md` for first-use guidance and user control points.
 Read `../../references/superpowers-integration.md` when deciding which auxiliary process skills should strengthen the proceeding.
 Read `../../references/frontend-governance.md` when the petition affects a page, component, screen, design system, or other frontend surface.
 Read `../../references/market-acquisition.md` when local capability may be insufficient.
@@ -35,7 +39,7 @@ $ARGUMENTS
    - `find-skills`
    - approved GitHub plugin marketplaces via `instrument-market.cmd`
    - generic agents only if no suitable capability exists
-4. 每次用户可见的回复必须以朝政进度清单开头，列出所有 14 个阶段（含六部每一部）。使用待办清单格式，已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。
+4. 用户可见的回复必须以朝政进度开头。首个实质性回复、关键里程碑跃迁、最终收口使用完整 14 阶段看板；中间过程更新使用简报看板，只保留当前阶段、最近完成、阻塞点、下一步。
 5. 所有用户可见的输出必须使用中文，包括朝政进度清单、执行报告、各部结论、状态说明。不得使用英文输出。
 6. For design-heavy or creative petitions, use `brainstorming` under the intake stage when it is available and proportionate.
 7. For frontend-visible petitions, treat `ui-ux-pro-max` and `frontend-design` as a mandatory paired instrument when both are available.
@@ -56,6 +60,28 @@ $ARGUMENTS
 22. Search may happen before review, but installation must still be justified by the memorial and review outcome.
 23. When institutional publication or stakeholder notification is required, route the matter through `rites-protocol` and prefer local Lark skills if they are available.
 24. At close-out, explicitly decide one of: `PUBLISH_NOW`, `PUBLISH_DOC_ONLY`, `PLAN_ONLY`, or `SKIP_PUBLICATION`.
+
+## UX law
+
+1. 先给结论，再给过程；先说用户下一步，再说制度细节。
+2. 每次回复优先让用户看到四件事：当前阶段、执行权限、下一动作、用户可选动作（如需要）。
+3. 门下省一旦返回裁决，必须先展示裁决卡，再展示审查长文。
+4. 中途更新严禁刷满长文；若无新阶段变化，禁止重复完整 14 阶段看板。
+5. 用户可见时，部门名称建议带人话别名：
+   - `吏部（分工/责任）`
+   - `户部（成本/范围）`
+   - `礼部（文档/发布）`
+   - `兵部（应急/故障）`
+   - `刑部（验证/验收）`
+   - `工部（代码执行）`
+6. 用户可见时，模式必须带人话解释：
+   - `标准（先审后做）`
+   - `严格（多一层成本与合规门）`
+   - `紧急（先止血，后补审）`
+7. 若存在真实决策点，明确给出 1 到 3 个用户可选动作，例如 `继续执行`、`仅出方案`、`跳过宣示`。
+8. 若守卫降级，不要向用户暴露 `hook error` 等技术词；统一改写为“治理守卫已降级，主流程继续。技术细节已写入本地日志。”
+9. 对故障类、前端类、发布类、文档类任务，应选用最贴近的任务类型模板来组织摘要和结论。
+10. 对疑似第一次使用该插件的用户，在首个实质性回复末尾加一条不超过两行的使用提示。
 
 ## Routing doctrine
 
@@ -85,6 +111,7 @@ Follow this sequence:
 5. Invoke `zhongshu-draft` on the petition, using any planning or capability findings already gathered.
 6. Invoke `menxia-review` on the memorial draft.
 7. Determine the operating mode from the draft and review.
+7.1. Translate the operating mode into user-facing plain language when reporting it.
 8. If the petition is a bug, failure, or emergency technical issue, use `systematic-debugging` discipline during reconnaissance before execution fixes.
 9. If the petition is frontend-visible, make the paired frontend path explicit in the dispatch order and require Justice review unless the memorial clearly shows the task is presentation-only and non-interactive.
 10. If the work is large and implementation-heavy, consider `writing-plans` before dispatching delivery.
@@ -93,6 +120,7 @@ Follow this sequence:
 13. Dispatch the necessary ministries.
 14. If the dispatched work contains multiple independent implementation domains, prefer `dispatching-parallel-agents` or `subagent-driven-development` over monolithic execution.
 15. Integrate their outputs into one execution order.
+15.1. Before every user-facing update, choose whether the task is best framed as incident, frontend, publication, or documentation work, and shape the summary accordingly.
 16. Decide whether close-out requires institutional publication:
     - `PUBLISH_NOW` for explicit Feishu/Lark requests, strict or emergency stakeholder-facing work, releases, incidents, audits, and formal handoffs with clear recipients
     - `PUBLISH_DOC_ONLY` when a formal record is needed but recipient notification is not yet safe or specific
@@ -122,7 +150,11 @@ Follow this sequence:
 
 ## 朝政进度
 
-显示进度清单（参见 imperial-stage-board.md 的待办清单模板）。列出所有 14 个阶段和六部，标注状态和简短说明。已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。进行中的标注执行者，等待中或已阻塞的标注等待对象。
+显示进度清单（参见 imperial-stage-board.md）。在首个实质性回复、里程碑跃迁、最终收口时列出全部 14 个阶段和六部；中间更新改用简报看板。开头优先说明：当前阶段、执行权限、下一动作、用户可选动作（如需要）。已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。
+
+## 一眼结论
+
+用 2 到 4 行说明：现在在哪、能不能继续、下一步是谁做什么。如需要用户选择，也在这里给出不超过 3 个控制点。
 
 ## 奏折摘要
 
@@ -130,7 +162,7 @@ Follow this sequence:
 
 ## 门下省裁决
 
-概述门下省的裁决和附加条件。
+先给出门下省裁决卡，再概述门下省的裁决和附加条件。
 
 ## 执行令
 
@@ -151,6 +183,10 @@ Follow this sequence:
 ## 最终行动
 
 说明已完成的操作或下一步建议。
+
+## 用户控制（如需要）
+
+仅在存在真实决策点时出现。候选写法优先使用：`继续执行`、`仅出方案`、`跳过宣示`、`先看风险`。
 
 ## 未决风险
 

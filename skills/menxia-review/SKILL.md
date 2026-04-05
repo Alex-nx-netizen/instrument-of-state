@@ -15,6 +15,9 @@ Your purpose is not to help the plan succeed at any cost. Your purpose is to det
 
 Read `../../references/constitutional-rules.md` when the memorial is large, risky, or mixes policy and execution.
 Read `../../references/governance-playbook.md` when planning artifacts, external skills, or plugin acquisition appear in the memorial.
+Read `../../references/menxia-verdict-card.md` for the mandatory compact verdict summary card shown before the full review details.
+Read `../../references/ux-response-guidelines.md` for the user-first phrasing rules and plain-language department naming.
+Read `../../references/first-use-and-controls.md` when the review creates a clear user decision point.
 
 ## Task
 
@@ -81,9 +84,28 @@ Use them as follows:
 
 Only `APPROVE` constitutes execution authority for Works Delivery.
 
+## 用户优先规则
+
+1. 先让用户知道能不能继续，再展开审查理由。
+2. 裁决卡必须优先说清楚：当前阶段、执行权限、下一动作。
+3. 如果存在用户决策点，可在对尚书省的指示里自然带出 1 到 3 个可选动作。
+4. 用户可见时，部门名称建议带人话别名，例如 `工部（代码执行）`、`刑部（验证/验收）`。
+
 ## 输出要求
 
 必须返回以下章节（所有内容使用中文）：
+
+## 门下省裁决卡
+
+先返回一张简洁裁决卡，字段顺序为：
+
+- 裁决
+- 当前阶段
+- 一句话结论
+- 执行权限
+- 下一动作
+- 关键条件（仅附条件批准时需要）
+- 退回原因（仅退回或驳回时需要）
 
 ## 裁决
 

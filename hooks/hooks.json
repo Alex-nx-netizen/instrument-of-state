@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" session-context",
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" session-context\"",
             "timeout": 15
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" reset"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" reset\""
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" annotate-start"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" annotate-start\""
           }
         ]
       }
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-zhongshu"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" record-zhongshu\""
           }
         ]
       },
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-menxia"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" record-menxia\""
           }
         ]
       }
@@ -58,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-agent"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" guard-agent\""
           }
         ]
       },
@@ -67,7 +67,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-tool"
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" guard-tool\""
           }
         ]
       }

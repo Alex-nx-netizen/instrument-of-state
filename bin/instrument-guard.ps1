@@ -6,13 +6,47 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+function Resolve-SafeSessionId([string]$SessionId) {
+  if (-not $SessionId) {
+    return "session-unknown"
+  }
+
+  $safe = [regex]::Replace($SessionId, '[<>:"/\\|?*\x00-\x1F]', '_')
+  if (-not $safe) {
+    return "session-unknown"
+  }
+
+  return $safe
+}
+
+function Write-SoftFailure([string]$ModeName) {
+  try {
+    $payload = [ordered]@{
+      hookSpecificOutput = [ordered]@{
+        hookEventName = $ModeName
+        additionalContext = "Guard degraded gracefully. Main flow continues. Details were written to the local log."
+      }
+    }
+    $payload | ConvertTo-Json -Depth 10
+  } catch {
+    # Hooks should fail open.
+  }
+}
+
 function Read-HookInput {
   if ([Console]::IsInputRedirected) {
     $raw = [Console]::In.ReadToEnd()
     if ($raw -and $raw.Trim().Length -gt 0) {
-      return $raw | ConvertFrom-Json
+      try {
+        return $raw | ConvertFrom-Json
+      } catch {
+        return [pscustomobject]@{
+          _raw_input = $raw
+        }
+      }
     }
   }
+
   return [pscustomobject]@{}
 }
 
@@ -37,9 +71,29 @@ function Ensure-StateDirectory([string]$Cwd) {
   return $dir
 }
 
+function Ensure-LogDirectory([string]$Cwd) {
+  $dir = Join-Path $Cwd ".claude\instrument-of-state\logs"
+  if (-not (Test-Path -LiteralPath $dir)) {
+    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+  }
+  return $dir
+}
+
+function Write-DebugLog([string]$Cwd, [string]$ModeName, [string]$SessionId, [string]$Message) {
+  try {
+    $dir = Ensure-LogDirectory $Cwd
+    $path = Join-Path $dir "hook-debug.log"
+    $line = "[{0}] mode={1} session={2} {3}" -f (Get-Date).ToString("o"), $ModeName, (Resolve-SafeSessionId $SessionId), $Message
+    Add-Content -LiteralPath $path -Value $line -Encoding UTF8
+  } catch {
+    # Logging must never break hook execution.
+  }
+}
+
 function Get-StatePath([string]$Cwd, [string]$SessionId) {
   $dir = Ensure-StateDirectory $Cwd
-  return Join-Path $dir "$SessionId.json"
+  $safeSessionId = Resolve-SafeSessionId $SessionId
+  return Join-Path $dir "$safeSessionId.json"
 }
 
 function New-DefaultState([string]$SessionId) {
@@ -71,6 +125,7 @@ function Load-State([string]$Cwd, [string]$SessionId) {
   if (-not $raw.Trim()) {
     return (New-DefaultState $SessionId)
   }
+
   return $raw | ConvertFrom-Json
 }
 
@@ -86,28 +141,30 @@ function Get-Verdict([string]$Message) {
     return "NONE"
   }
 
-  $chineseVerdictMap = @{
-    '批准' = 'APPROVE'
-    '附条件批准' = 'CONDITIONAL'
-    '退回' = 'RETURN'
-    '驳回' = 'REJECT'
+  $englishMatch = [regex]::Match($Message, '(?ms)^## (?:Verdict|\u88c1\u51b3)\s+([A-Z]+)\b|\b(APPROVE|CONDITIONAL|RETURN|REJECT)\b')
+  if ($englishMatch.Success) {
+    foreach ($index in @(1, 2)) {
+      $value = $englishMatch.Groups[$index].Value
+      if ($value) {
+        return $value.ToUpperInvariant()
+      }
+    }
   }
 
-  $patterns = @(
-    '(?ms)^## (?:Verdict|裁决)\s+([A-Z]+)\b',
-    '\b(APPROVE|CONDITIONAL|RETURN|REJECT)\b',
-    '(附条件批准|批准|退回|驳回)'
-  )
+  if ($Message -match '\u9644\u6761\u4ef6\u6279\u51c6') {
+    return "CONDITIONAL"
+  }
 
-  foreach ($pattern in $patterns) {
-    $match = [regex]::Match($Message, $pattern)
-    if ($match.Success) {
-      $value = $match.Groups[1].Value
-      if ($chineseVerdictMap.ContainsKey($value)) {
-        return $chineseVerdictMap[$value]
-      }
-      return $value.ToUpperInvariant()
-    }
+  if ($Message -match '\u6279\u51c6') {
+    return "APPROVE"
+  }
+
+  if ($Message -match '\u9000\u56de') {
+    return "RETURN"
+  }
+
+  if ($Message -match '\u9a73\u56de') {
+    return "REJECT"
   }
 
   return "NONE"
@@ -118,11 +175,10 @@ function Get-MemorialReady([string]$Message) {
     return $false
   }
 
-  # Support both English and Chinese section headers
   $requiredSections = @(
-    @("## Objective", "## 目标"),
-    @("## Recommended Mode", "## 建议模式"),
-    @("## Deliverables", "## 交付物")
+    @("## Objective", "## \u76ee\u6807"),
+    @("## Recommended Mode", "## \u5efa\u8bae\u6a21\u5f0f"),
+    @("## Deliverables", "## \u4ea4\u4ed8\u7269")
   )
 
   foreach ($alternatives in $requiredSections) {
@@ -225,120 +281,148 @@ function Is-PlanningArtifactPath([string]$PathValue) {
   return $leaf -in @("task_plan.md", "findings.md", "progress.md")
 }
 
-$inputData = Read-HookInput
-$cwdValue = Get-ObjectProperty $inputData "cwd"
-$sessionValue = Get-ObjectProperty $inputData "session_id"
-$cwd = if ($cwdValue) { [string]$cwdValue } else { (Get-Location).Path }
-$sessionId = if ($sessionValue) { [string]$sessionValue } else { "session-unknown" }
+try {
+  $inputData = Read-HookInput
+  $cwdValue = Get-ObjectProperty $inputData "cwd"
+  $sessionValue = Get-ObjectProperty $inputData "session_id"
+  $cwd = if ($cwdValue) { [string]$cwdValue } else { (Get-Location).Path }
+  $sessionId = if ($sessionValue) { [string]$sessionValue } else { "session-unknown" }
 
-switch ($Mode) {
-  "session-context" {
-    $context = @(
-      "Constitutional order: for substantial work open the docket with planning-with-files, then draft with Zhongshu, review with Menxia, and only then dispatch delivery.",
-      "Capability ladder: local skills and plugins first, then find-skills, then approved GitHub plugin marketplaces.",
-      "Only Works Delivery may land governed file changes. The sole exception is planning artifacts: task_plan.md, findings.md, and progress.md."
-    ) -join " "
-    Write-AdditionalContext "SessionStart" $context
-    exit 0
-  }
-
-  "reset" {
-    $state = New-DefaultState $sessionId
-    Save-State $cwd $sessionId $state
-    exit 0
-  }
-
-  "record-zhongshu" {
-    $state = Load-State $cwd $sessionId
-    $drafted = Get-MemorialReady ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
-    $state.memorial.drafted = $drafted
-    $state.memorial.updated_at = (Get-Date).ToString("o")
-    Save-State $cwd $sessionId $state
-    exit 0
-  }
-
-  "record-menxia" {
-    $state = Load-State $cwd $sessionId
-    $verdict = Get-Verdict ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
-    $approved = $verdict -eq "APPROVE"
-    $state.menxia.verdict = $verdict
-    $state.menxia.approved = $approved
-    $state.menxia.updated_at = (Get-Date).ToString("o")
-    $state.approvals.works_delivery = $approved
-    Save-State $cwd $sessionId $state
-    exit 0
-  }
-
-  "annotate-start" {
-    $state = Load-State $cwd $sessionId
-    $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
-
-    if ($agentType -eq "zhongshu-agent") {
-      Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Produce a real memorial with ## Objective, ## Recommended Mode, and ## Deliverables. Do not execute."
+  switch ($Mode) {
+    "session-context" {
+      Write-DebugLog $cwd $Mode $sessionId "session context requested"
+      $context = @(
+        "Governed order: for substantial work, open the docket first, then draft with Zhongshu, review with Menxia, and only then unlock Works Delivery.",
+        "Capability ladder: local skills and plugins first, then find-skills, then approved marketplaces if a gap remains.",
+        "Only Works Delivery may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md."
+      ) -join " "
+      Write-AdditionalContext "SessionStart" $context
       exit 0
     }
 
-    if ($agentType -eq "menxia-agent") {
-      Write-AdditionalContext "SubagentStart" "Issue an explicit ## Verdict section with one of: APPROVE, CONDITIONAL, RETURN, REJECT. Check planning discipline and capability ladder compliance. Only APPROVE authorizes Works Delivery."
+    "reset" {
+      Write-DebugLog $cwd $Mode $sessionId "reset state"
+      $state = New-DefaultState $sessionId
+      Save-State $cwd $sessionId $state
       exit 0
     }
 
-    if ($agentType -eq "works-delivery-agent") {
-      $approved = [bool]$state.approvals.works_delivery
-      if ($approved) {
-        Write-AdditionalContext "SubagentStart" "Menxia approval is recorded for this petition. Deliver only within the approved memorial and review conditions."
-      } else {
-        Write-AdditionalContext "SubagentStart" "No Menxia APPROVE is currently recorded for this petition. You may inspect, but file landing and mutating commands will be blocked by hook law."
+    "record-zhongshu" {
+      $state = Load-State $cwd $sessionId
+      $drafted = Get-MemorialReady ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
+      Write-DebugLog $cwd $Mode $sessionId ("record zhongshu drafted={0}" -f $drafted)
+      $state.memorial.drafted = $drafted
+      $state.memorial.updated_at = (Get-Date).ToString("o")
+      Save-State $cwd $sessionId $state
+      exit 0
+    }
+
+    "record-menxia" {
+      $state = Load-State $cwd $sessionId
+      $verdict = Get-Verdict ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
+      Write-DebugLog $cwd $Mode $sessionId ("record menxia verdict={0}" -f $verdict)
+      $approved = $verdict -eq "APPROVE"
+      $state.menxia.verdict = $verdict
+      $state.menxia.approved = $approved
+      $state.menxia.updated_at = (Get-Date).ToString("o")
+      $state.approvals.works_delivery = $approved
+      Save-State $cwd $sessionId $state
+      exit 0
+    }
+
+    "annotate-start" {
+      $state = Load-State $cwd $sessionId
+      $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
+      Write-DebugLog $cwd $Mode $sessionId ("annotate agent={0}" -f $agentType)
+
+      if ($agentType -eq "zhongshu-agent") {
+        Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Draft the memorial only. Include at least ## Objective, ## Recommended Mode, and ## Deliverables. Do not execute."
+        exit 0
       }
+
+      if ($agentType -eq "menxia-agent") {
+        Write-AdditionalContext "SubagentStart" "Review only. Return an explicit ## Verdict with one of: APPROVE, CONDITIONAL, RETURN, REJECT. Only APPROVE unlocks Works Delivery."
+        exit 0
+      }
+
+      if ($agentType -eq "works-delivery-agent") {
+        $approved = [bool]$state.approvals.works_delivery
+        if ($approved) {
+          Write-AdditionalContext "SubagentStart" "Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions."
+        } else {
+          Write-AdditionalContext "SubagentStart" "Menxia approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
+        }
+        exit 0
+      }
+
       exit 0
     }
 
-    exit 0
-  }
+    "guard-agent" {
+      $state = Load-State $cwd $sessionId
+      $toolInput = Get-ObjectProperty $inputData "tool_input"
+      $subagentType = [string](Get-ObjectProperty $toolInput "subagent_type" "")
+      Write-DebugLog $cwd $Mode $sessionId ("guard agent subagent_type={0} memorial={1} approved={2}" -f $subagentType, [bool]$state.memorial.drafted, [bool]$state.approvals.works_delivery)
 
-  "guard-agent" {
-    $state = Load-State $cwd $sessionId
-    $toolInput = Get-ObjectProperty $inputData "tool_input"
-    $subagentType = [string](Get-ObjectProperty $toolInput "subagent_type" "")
+      if ($subagentType -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
+        Write-PreToolDecision "deny" "Menxia review is blocked until Zhongshu has produced a formal memorial for this petition."
+        exit 0
+      }
 
-    if ($subagentType -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
-      Write-PreToolDecision "deny" "Menxia cannot be spawned until Zhongshu has produced a memorial for the current petition."
+      if ($subagentType -ne "works-delivery-agent") {
+        exit 0
+      }
+
+      if (-not [bool]$state.approvals.works_delivery) {
+        Write-PreToolDecision "deny" "Works Delivery is not unlocked because Menxia has not approved this petition yet."
+        exit 0
+      }
+
       exit 0
     }
 
-    if ($subagentType -ne "works-delivery-agent") {
-      exit 0
-    }
+    "guard-tool" {
+      $state = Load-State $cwd $sessionId
+      $toolInput = Get-ObjectProperty $inputData "tool_input"
+      $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
+      $toolName = [string](Get-ObjectProperty $inputData "tool_name" "")
+      $filePath = Get-ToolFilePath $inputData
+      $isPlanningArtifact = Is-PlanningArtifactPath $filePath
+      Write-DebugLog $cwd $Mode $sessionId ("guard tool agent={0} tool={1} path={2}" -f $agentType, $toolName, $filePath)
 
-    if (-not [bool]$state.approvals.works_delivery) {
-      Write-PreToolDecision "deny" "Works Delivery cannot be spawned because Menxia has not issued APPROVE for the current petition."
-      exit 0
-    }
-
-    exit 0
-  }
-
-  "guard-tool" {
-    $state = Load-State $cwd $sessionId
-    $toolInput = Get-ObjectProperty $inputData "tool_input"
-    $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
-    $toolName = [string](Get-ObjectProperty $inputData "tool_name" "")
-    $filePath = Get-ToolFilePath $inputData
-    $isPlanningArtifact = Is-PlanningArtifactPath $filePath
-
-    if ($agentType -ne "works-delivery-agent") {
-      if ($toolName -in @("Write", "Edit")) {
-        if ($isPlanningArtifact) {
+      if ($agentType -ne "works-delivery-agent") {
+        if ($toolName -in @("Write", "Edit")) {
+          if ($isPlanningArtifact) {
+            exit 0
+          }
+          Write-PreToolDecision "deny" "Governed file writes are reserved for Works Delivery. Other offices may inspect and advise, but may not write files."
           exit 0
         }
-        Write-PreToolDecision "deny" "Governed file landing is reserved for Works Delivery. Other ministries may advise but may not write files."
+
+        if ($toolName -eq "Bash") {
+          $commandText = [string](Get-ObjectProperty $toolInput "command" "")
+          if (Is-MutatingBash $CommandText) {
+            Write-PreToolDecision "deny" "Mutating workspace commands are reserved for Works Delivery after Menxia approval. Other offices may inspect and plan only."
+            exit 0
+          }
+        }
+
+        exit 0
+      }
+
+      if ([bool]$state.approvals.works_delivery) {
+        exit 0
+      }
+
+      if ($toolName -in @("Write", "Edit")) {
+        Write-PreToolDecision "deny" "Works Delivery may not write files yet because Menxia has not approved this petition."
         exit 0
       }
 
       if ($toolName -eq "Bash") {
         $commandText = [string](Get-ObjectProperty $toolInput "command" "")
-        if (Is-MutatingBash $commandText) {
-          Write-PreToolDecision "deny" "Mutating shell commands are reserved for Works Delivery after approval. Other ministries may inspect and plan, but may not mutate the workspace."
+        if (Is-MutatingBash $CommandText) {
+          Write-PreToolDecision "deny" "Works Delivery may not run mutating commands yet because Menxia has not approved this petition."
           exit 0
         }
       }
@@ -346,28 +430,15 @@ switch ($Mode) {
       exit 0
     }
 
-    if ([bool]$state.approvals.works_delivery) {
-      exit 0
+    default {
+      Write-Error "Unknown mode: $Mode"
+      exit 1
     }
-
-    if ($toolName -in @("Write", "Edit")) {
-      Write-PreToolDecision "deny" "Works Delivery write access is blocked because Menxia has not issued APPROVE for the current petition."
-      exit 0
-    }
-
-    if ($toolName -eq "Bash") {
-      $commandText = [string](Get-ObjectProperty $toolInput "command" "")
-      if (Is-MutatingBash $commandText) {
-        Write-PreToolDecision "deny" "Mutating shell commands are blocked because Menxia has not issued APPROVE for the current petition."
-        exit 0
-      }
-    }
-
-    exit 0
   }
-
-  default {
-    Write-Error "Unknown mode: $Mode"
-    exit 1
+} catch {
+  if ($cwd -and $sessionId) {
+    Write-DebugLog $cwd $Mode $sessionId ("error={0}" -f $_.Exception.Message)
   }
+  Write-SoftFailure $Mode
+  exit 0
 }
