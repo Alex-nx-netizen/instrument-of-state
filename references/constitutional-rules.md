@@ -5,6 +5,8 @@ This plugin treats complex work as a governed state process, not a single free-f
 Read `governance-playbook.md` alongside this file when the task is substantial, repository-affecting, or likely to need external capability.
 Read `imperial-workflow.md` when you want the same system explained as a stage-based court workflow.
 Read `imperial-stage-board.md` when you need the mandatory user-visible stage display.
+Read `team-blueprint-board.md` when you need the mandatory user-visible team blueprint table.
+Read `global-agent-routing.md` when detecting and routing global agents from `~/.claude/agents/`.
 Read `superpowers-integration.md` when deciding how auxiliary process skills reinforce the court.
 Read `frontend-governance.md` when the task affects a UI, page, component, interaction flow, visual system, or other frontend surface.
 
@@ -164,11 +166,12 @@ Before external installation:
 
 1. Query project-local skills and plugins first.
 2. Query user-local skills and plugins next.
-3. If a gap remains, use `find-skills` for external skill discovery.
-4. If a gap still remains, search approved GitHub-hosted plugin marketplaces.
-5. Prefer `local` or `project` installation scope over `user` unless the capability is broadly reusable.
-6. If a marketplace, repository, or plugin is unknown, high-risk, or weakly matched, surface it for approval instead of auto-installing.
-7. External acquisition should be tied to a concrete memorial need, not curiosity.
+3. Detect global agents in `~/.claude/agents/` and match by keyword routing. Global agents are preferred over generic agents when a match exists.
+4. If a gap remains, use `find-skills` for external skill discovery.
+5. If a gap still remains, search approved GitHub-hosted plugin marketplaces.
+6. Prefer `local` or `project` installation scope over `user` unless the capability is broadly reusable.
+7. If a marketplace, repository, or plugin is unknown, high-risk, or weakly matched, surface it for approval instead of auto-installing.
+8. External acquisition should be tied to a concrete memorial need, not curiosity.
 
 ## Enforcement doctrine
 

@@ -30,10 +30,11 @@ Before installing anything new, run the capability ladder in this order:
 
 1. Project-local skills and plugins
 2. User-local skills and plugins
-3. Built-in plugin skills already available in the current session
-4. `find-skills` for external skill discovery
-5. Approved GitHub plugin marketplaces via `instrument-market.cmd`
-6. Generic agents only when the above paths do not yield a suitable capability
+3. Global agents from `~/.claude/agents/` — detect availability, match keywords against the routing table in `global-agent-routing.md`, and register matched agents as ministry reinforcements in the team blueprint
+4. Built-in plugin skills already available in the current session
+5. `find-skills` for external skill discovery
+6. Approved GitHub plugin marketplaces via `instrument-market.cmd`
+7. Generic agents only when the above paths do not yield a suitable capability
 
 Record the winning capability, rejected candidates, and the reason in `findings.md`.
 

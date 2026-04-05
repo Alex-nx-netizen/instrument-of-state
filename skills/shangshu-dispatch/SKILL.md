@@ -15,6 +15,8 @@ Before acting, read `../../references/constitutional-rules.md` and follow it as 
 Read `../../references/governance-playbook.md` for the mandatory docket and capability ladder.
 Read `../../references/imperial-workflow.md` for the court-stage mapping.
 Read `../../references/imperial-stage-board.md` for the mandatory user-visible stage board.
+Read `../../references/team-blueprint-board.md` for the mandatory user-visible team blueprint table.
+Read `../../references/global-agent-routing.md` for global agent detection, keyword routing, and integration protocol.
 Read `../../references/menxia-verdict-card.md` for the compact review summary format that should be surfaced when Menxia returns a verdict.
 Read `../../references/ux-response-guidelines.md` for the user-first output order, plain-language naming, and degraded error wording.
 Read `../../references/task-type-templates.md` to choose the right output skeleton for incidents, frontend work, publication work, and documentation work.
@@ -39,8 +41,9 @@ $ARGUMENTS
    - `find-skills`
    - approved GitHub plugin marketplaces via `instrument-market.cmd`
    - generic agents only if no suitable capability exists
-4. 用户可见的回复必须以朝政进度开头。首个实质性回复、关键里程碑跃迁、最终收口使用完整 14 阶段看板；中间过程更新使用简报看板，只保留当前阶段、最近完成、阻塞点、下一步。
-5. 所有用户可见的输出必须使用中文，包括朝政进度清单、执行报告、各部结论、状态说明。不得使用英文输出。
+4. 用户可见的回复必须以朝政进度开头，紧随其后展示团队蓝图表。首个实质性回复、关键里程碑跃迁、最终收口使用完整 14 阶段看板和完整团队蓝图；中间过程更新使用简报看板和简报蓝图（只列出状态变化的角色）。
+5. 所有用户可见的输出必须使用中文，包括朝政进度清单、团队蓝图、执行报告、各部结论、状态说明。不得使用英文输出（Agent 类型名和 Skill 名保留英文原名，因需精确匹配调用）。
+5.1. 在太子承旨阶段，必须检测 `~/.claude/agents/` 目录是否存在全局 Agent 配置。若存在，按 `global-agent-routing.md` 的关键词路由表匹配相关 Agent，并将其纳入团队蓝图作为对应部门的增援角色。全局 Agent 优先于泛用 Agent 调用。
 6. For design-heavy or creative petitions, use `brainstorming` under the intake stage when it is available and proportionate.
 7. For frontend-visible petitions, treat `ui-ux-pro-max` and `frontend-design` as a mandatory paired instrument when both are available.
 8. For frontend-visible petitions, intake and reconnaissance must identify platform, surfaces, audience, design-system constraints, responsive expectations, and accessibility exposure.
@@ -105,6 +108,8 @@ Frontend routing note:
 Follow this sequence:
 
 1. Decide whether the petition is governed work. If it is substantial, open or refresh the docket with `planning-with-files`.
+1.1. Detect global agent availability: use `Glob` to check if `~/.claude/agents/` exists and contains agent files. If found, scan subdirectories and match petition keywords against the routing table in `global-agent-routing.md`. Read the YAML frontmatter `name` field from matched agent files to obtain the exact `subagent_type` for later dispatch.
+1.2. Compose the initial team blueprint: list all built-in offices involved in this petition, plus any matched global agent reinforcements. Assign models based on task complexity. Record initial status for each role.
 2. If the petition is frontend-visible, record the target platform, interface surfaces, audience, existing design language, and responsive expectations in the docket.
 3. If the petition implies missing capability, inspect local inventory with `instrument-market.cmd inventory "<query>"`.
 4. If local inventory is weak, invoke `find-skills` with a narrow capability query and record the recommendation.
@@ -117,8 +122,9 @@ Follow this sequence:
 10. If the work is large and implementation-heavy, consider `writing-plans` before dispatching delivery.
 11. If the review authorizes or conditions capability acquisition and a gap remains, use `instrument-market.cmd resolve "<query>"` to search approved GitHub marketplaces.
 12. If an external plugin is clearly required and a trusted match exists, install it with `instrument-market.cmd install <repo> <plugin> <scope>`.
-13. Dispatch the necessary ministries.
+13. Dispatch the necessary ministries. When global agent reinforcements have been identified, dispatch them alongside or within their assigned ministry. Use the global agent's `name` (from YAML frontmatter) as `subagent_type` in Agent calls. Global agents work within the governance framework of their assigned ministry, not independently.
 14. If the dispatched work contains multiple independent implementation domains, prefer `dispatching-parallel-agents` or `subagent-driven-development` over monolithic execution.
+14.1. Update the team blueprint after each dispatch: mark dispatched roles as "执行中", roles waiting for upstream as "等待联动", and completed roles as "已完成".
 15. Integrate their outputs into one execution order.
 15.1. Before every user-facing update, choose whether the task is best framed as incident, frontend, publication, or documentation work, and shape the summary accordingly.
 16. Decide whether close-out requires institutional publication:
@@ -152,6 +158,10 @@ Follow this sequence:
 
 显示进度清单（参见 imperial-stage-board.md）。在首个实质性回复、里程碑跃迁、最终收口时列出全部 14 个阶段和六部；中间更新改用简报看板。开头优先说明：当前阶段、执行权限、下一动作、用户可选动作（如需要）。已完成或已跳过的打勾 `[x]`，其他用 `[ ]`。
 
+## 团队蓝图
+
+显示团队蓝图表（参见 team-blueprint-board.md）。列出本次任务涉及的所有角色，包括内置官署和全局 Agent 增援。首个实质性回复展示完整蓝图，中间更新展示简报蓝图（仅状态变化角色），最终收口展示完整蓝图含最终状态。
+
 ## 一眼结论
 
 用 2 到 4 行说明：现在在哪、能不能继续、下一步是谁做什么。如需要用户选择，也在这里给出不超过 3 个控制点。
@@ -170,7 +180,7 @@ Follow this sequence:
 
 ## 能力调度
 
-说明本地匹配、外部发现、安装结果或能力缺口。
+说明全局 Agent 检测结果（检测到哪些、匹配了哪些、实际使用了哪些），以及本地匹配、外部发现、安装结果或能力缺口。
 
 ## 宣示决定
 

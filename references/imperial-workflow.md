@@ -7,6 +7,8 @@ This file presents `instrument-of-state` in the court-process language:
 It is a user-facing mental model layered on top of the constitutional rules. It does not replace `constitutional-rules.md`; it explains the same system in a more stage-oriented way.
 
 Read `imperial-stage-board.md` for the mandatory user-visible stage board shown in each governed response.
+Read `team-blueprint-board.md` for the mandatory user-visible team blueprint table shown alongside the stage board.
+Read `global-agent-routing.md` for global agent detection and routing from `~/.claude/agents/`.
 Read `superpowers-integration.md` for the auxiliary process skills that strengthen the court at specific stages.
 
 ## What the plugin does
@@ -442,14 +444,15 @@ Conceptually present but still folded into Shangshu:
 - 太子承旨
 - 锦衣卫侦察
 
-## Stage board requirement
+## Stage board and team blueprint requirement
 
 Every governed task should begin with:
 
 1. an Imperial Banner
 2. a full Imperial Stage Board
+3. a full Team Blueprint table
 
-The board should list all stages and all six ministries, showing whether each is:
+The stage board should list all stages and all six ministries, showing whether each is:
 
 - `DONE`
 - `ACTIVE`
@@ -457,7 +460,9 @@ The board should list all stages and all six ministries, showing whether each is
 - `BLOCKED`
 - `SKIPPED`
 
-That makes the court visible to the user instead of leaving the proceeding implicit.
+The team blueprint should list all roles involved in this task with their duties, model, agent type, invocation method, and current status. When global agents from `~/.claude/agents/` are detected and matched, they appear as ministry reinforcements.
+
+That makes both the process and the organization visible to the user instead of leaving the proceeding implicit.
 
 ## Superpowers note
 
