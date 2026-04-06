@@ -118,16 +118,18 @@ Example petitions:
 - **Guarded delivery**: Works is blocked until Menxia returns `APPROVE`
 - **Local-first capability search**: local skills/plugins -> `find-skills` -> marketplace
 - **Lark publication**: Rites can create docs, grant access, send IM, and publish to Wiki
-- **Frontend governance**: UI work must use `ui-ux-pro-max` + `frontend-design`
+- **Frontend governance**: UI work discovers the best frontend tools through the capability ladder
 - **Superpowers integration**: supporting skills are attached to the right office, not used ad hoc
 ---
 
 ## Frontend Rule
 
-For UI-facing work, this plugin requires the paired frontend path:
+For UI-facing work, this plugin requires two categories of frontend capability:
 
-- `ui-ux-pro-max` for UX structure, accessibility, responsive behavior, interaction quality
-- `frontend-design` for visual direction, typography, composition, motion, and anti-generic output
+- **UX structure**: accessibility, responsive behavior, layout logic, interaction quality
+- **Visual design**: art direction, typography, composition, motion, anti-generic output
+
+These capabilities are discovered dynamically through the capability ladder (global agents → session skills → find-skills → marketplace), not hardcoded to specific skill names.
 
 ---
 

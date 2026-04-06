@@ -1,7 +1,7 @@
 {
   "name": "instrument-of-state",
   "description": "A governed execution plugin for Claude Code that applies drafting, review, dispatch, capability discovery, and specialist delivery under a Three Departments and Six Ministries model.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "Drafted with Codex"
   }

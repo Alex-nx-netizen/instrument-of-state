@@ -59,100 +59,100 @@
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| frontend, react, vue, angular, css, component, 前端, 组件 | `engineering/engineering-frontend-developer.md` | `Frontend Developer` |
-| backend, api, server, microservice, 后端, 服务端 | `engineering/engineering-backend-architect.md` | `Backend Architect` |
-| mobile, ios, android, flutter, react native, 移动端 | `engineering/engineering-mobile-app-builder.md` | `Mobile App Builder` |
-| database, sql, query, index, 数据库, 查询优化 | `engineering/engineering-database-optimizer.md` | `Database Optimizer` |
-| devops, ci/cd, pipeline, docker, kubernetes, deploy, 部署 | `engineering/engineering-devops-automator.md` | `DevOps Automator` |
-| architecture, system design, scalability, 架构, 系统设计 | `engineering/engineering-software-architect.md` | `Software Architect` |
-| full-stack, complex feature, senior, 全栈 | `engineering/engineering-senior-developer.md` | `Senior Developer` |
-| prototype, mvp, poc, 原型, 快速验证 | `engineering/engineering-rapid-prototyper.md` | `Rapid Prototyper` |
-| cms, wordpress, drupal, 内容管理 | `engineering/engineering-cms-developer.md` | `CMS Developer` |
-| ml, ai, machine learning, model, 机器学习, 模型 | `engineering/engineering-ai-engineer.md` | `AI Engineer` |
-| solidity, smart contract, blockchain, ethereum, 智能合约 | `engineering/engineering-solidity-smart-contract-engineer.md` | `Solidity Smart Contract Engineer` |
-| embedded, firmware, iot, hardware, 嵌入式, 固件 | `engineering/engineering-embedded-firmware-engineer.md` | `Embedded Firmware Engineer` |
-| wechat, mini program, 微信, 小程序 | `engineering/engineering-wechat-mini-program-developer.md` | `WeChat Mini Program Developer` |
-| feishu, lark, 飞书 | `engineering/engineering-feishu-integration-developer.md` | `Feishu Integration Developer` |
-| git, branch, merge, rebase, commit, 版本控制 | `engineering/engineering-git-workflow-master.md` | `Git Workflow Master` |
-| data pipeline, etl, spark, 数据管道 | `engineering/engineering-data-engineer.md` | `Data Engineer` |
-| email, smtp, deliverability, 邮件 | `engineering/engineering-email-intelligence-engineer.md` | `Email Intelligence Engineer` |
+| frontend, react, vue, angular, svelte, solid, next, nuxt, remix, astro, gatsby, vite, webpack, rollup, esbuild, css, scss, sass, less, tailwind, styled-components, emotion, css-in-js, component, widget, layout, responsive, UI, 前端, 组件, 页面, 界面, 样式, 布局, 响应式, 交互, 动画, 表单, 路由, 状态管理, 渲染, SSR, CSR, SSG, hydration, DOM, virtual DOM, JSX, TSX, HTML, 模板 | `engineering/engineering-frontend-developer.md` | `Frontend Developer` |
+| backend, api, server, microservice, REST, GraphQL, gRPC, WebSocket, middleware, controller, service, repository, ORM, endpoint, route, handler, authentication, authorization, JWT, OAuth, session, cache, Redis, message queue, RabbitMQ, Kafka, Spring, Django, Express, FastAPI, NestJS, Laravel, Rails, Gin, Echo, Fiber, 后端, 服务端, 接口, 中间件, 控制器, 路由, 鉴权, 缓存, 消息队列 | `engineering/engineering-backend-architect.md` | `Backend Architect` |
+| mobile, ios, android, flutter, react native, swift, kotlin, SwiftUI, Jetpack Compose, Xcode, Android Studio, APK, IPA, App Store, Google Play, push notification, deep link, 移动端, 移动应用, 手机, 安卓, 苹果 | `engineering/engineering-mobile-app-builder.md` | `Mobile App Builder` |
+| database, sql, query, index, PostgreSQL, MySQL, MongoDB, SQLite, Oracle, DynamoDB, Supabase, PlanetScale, migration, schema, table, column, join, aggregate, transaction, connection pool, 数据库, 查询优化, 索引, 表结构, 迁移, 事务 | `engineering/engineering-database-optimizer.md` | `Database Optimizer` |
+| devops, ci/cd, pipeline, docker, kubernetes, deploy, terraform, ansible, nginx, AWS, GCP, Azure, CloudFlare, Vercel, Netlify, GitHub Actions, GitLab CI, Jenkins, ArgoCD, Helm, 部署, 运维, 容器, 编排, 云服务, 自动化部署 | `engineering/engineering-devops-automator.md` | `DevOps Automator` |
+| architecture, system design, scalability, distributed, microservice architecture, DDD, domain-driven, event-driven, CQRS, saga, service mesh, load balancing, high availability, fault tolerance, 架构, 系统设计, 分布式, 可扩展, 高可用, 领域驱动 | `engineering/engineering-software-architect.md` | `Software Architect` |
+| full-stack, complex feature, senior, refactor, large-scale, cross-cutting, 全栈, 重构, 复杂功能 | `engineering/engineering-senior-developer.md` | `Senior Developer` |
+| prototype, mvp, poc, proof of concept, demo, hackathon, spike, 原型, 快速验证, 概念验证, 最小可行产品 | `engineering/engineering-rapid-prototyper.md` | `Rapid Prototyper` |
+| cms, wordpress, drupal, strapi, contentful, headless CMS, 内容管理 | `engineering/engineering-cms-developer.md` | `CMS Developer` |
+| ml, ai, machine learning, deep learning, model, neural network, training, inference, LLM, NLP, computer vision, PyTorch, TensorFlow, 机器学习, 模型, 深度学习, 人工智能, 训练, 推理 | `engineering/engineering-ai-engineer.md` | `AI Engineer` |
+| solidity, smart contract, blockchain, ethereum, web3, DeFi, NFT, ERC-20, ERC-721, hardhat, foundry, 智能合约, 区块链 | `engineering/engineering-solidity-smart-contract-engineer.md` | `Solidity Smart Contract Engineer` |
+| embedded, firmware, iot, hardware, ESP32, Arduino, STM32, RTOS, PlatformIO, sensor, 嵌入式, 固件, 物联网 | `engineering/engineering-embedded-firmware-engineer.md` | `Embedded Firmware Engineer` |
+| wechat, mini program, 微信, 小程序, WXML, WXSS, 微信支付, 公众号 | `engineering/engineering-wechat-mini-program-developer.md` | `WeChat Mini Program Developer` |
+| feishu, lark, 飞书, 飞书机器人, 飞书审批, 多维表格 | `engineering/engineering-feishu-integration-developer.md` | `Feishu Integration Developer` |
+| git, branch, merge, rebase, commit, cherry-pick, stash, worktree, conflict, 版本控制, 分支管理, 合并冲突 | `engineering/engineering-git-workflow-master.md` | `Git Workflow Master` |
+| data pipeline, etl, elt, spark, dbt, Airflow, data warehouse, data lake, lakehouse, BigQuery, Snowflake, Redshift, 数据管道, 数据仓库, 数据湖, 数据治理 | `engineering/engineering-data-engineer.md` | `Data Engineer` |
+| email, smtp, deliverability, IMAP, 邮件, 邮件发送 | `engineering/engineering-email-intelligence-engineer.md` | `Email Intelligence Engineer` |
 
 ### 刑部（验证/验收）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| security, vulnerability, threat, owasp, auth, 安全 | `engineering/engineering-security-engineer.md` | `Security Engineer` |
-| accessibility, wcag, a11y, screen reader, 无障碍 | `testing/testing-accessibility-auditor.md` | `Accessibility Auditor` |
-| evidence, proof, screenshot, 证据, 截图 | `testing/testing-evidence-collector.md` | `Evidence Collector` |
-| verify, validate, production ready, 验证, 生产就绪 | `testing/testing-reality-checker.md` | `Reality Checker` |
-| api test, endpoint test, integration test, 接口测试 | `testing/testing-api-tester.md` | `API Tester` |
-| performance, benchmark, load test, 性能, 压测 | `testing/testing-performance-benchmarker.md` | `Performance Benchmarker` |
-| test results, coverage, metrics, 测试结果, 覆盖率 | `testing/testing-test-results-analyzer.md` | `Test Results Analyzer` |
-| compliance, soc2, iso, hipaa, pci, 合规 | `specialized/compliance-auditor.md` | `Compliance Auditor` |
+| security, vulnerability, threat, owasp, auth, XSS, CSRF, SQL injection, SSRF, RCE, CVE, pentest, penetration, encryption, TLS, SSL, certificate, secret, credential, token, 安全, 漏洞, 渗透, 注入, 加密, 认证, 授权 | `engineering/engineering-security-engineer.md` | `Security Engineer` |
+| accessibility, wcag, a11y, screen reader, aria, keyboard navigation, contrast, focus, alt text, 无障碍, 可访问性, 键盘导航, 对比度 | `testing/testing-accessibility-auditor.md` | `Accessibility Auditor` |
+| evidence, proof, screenshot, visual test, 证据, 截图, 视觉验证 | `testing/testing-evidence-collector.md` | `Evidence Collector` |
+| verify, validate, production ready, sanity check, smoke test, 验证, 生产就绪, 上线检查 | `testing/testing-reality-checker.md` | `Reality Checker` |
+| api test, endpoint test, integration test, contract test, Postman, 接口测试, 集成测试, 契约测试 | `testing/testing-api-tester.md` | `API Tester` |
+| performance, benchmark, load test, stress test, latency, throughput, profiling, flame graph, 性能, 压测, 负载测试, 延迟, 吞吐量 | `testing/testing-performance-benchmarker.md` | `Performance Benchmarker` |
+| test results, coverage, metrics, regression, flaky test, 测试结果, 覆盖率, 回归测试 | `testing/testing-test-results-analyzer.md` | `Test Results Analyzer` |
+| compliance, soc2, iso, hipaa, pci, gdpr, ccpa, audit, 合规, 审计, 数据保护 | `specialized/compliance-auditor.md` | `Compliance Auditor` |
 | smart contract audit, blockchain security, 合约审计 | `specialized/blockchain-security-auditor.md` | `Blockchain Security Auditor` |
-| code review, 代码审查 | `engineering/engineering-code-reviewer.md` | `Code Reviewer` |
-| threat detection, siem, 威胁检测 | `engineering/engineering-threat-detection-engineer.md` | `Threat Detection Engineer` |
+| code review, pull request review, PR review, code quality, lint, 代码审查, 代码质量, 代码评审 | `engineering/engineering-code-reviewer.md` | `Code Reviewer` |
+| threat detection, siem, detection rule, sigma, yara, 威胁检测, 告警规则 | `engineering/engineering-threat-detection-engineer.md` | `Threat Detection Engineer` |
 
 ### 吏部（分工/责任）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| project, task, sprint, kanban, 项目管理 | `project-management/` 下的相关 agent | 按文件 name 字段 |
-| hire, recruit, talent, 招聘, 人才 | `specialized/recruitment-specialist.md` | `Recruitment Specialist` |
-| jira, workflow, issue tracking | `project-management/` 下的 jira 相关 agent | `Jira Workflow Steward` |
+| project, task, sprint, kanban, scrum, agile, backlog, story, epic, milestone, 项目管理, 任务管理, 迭代, 排期 | `project-management/` 下的相关 agent | 按文件 name 字段 |
+| hire, recruit, talent, headcount, onboarding, JD, 招聘, 人才, 入职 | `specialized/recruitment-specialist.md` | `Recruitment Specialist` |
+| jira, workflow, issue tracking, ticket, board, 工单, 看板 | `project-management/` 下的 jira 相关 agent | `Jira Workflow Steward` |
 
 ### 户部（成本/范围）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| finance, budget, expense, cost, 财务, 预算 | `support/` 下的 finance 相关 agent | `Finance Tracker` |
-| priority, sprint, backlog, 优先级 | `product/product-sprint-prioritizer.md` | `Sprint Prioritizer` |
-| analytics, metrics, data, 数据分析 | `support/` 下的 analytics 相关 agent | `Analytics Reporter` |
-| supply chain, procurement, 供应链 | `specialized/supply-chain-strategist.md` | `Supply Chain Strategist` |
+| finance, budget, expense, cost, revenue, pricing, billing, invoice, ROI, TCO, 财务, 预算, 成本, 费用, 收入, 定价 | `support/` 下的 finance 相关 agent | `Finance Tracker` |
+| priority, sprint, backlog, capacity, velocity, estimation, sizing, story point, 优先级, 容量, 估算, 排序 | `product/product-sprint-prioritizer.md` | `Sprint Prioritizer` |
+| analytics, metrics, data, dashboard, KPI, OKR, funnel, conversion, retention, 数据分析, 仪表盘, 指标, 转化率 | `support/` 下的 analytics 相关 agent | `Analytics Reporter` |
+| supply chain, procurement, logistics, inventory, warehouse, 供应链, 采购, 物流, 库存 | `specialized/supply-chain-strategist.md` | `Supply Chain Strategist` |
 
 ### 礼部（文档/发布）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| documentation, docs, api docs, readme, 文档 | `engineering/engineering-technical-writer.md` | `Technical Writer` |
-| pdf, document, report, generate, 报告生成 | `specialized/specialized-document-generator.md` | `Document Generator` |
-| summary, executive, brief, 摘要 | `support/` 下的 summary 相关 agent | `Executive Summary Generator` |
-| content, article, blog, 内容创作 | `marketing/` 下的 content 相关 agent | 按文件 name 字段 |
-| brand, visual identity, 品牌 | `design/` 下的 brand 相关 agent | `Brand Guardian` |
-| ui design, visual design, 界面设计 | `design/` 下的 ui 相关 agent | `UI Designer` |
+| documentation, docs, api docs, readme, changelog, guide, tutorial, reference, JSDoc, Swagger, OpenAPI, 文档, 说明文档, 接口文档, 使用指南 | `engineering/engineering-technical-writer.md` | `Technical Writer` |
+| pdf, document, report, generate, export, 报告生成, 导出, 报表 | `specialized/specialized-document-generator.md` | `Document Generator` |
+| summary, executive, brief, digest, 摘要, 总结, 简报 | `support/` 下的 summary 相关 agent | `Executive Summary Generator` |
+| content, article, blog, newsletter, copywriting, 内容创作, 文章, 博客, 文案 | `marketing/` 下的 content 相关 agent | 按文件 name 字段 |
+| brand, visual identity, brand guideline, logo, 品牌, 视觉识别, 品牌规范 | `design/` 下的 brand 相关 agent | `Brand Guardian` |
+| ui design, visual design, mockup, wireframe, design system, Figma, sketch, 界面设计, 视觉设计, 设计系统, 原型图, 线框图 | `design/` 下的 ui 相关 agent | `UI Designer` |
 
 ### 兵部（应急/故障）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| incident, outage, p0, p1, 故障, 宕机 | `engineering/engineering-incident-response-commander.md` | `Incident Response Commander` |
-| sre, reliability, observability, monitoring, 可靠性 | `engineering/engineering-sre.md` | `SRE (Site Reliability Engineer)` |
-| deploy, rollback, ci/cd, 部署回滚 | `engineering/engineering-devops-automator.md` | `DevOps Automator` |
+| incident, outage, p0, p1, downtime, error spike, 5xx, 故障, 宕机, 线上问题, 生产事故 | `engineering/engineering-incident-response-commander.md` | `Incident Response Commander` |
+| sre, reliability, observability, monitoring, alerting, Grafana, Prometheus, Datadog, SLO, SLI, error budget, 可靠性, 可观测性, 监控, 告警 | `engineering/engineering-sre.md` | `SRE (Site Reliability Engineer)` |
+| deploy, rollback, ci/cd, release, canary, blue-green, 部署回滚, 灰度发布, 蓝绿部署 | `engineering/engineering-devops-automator.md` | `DevOps Automator` |
 
 ### 中书省（起草方案）增援
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) |
 |--------|----------------|--------------------------|
-| prd, product, roadmap, 产品需求 | `product/product-manager.md` | `Product Manager` |
-| research, trend, market, 市场研究 | `product/product-trend-researcher.md` | `Trend Researcher` |
-| user feedback, user research, 用户反馈 | `product/product-feedback-synthesizer.md` | `Feedback Synthesizer` |
-| workflow, process, 工作流 | `specialized/specialized-workflow-architect.md` | `Workflow Architect` |
-| ux, usability, 用户体验 | `design/` 下的 ux 相关 agent | `UX Researcher` 或 `UX Architect` |
+| prd, product, roadmap, feature, requirement, spec, user story, acceptance criteria, 产品需求, 需求文档, 产品规划, 路线图 | `product/product-manager.md` | `Product Manager` |
+| research, trend, market, competitive analysis, industry, benchmark, 市场研究, 竞品分析, 行业趋势 | `product/product-trend-researcher.md` | `Trend Researcher` |
+| user feedback, user research, survey, interview, NPS, satisfaction, persona, 用户反馈, 用户调研, 用户画像, 满意度 | `product/product-feedback-synthesizer.md` | `Feedback Synthesizer` |
+| workflow, process, automation, pipeline design, 工作流, 流程设计, 流程优化 | `specialized/specialized-workflow-architect.md` | `Workflow Architect` |
+| ux, usability, user experience, information architecture, user journey, interaction design, heuristic, 用户体验, 可用性, 交互设计, 信息架构, 用户旅程 | `design/` 下的 ux 相关 agent | `UX Researcher` 或 `UX Architect` |
 
 ### 特殊领域增援（按需路由）
 
 | 关键词 | 全局 Agent 文件 | Agent Name (subagent_type) | 建议部门 |
 |--------|----------------|--------------------------|---------|
-| mcp, model context protocol | `specialized/specialized-mcp-builder.md` | `MCP Builder` | 工部 |
-| salesforce, crm | `specialized/specialized-salesforce-architect.md` | `Salesforce Architect` | 工部 |
-| game, unity, unreal, godot, roblox | `game-development/` 下的相关 agent | 按文件 name 字段 | 工部 |
-| visionos, xr, ar, vr, spatial | `spatial-computing/` 下的相关 agent | 按文件 name 字段 | 工部 |
-| civil engineering, 土木工程 | `specialized/specialized-civil-engineer.md` | `Civil Engineer` | 工部 |
-| legal, compliance, 法律合规 | `support/` 下的 legal 相关 agent | `Legal Compliance Checker` | 刑部 |
-| infrastructure, 基础设施 | `support/` 下的 infra 相关 agent | `Infrastructure Maintainer` | 兵部 |
-| customer support, 客户支持 | `support/` 下的 support 相关 agent | `Support Responder` | 礼部 |
-| automation, n8n, 自动化 | `specialized/automation-governance-architect.md` | `Automation Governance Architect` | 工部 |
-| blockchain, web3, 区块链 | `specialized/blockchain-security-auditor.md` | `Blockchain Security Auditor` | 刑部 |
+| mcp, model context protocol, tool server, 工具服务 | `specialized/specialized-mcp-builder.md` | `MCP Builder` | 工部 |
+| salesforce, crm, HubSpot, 客户关系管理 | `specialized/specialized-salesforce-architect.md` | `Salesforce Architect` | 工部 |
+| game, unity, unreal, godot, roblox, game loop, sprite, physics, 游戏, 游戏开发 | `game-development/` 下的相关 agent | 按文件 name 字段 | 工部 |
+| visionos, xr, ar, vr, spatial, mixed reality, 空间计算, 混合现实 | `spatial-computing/` 下的相关 agent | 按文件 name 字段 | 工部 |
+| civil engineering, structural, 土木工程, 结构设计 | `specialized/specialized-civil-engineer.md` | `Civil Engineer` | 工部 |
+| legal, compliance, regulation, privacy policy, terms of service, 法律合规, 隐私政策, 条款 | `support/` 下的 legal 相关 agent | `Legal Compliance Checker` | 刑部 |
+| infrastructure, server, cluster, CDN, DNS, load balancer, 基础设施, 服务器, 集群 | `support/` 下的 infra 相关 agent | `Infrastructure Maintainer` | 兵部 |
+| customer support, helpdesk, ticket, FAQ, 客户支持, 工单, 帮助中心 | `support/` 下的 support 相关 agent | `Support Responder` | 礼部 |
+| automation, n8n, Zapier, Make, workflow automation, 自动化, 流程自动化 | `specialized/automation-governance-architect.md` | `Automation Governance Architect` | 工部 |
+| blockchain, web3, DApp, 区块链, 去中心化 | `specialized/blockchain-security-auditor.md` | `Blockchain Security Auditor` | 刑部 |
 
 ## 调用优先级
 

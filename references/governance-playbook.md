@@ -90,7 +90,7 @@ When multiple independent domains exist, this phase may use `dispatching-paralle
 
 When the petition is frontend-visible:
 
-- treat `ui-ux-pro-max` plus `frontend-design` as the mandatory paired delivery path when both are available
+- discover and use the best available frontend capability tools through the standard capability ladder (global agents → session skills → find-skills → marketplace)
 - route to `works-delivery`
 - normally route to `justice-compliance` for accessibility, interaction, and responsive gates
 - route to `rites-protocol` when the interface needs formal handoff, screenshots, demos, stakeholder publication, or release communication

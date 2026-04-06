@@ -45,7 +45,7 @@ $ARGUMENTS
 5. 所有用户可见的输出必须使用中文，包括朝政进度清单、团队蓝图、执行报告、各部结论、状态说明。不得使用英文输出（Agent 类型名和 Skill 名保留英文原名，因需精确匹配调用）。
 5.1. 在太子承旨阶段，必须检测 `~/.claude/agents/` 目录是否存在全局 Agent 配置。若存在，按 `global-agent-routing.md` 的关键词路由表匹配相关 Agent，并将其纳入团队蓝图作为对应部门的增援角色。全局 Agent 优先于泛用 Agent 调用。
 6. For design-heavy or creative petitions, use `brainstorming` under the intake stage when it is available and proportionate.
-7. For frontend-visible petitions, treat `ui-ux-pro-max` and `frontend-design` as a mandatory paired instrument when both are available.
+7. For frontend-visible petitions, discover the best available frontend capability tools through the capability ladder: first check `~/.claude/agents/` for matching frontend agents, then check session-available skills, then use `find-skills` or marketplace search. Do not hardcode any specific skill name.
 8. For frontend-visible petitions, intake and reconnaissance must identify platform, surfaces, audience, design-system constraints, responsive expectations, and accessibility exposure.
 9. For greenfield or redesigned frontend work, require a deliberate visual direction and reject generic AI-looking output.
 10. For large approved implementation work, use `writing-plans`, `dispatching-parallel-agents`, `subagent-driven-development`, or `executing-plans` when they fit the stage and scale.
@@ -100,7 +100,7 @@ Choose ministries based on the approved memorial:
 Frontend routing note:
 
 - frontend-visible petitions should route to `works-delivery` and normally to `justice-compliance`
-- when both are available, `ui-ux-pro-max` and `frontend-design` are the mandatory paired frontend path
+- frontend capability tools (UX structure + visual design) should be discovered through the capability ladder, not hardcoded
 - if stakeholder presentation, demo material, or visual handoff is needed, also route to `rites-protocol`
 
 ## Dispatch procedure
@@ -118,7 +118,7 @@ Follow this sequence:
 7. Determine the operating mode from the draft and review.
 7.1. Translate the operating mode into user-facing plain language when reporting it.
 8. If the petition is a bug, failure, or emergency technical issue, use `systematic-debugging` discipline during reconnaissance before execution fixes.
-9. If the petition is frontend-visible, make the paired frontend path explicit in the dispatch order and require Justice review unless the memorial clearly shows the task is presentation-only and non-interactive.
+9. If the petition is frontend-visible, make the discovered frontend capability tools explicit in the dispatch order and require Justice review unless the memorial clearly shows the task is presentation-only and non-interactive.
 10. If the work is large and implementation-heavy, consider `writing-plans` before dispatching delivery.
 11. If the review authorizes or conditions capability acquisition and a gap remains, use `instrument-market.cmd resolve "<query>"` to search approved GitHub marketplaces.
 12. If an external plugin is clearly required and a trusted match exists, install it with `instrument-market.cmd install <repo> <plugin> <scope>`.
@@ -148,7 +148,7 @@ Follow this sequence:
 - Incidents, hotfixes, deploy problems, and rollback questions also route to `war-operations`.
 - Third-party plugin or skill acquisition should be reported in the final answer with source and scope.
 - Planning artifacts are part of governance, not delivery. Keeping the docket current is Shangshu's responsibility.
-- Frontend-visible work should explicitly report that the paired frontend path was used, and should mention the chosen design direction or preservation constraint.
+- Frontend-visible work should explicitly report which frontend capability tools were discovered and used, and should mention the chosen design direction or preservation constraint.
 
 ## 最终回复格式
 

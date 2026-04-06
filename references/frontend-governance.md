@@ -15,21 +15,21 @@ Apply this doctrine when the petition involves any of the following:
 
 Do not apply it to backend-only, infrastructure-only, or non-visual automation work.
 
-## Twin instruments of frontend statecraft
+## Frontend capability requirements
 
-Frontend work must use these two instruments together when both are available:
+Frontend work requires two categories of capability, sourced through the standard capability ladder (global agents → session skills → find-skills → marketplace):
 
-- `ui-ux-pro-max`: governs UX structure, accessibility, responsive behavior, layout logic, interaction states, platform adaptation, and design-system coherence
-- `frontend-design`: governs aesthetic direction, typography character, composition, atmosphere, motion moments, and protection against generic AI-looking output
+- **UX 结构能力**：UX structure, accessibility, responsive behavior, layout logic, interaction states, platform adaptation, and design-system coherence
+- **视觉设计能力**：aesthetic direction, typography character, composition, atmosphere, motion moments, and protection against generic AI-looking output
 
-Neither instrument is sufficient on its own for governed frontend delivery when both are present.
+No specific skill or agent name is prescribed. The best available tools should be discovered dynamically for each project context. When multiple candidates exist, prefer the one that best matches the project's technology stack, design system, and quality requirements.
 
 ## Core law
 
 1. Frontend is not generic implementation. It is governed design, experience, and delivery.
 2. Every frontend petition needs an explicit product surface, audience, and user outcome.
 3. Every frontend memorial needs an experience thesis, not just a list of components.
-4. Every frontend dispatch must state that `ui-ux-pro-max` and `frontend-design` are the paired delivery path.
+4. Every frontend dispatch must state which frontend tools were selected through the capability ladder and why.
 5. Every frontend review must check accessibility, responsiveness, and interaction clarity, not just visual polish.
 6. Every frontend implementation must either preserve the established product language or deliberately choose a new one and justify it.
 7. Generic AI aesthetics are forbidden for greenfield frontend work.
@@ -96,6 +96,6 @@ When the docket exists, it should record:
 
 When frontend work is governed, the final report should state:
 
-- that the paired frontend path was used
+- which frontend capability tools were selected and how they were discovered
 - the chosen visual or UX direction
 - the main accessibility and responsive checks that were applied

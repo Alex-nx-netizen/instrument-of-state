@@ -131,12 +131,19 @@ The constitution explicitly recognizes two external skills as state instruments 
 
 They belong under Shangshu's prelude and capability ladder, not as ad hoc ministry behavior.
 
-For frontend-visible work, the constitution explicitly recognizes this paired frontend path:
+For frontend-visible work, the constitution requires two categories of capability:
 
-- `ui-ux-pro-max`: system-grade UX, accessibility, responsive behavior, layout, interaction, and interface review
-- `frontend-design`: art direction, typography, composition, motion direction, atmosphere, and anti-generic frontend design
+- **UX 结构能力**：system-grade UX, accessibility, responsive behavior, layout, interaction, and interface review
+- **视觉设计能力**：art direction, typography, composition, motion direction, atmosphere, and anti-generic frontend design
 
-When both are available, they are a twin instrument of state. Frontend work should not be routed as ordinary implementation without them.
+These capabilities must be sourced through the standard capability ladder:
+
+1. Global agents from `~/.claude/agents/` matching frontend keywords
+2. Session-available skills that match the capability need
+3. `find-skills` discovery for external skill candidates
+4. Approved marketplace search
+
+No specific skill name is hardcoded. The best available frontend tools should be selected dynamically per project and context.
 
 The constitution also recognizes the `superpowers` family as auxiliary state instruments when present locally. They should be attached to the proper office rather than invoked vaguely:
 
@@ -209,7 +216,7 @@ Escalate into emergency mode when any of the following are present:
 - Any staffing or decomposition question should route to Personnel Routing.
 - Any deployment or incident question should route to War Operations.
 - Any frontend-visible task should route to Works Delivery and should normally route to Justice Compliance as well.
-- Any frontend-visible task should be governed by `frontend-governance.md` and the paired use of `ui-ux-pro-max` plus `frontend-design`.
+- Any frontend-visible task should be governed by `frontend-governance.md` and dynamically discovered frontend capabilities (UX structure + visual design tools selected via the capability ladder).
 
 ## Output constitution
 

@@ -7,7 +7,7 @@ The principle is simple:
 - `instrument-of-state` remains the governing constitution
 - `superpowers` provides specialist workflows that strengthen specific court offices
 - `find-skills` remains part of reconnaissance and capability acquisition, not a free-floating action
-- for frontend-visible work, `superpowers` does not replace the paired frontend instruments `ui-ux-pro-max` and `frontend-design`
+- for frontend-visible work, `superpowers` does not replace the dynamically discovered frontend capability tools
 
 ## Meta rule
 
@@ -19,9 +19,9 @@ In the court model, use concrete `superpowers` skills at the proper stage rather
 
 When the petition affects a UI, page, screen, component, or visual system:
 
-- use `ui-ux-pro-max` plus `frontend-design` as the primary frontend pair
-- let `superpowers` support planning, dispatch, or verification around that pair
-- never let `superpowers` become a substitute for explicit frontend design and UX rules
+- use the dynamically discovered frontend capability tools as the primary frontend path
+- let `superpowers` support planning, dispatch, or verification around the discovered tools
+- never let `superpowers` become a substitute for explicit frontend design and UX discipline
 
 ## Stage-to-skill mapping
 
@@ -164,4 +164,4 @@ Attach `superpowers` skills to these offices:
 - Menxia review
 - Works Delivery authorization
 - local-first capability law
-- the frontend rule that UI work should use `ui-ux-pro-max` plus `frontend-design` when both are available
+- the frontend rule that UI work should use dynamically discovered frontend capability tools

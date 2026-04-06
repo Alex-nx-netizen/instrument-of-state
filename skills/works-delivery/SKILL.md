@@ -30,7 +30,7 @@ Read `../../references/frontend-governance.md` when the approved order affects a
 - If deployment urgency or rollback risk is active, coordinate with `war-operations`.
 - Menxia `APPROVE` is mandatory. Plugin hooks enforce this rule on file-writing actions.
 - If `progress.md` exists, treat it as the execution ledger and keep major milestones visible.
-- For frontend-visible work, use `ui-ux-pro-max` plus `frontend-design` together when both are available.
+- For frontend-visible work, use the best available frontend capability tools discovered through the capability ladder (global agents → session skills → find-skills → marketplace).
 - For greenfield or redesigned frontend work, choose a deliberate visual direction instead of defaulting to generic patterns.
 - For established products, preserve the existing design system unless the memorial authorizes redesign.
 
