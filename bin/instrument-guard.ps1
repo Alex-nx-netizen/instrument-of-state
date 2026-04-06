@@ -291,12 +291,23 @@ try {
   switch ($Mode) {
     "session-context" {
       Write-DebugLog $cwd $Mode $sessionId "session context requested"
-      $context = @(
-        "Governed order: for substantial work, open the docket first, then draft with Zhongshu, review with Menxia, and only then unlock Works Delivery.",
-        "Capability ladder: local skills and plugins first, then find-skills, then approved marketplaces if a gap remains.",
-        "Only Works Delivery may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md."
-      ) -join " "
-      Write-AdditionalContext "SessionStart" $context
+      $contextParts = [System.Collections.Generic.List[string]]::new()
+      $contextParts.Add("Governed order: for substantial work, open the docket first, then draft with Zhongshu, review with Menxia, and only then unlock Works Delivery.")
+      $contextParts.Add("Capability ladder: local skills and plugins first, then find-skills, then approved marketplaces if a gap remains.")
+      $contextParts.Add("Only Works Delivery may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md.")
+
+      $spSkillPath  = Join-Path $env:USERPROFILE ".claude\skills\superpowers"
+      $spPluginPath = Join-Path $env:USERPROFILE ".claude\plugins\superpowers"
+      $superpowersInstalled = (Test-Path -LiteralPath $spSkillPath -PathType Container) -or `
+                              (Test-Path -LiteralPath $spPluginPath -PathType Container)
+
+      if ($superpowersInstalled) {
+        $contextParts.Add("Superpowers is active. Use its skills at the correct governance stage as defined in references/superpowers-integration.md: brainstorming at intake, writing-plans after the memorial, executing-plans and subagent-driven-development for delivery, systematic-debugging for incidents, verification-before-completion and requesting-code-review before close-out.")
+      } else {
+        $contextParts.Add("Superpowers is not installed. It provides brainstorming, planning, debugging, and verification skills that pair with this governance system. Install it with: /plugin install superpowers@superpowers-marketplace")
+      }
+
+      Write-AdditionalContext "SessionStart" ($contextParts -join " ")
       exit 0
     }
 
