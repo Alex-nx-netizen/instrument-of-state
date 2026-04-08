@@ -22,6 +22,7 @@ Default to `PUBLISH_DOC_ONLY` when:
 
 - a formal artifact is needed, but recipients are not explicit
 - recipients exist, but their identities are not yet resolved
+- the result is not yet proven public-ready enough for `PUBLISH_NOW`
 
 Default to `SKIP_PUBLICATION` when:
 
@@ -103,10 +104,45 @@ Published: <document title>
 Before `publish-to-lark` sends anything externally, confirm:
 
 - the publication decision is not `SKIP_PUBLICATION`
+- the result has explicit public-ready evidence
 - the recipient is explicit or resolvable
 - the sending identity is the bot and that is memorial-authorized or user-requested
 - the document exists
 - the required permissions were granted or the message explicitly discloses access limitations
+
+## Public-ready evidence block
+
+Prefer passing publication one of these:
+
+```json
+{
+  "summaryPacket": {
+    "publicReady": true
+  },
+  "verificationPacket": {
+    "verifyPassed": true
+  },
+  "publicationPacket": {
+    "publicReadyEvidence": [
+      "verificationPacket.verifyPassed",
+      "summaryPacket.summaryClosed",
+      "summaryPacket.deliverableChainClosed"
+    ]
+  }
+}
+```
+
+Or a Chinese summary block:
+
+```markdown
+## 校验与公开闸门
+
+- 验证通过：是
+- 汇总闭合：是
+- 单一交付物保持完整：是
+- 交付链闭合：是
+- 汇总结果完整可对外说明：是
+```
 
 ## Safety and delivery notes
 

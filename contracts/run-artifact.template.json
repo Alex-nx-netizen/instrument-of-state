@@ -1,0 +1,116 @@
+{
+  "artifactVersion": "0.1.0",
+  "sourceContract": "contracts/workflow-contract.json",
+  "runHeader": {
+    "petitionId": "<petition-id>",
+    "taskSummary": "<short task summary>",
+    "mode": "standard",
+    "governanceFlow": "governed_task",
+    "createdAt": "<ISO-8601>",
+    "updatedAt": "<ISO-8601>",
+    "ownerOffice": "shangshu",
+    "surfaceState": "internal_only",
+    "notes": []
+  },
+  "intentPacket": {
+    "trueUserIntent": "<what the user actually wants>",
+    "successCriteria": [
+      "<criterion 1>"
+    ],
+    "nonGoals": [
+      "<non-goal 1>"
+    ],
+    "defaultAssumptions": [
+      "<assumption 1>"
+    ],
+    "intentPacketVersion": "v1"
+  },
+  "intentGatePacket": {
+    "ambiguitiesResolved": false,
+    "requiresUserChoice": false,
+    "pendingUserChoices": [],
+    "currentDefaultPath": "<default path>",
+    "intentGatePacketVersion": "v1"
+  },
+  "memorialPacket": {
+    "objective": "<objective>",
+    "scope": [
+      "<scope item>"
+    ],
+    "outOfScope": [
+      "<out-of-scope item>"
+    ],
+    "constraints": [
+      "<constraint>"
+    ],
+    "risks": [
+      "<risk>"
+    ],
+    "ministries": [
+      "works-delivery"
+    ],
+    "mode": "standard",
+    "deliverables": [
+      "<deliverable>"
+    ],
+    "rollbackLevel": "file",
+    "evidenceFiles": []
+  },
+  "reviewPacket": {
+    "verdict": "RETURN",
+    "conditions": [],
+    "protocolCheck": {
+      "intentPacket": false,
+      "intentGatePacket": false,
+      "memorialReady": false
+    },
+    "ministryAdjustments": [],
+    "publicationPrerequisites": [],
+    "reviewNotes": []
+  },
+  "dispatchPacket": {
+    "selectedMinistries": [],
+    "capabilityDecision": {
+      "state": "covered",
+      "used": [],
+      "gaps": []
+    },
+    "ownerAssignments": [],
+    "parallelGroups": [],
+    "rollbackLevel": "file",
+    "publicationPosture": "SKIP_PUBLICATION"
+  },
+  "verificationPacket": {
+    "evidence": [],
+    "testsOrChecks": [],
+    "openFindings": [],
+    "verifyPassed": false
+  },
+  "summaryPacket": {
+    "summaryClosed": false,
+    "singleDeliverableMaintained": false,
+    "deliverableChainClosed": false,
+    "consolidatedDeliverablePresent": false,
+    "publicReady": false,
+    "closeoutSummary": "<final summary>"
+  },
+  "publicationPacket": {
+    "publicationDecision": "SKIP_PUBLICATION",
+    "publicReadyEvidence": [],
+    "recipientsResolved": false,
+    "accessReady": false,
+    "notificationReady": false,
+    "blockers": []
+  },
+  "writebackPacket": {
+    "writebackDecision": "none",
+    "targets": [],
+    "rationale": "<why writeback or why not>",
+    "templateHints": [
+      "memory/templates/pattern-template.md",
+      "memory/templates/scar-template.md",
+      "memory/templates/dispatch-pattern-template.md",
+      "memory/templates/writeback-packet.template.json"
+    ]
+  }
+}

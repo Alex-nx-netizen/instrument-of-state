@@ -1,0 +1,14 @@
+{
+  "writebackDecision": "writeback",
+  "targets": [
+    "memory/patterns/<pattern-file>.md"
+  ],
+  "rationale": "<why this learning should persist>",
+  "artifacts": {
+    "patternTemplate": "memory/templates/pattern-template.md",
+    "scarTemplate": "memory/templates/scar-template.md",
+    "dispatchPatternTemplate": "memory/templates/dispatch-pattern-template.md",
+    "capabilityGapTemplate": "memory/templates/capability-gap-entry-template.md"
+  },
+  "ownerFollowup": "<who should maintain this writeback>"
+}

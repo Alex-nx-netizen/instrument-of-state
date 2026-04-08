@@ -11,8 +11,16 @@ Publication may execute only when all of these are true:
 - the memorial, Menxia verdict, and ministry outputs are clear enough to publish
 - the publication decision is `PUBLISH_NOW` or `PUBLISH_DOC_ONLY`
 - the recipient, message purpose, and bot-sender identity are explicit, memorial-authorized, or directly requested by the user
+- explicit public-ready evidence exists
+
+Preferred public-ready evidence:
+
+- a governed run artifact with `summaryPacket.publicReady == true`
+- `verificationPacket.verifyPassed == true`
+- non-empty `publicationPacket.publicReadyEvidence`
 
 Downgrade to `PLAN_ONLY` when identity resolution, permissions, or tool access are incomplete.
+Downgrade to `PLAN_ONLY` or `PUBLISH_DOC_ONLY` when public-ready evidence is incomplete.
 
 ## Execution ladder
 
@@ -24,6 +32,8 @@ Follow this sequence in order.
 - `PUBLISH_DOC_ONLY`: create the document and grant the minimum safe permissions, but do not send IM
 - `PLAN_ONLY`: return the exact plan and blocker
 - `SKIP_PUBLICATION`: do nothing external
+
+Before choosing `PUBLISH_NOW`, confirm that the public-ready proof source is explicit and complete.
 
 ### 2. Resolve recipients
 
@@ -118,6 +128,7 @@ Use `lark-wiki` when available; otherwise return the exact wiki placement plan.
 
 Downgrade from `PUBLISH_NOW` when any of these occur:
 
+- public-ready evidence is missing or partial
 - recipient identity is ambiguous
 - the operator cannot determine whether bot identity is acceptable
 - permission grant fails and the user did not authorize a send-with-warning path

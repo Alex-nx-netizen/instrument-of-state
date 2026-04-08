@@ -1,0 +1,213 @@
+{
+  "contract_version": "0.1.0",
+  "public_model": "three_departments_and_six_ministries",
+  "meta_layer": {
+    "purpose": "Keep the court workflow as the user-facing surface while adding a protocol-first governance skeleton underneath it.",
+    "core_rules": [
+      "Intent must be locked before heavy execution.",
+      "Capability search must be explicit before acquisition.",
+      "Review must clear the execution gate before Works Delivery writes.",
+      "Verification and summary closure must clear the public-ready gate before publication.",
+      "Every governed run must end with an explicit writeback decision."
+    ]
+  },
+  "state_model": {
+    "stage_state": [
+      "petition",
+      "intake",
+      "recon",
+      "draft",
+      "review",
+      "dispatch",
+      "delivery",
+      "verification",
+      "summary",
+      "publication",
+      "evolution"
+    ],
+    "control_state": [
+      "normal",
+      "conditional",
+      "skip",
+      "interrupt",
+      "rollback",
+      "iteration"
+    ],
+    "gate_state": [
+      "intent_open",
+      "intent_locked",
+      "review_open",
+      "works_locked",
+      "works_unlocked",
+      "verification_open",
+      "summary_open",
+      "public_ready",
+      "writeback_open",
+      "closed"
+    ],
+    "surface_state": [
+      "internal_only",
+      "internal_ready",
+      "public_ready"
+    ],
+    "capability_state": [
+      "covered",
+      "partial",
+      "gap",
+      "escalated"
+    ],
+    "authority_state": [
+      "draft_only",
+      "review_only",
+      "works_unlocked",
+      "publish_ready"
+    ]
+  },
+  "protocols": {
+    "intentPacket": {
+      "required_for": [
+        "standard",
+        "strict",
+        "emergency"
+      ],
+      "fields": [
+        "trueUserIntent",
+        "successCriteria",
+        "nonGoals",
+        "defaultAssumptions",
+        "intentPacketVersion"
+      ]
+    },
+    "intentGatePacket": {
+      "required_for": [
+        "standard",
+        "strict",
+        "emergency"
+      ],
+      "fields": [
+        "ambiguitiesResolved",
+        "requiresUserChoice",
+        "pendingUserChoices",
+        "currentDefaultPath",
+        "intentGatePacketVersion"
+      ]
+    },
+    "memorialPacket": {
+      "fields": [
+        "objective",
+        "scope",
+        "outOfScope",
+        "constraints",
+        "risks",
+        "ministries",
+        "mode",
+        "deliverables"
+      ]
+    },
+    "reviewPacket": {
+      "fields": [
+        "verdict",
+        "conditions",
+        "protocolCheck",
+        "ministryAdjustments",
+        "publicationPrerequisites"
+      ]
+    },
+    "dispatchPacket": {
+      "fields": [
+        "selectedMinistries",
+        "capabilityDecision",
+        "ownerAssignments",
+        "parallelGroups",
+        "rollbackLevel"
+      ]
+    },
+    "verificationPacket": {
+      "fields": [
+        "evidence",
+        "testsOrChecks",
+        "openFindings",
+        "verifyPassed"
+      ]
+    },
+    "summaryPacket": {
+      "fields": [
+        "summaryClosed",
+        "singleDeliverableMaintained",
+        "deliverableChainClosed",
+        "consolidatedDeliverablePresent",
+        "publicReady"
+      ]
+    },
+    "publicationPacket": {
+      "fields": [
+        "publicationDecision",
+        "publicReadyEvidence",
+        "recipientsResolved",
+        "accessReady",
+        "notificationReady",
+        "blockers"
+      ]
+    },
+    "writebackPacket": {
+      "fields": [
+        "writebackDecision",
+        "targets",
+        "rationale"
+      ]
+    }
+  },
+  "run_artifact": {
+    "template": "contracts/run-artifact.template.json",
+    "recommended_output_dir": "artifacts/runs",
+    "required_packets_for_governed_run": [
+      "intentPacket",
+      "intentGatePacket",
+      "memorialPacket",
+      "reviewPacket",
+      "dispatchPacket",
+      "verificationPacket",
+      "summaryPacket",
+      "publicationPacket",
+      "writebackPacket"
+    ]
+  },
+  "gates": {
+    "menxia_review_ready": [
+      "intentPacket",
+      "intentGatePacket",
+      "memorialPacket"
+    ],
+    "works_delivery_unlock": [
+      "reviewPacket.verdict == APPROVE"
+    ],
+    "public_ready": [
+      "verificationPacket.verifyPassed == true",
+      "summaryPacket.summaryClosed == true",
+      "summaryPacket.singleDeliverableMaintained == true",
+      "summaryPacket.deliverableChainClosed == true",
+      "summaryPacket.consolidatedDeliverablePresent == true"
+    ],
+    "lark_publication": [
+      "public_ready",
+      "publicationPacket.publicReadyEvidence != empty",
+      "publicationPacket.accessReady == true or publicationDecision != PUBLISH_NOW"
+    ]
+  },
+  "rollback_levels": [
+    "file",
+    "subtask",
+    "partial",
+    "full"
+  ],
+  "writeback_targets": [
+    "memory/patterns",
+    "memory/scars",
+    "memory/capability-gaps.md",
+    "memory/dispatch-patterns.md",
+    "references",
+    "skills",
+    "agents",
+    "contracts/workflow-contract.json"
+  ]
+}

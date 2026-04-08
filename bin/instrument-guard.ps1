@@ -63,6 +63,17 @@ function Get-ObjectProperty($Object, [string]$Name, $Default = $null) {
   return $Default
 }
 
+function Set-ObjectPropertyIfMissing($Object, [string]$Name, $Value) {
+  if ($null -eq $Object) {
+    return
+  }
+
+  $property = $Object.PSObject.Properties.Match($Name)
+  if ($property.Count -eq 0) {
+    $Object | Add-Member -NotePropertyName $Name -NotePropertyValue $Value
+  }
+}
+
 function Ensure-StateDirectory([string]$Cwd) {
   $dir = Join-Path $Cwd ".claude\instrument-of-state\state"
   if (-not (Test-Path -LiteralPath $dir)) {
@@ -100,8 +111,28 @@ function New-DefaultState([string]$SessionId) {
   return [ordered]@{
     session_id = $SessionId
     updated_at = (Get-Date).ToString("o")
+    meta = [ordered]@{
+      stage_state = "PETITION"
+      control_state = "NORMAL"
+      gate_state = "INTENT_OPEN"
+      surface_state = "INTERNAL_ONLY"
+      capability_state = "UNKNOWN"
+      authority_state = "DRAFT_ONLY"
+      writeback_decision = "UNDECIDED"
+    }
+    gates = [ordered]@{
+      intent_locked = $false
+      intent_gate_resolved = $false
+      memorial_ready = $false
+      review_ready = $false
+      verification_ready = $false
+      summary_closed = $false
+      public_ready = $false
+    }
     memorial = [ordered]@{
       drafted = $false
+      intent_packet = $false
+      intent_gate = $false
       updated_at = $null
     }
     menxia = [ordered]@{
@@ -115,6 +146,54 @@ function New-DefaultState([string]$SessionId) {
   }
 }
 
+function Ensure-StateShape($State, [string]$SessionId) {
+  if ($null -eq $State) {
+    return (New-DefaultState $SessionId)
+  }
+
+  Set-ObjectPropertyIfMissing $State "session_id" $SessionId
+  Set-ObjectPropertyIfMissing $State "updated_at" $null
+  Set-ObjectPropertyIfMissing $State "meta" ([pscustomobject]@{})
+  Set-ObjectPropertyIfMissing $State "gates" ([pscustomobject]@{})
+  Set-ObjectPropertyIfMissing $State "memorial" ([pscustomobject]@{})
+  Set-ObjectPropertyIfMissing $State "menxia" ([pscustomobject]@{})
+  Set-ObjectPropertyIfMissing $State "approvals" ([pscustomobject]@{})
+
+  $meta = Get-ObjectProperty $State "meta"
+  Set-ObjectPropertyIfMissing $meta "stage_state" "PETITION"
+  Set-ObjectPropertyIfMissing $meta "control_state" "NORMAL"
+  Set-ObjectPropertyIfMissing $meta "gate_state" "INTENT_OPEN"
+  Set-ObjectPropertyIfMissing $meta "surface_state" "INTERNAL_ONLY"
+  Set-ObjectPropertyIfMissing $meta "capability_state" "UNKNOWN"
+  Set-ObjectPropertyIfMissing $meta "authority_state" "DRAFT_ONLY"
+  Set-ObjectPropertyIfMissing $meta "writeback_decision" "UNDECIDED"
+
+  $gates = Get-ObjectProperty $State "gates"
+  Set-ObjectPropertyIfMissing $gates "intent_locked" $false
+  Set-ObjectPropertyIfMissing $gates "intent_gate_resolved" $false
+  Set-ObjectPropertyIfMissing $gates "memorial_ready" $false
+  Set-ObjectPropertyIfMissing $gates "review_ready" $false
+  Set-ObjectPropertyIfMissing $gates "verification_ready" $false
+  Set-ObjectPropertyIfMissing $gates "summary_closed" $false
+  Set-ObjectPropertyIfMissing $gates "public_ready" $false
+
+  $memorial = Get-ObjectProperty $State "memorial"
+  Set-ObjectPropertyIfMissing $memorial "drafted" $false
+  Set-ObjectPropertyIfMissing $memorial "intent_packet" $false
+  Set-ObjectPropertyIfMissing $memorial "intent_gate" $false
+  Set-ObjectPropertyIfMissing $memorial "updated_at" $null
+
+  $menxia = Get-ObjectProperty $State "menxia"
+  Set-ObjectPropertyIfMissing $menxia "verdict" "NONE"
+  Set-ObjectPropertyIfMissing $menxia "approved" $false
+  Set-ObjectPropertyIfMissing $menxia "updated_at" $null
+
+  $approvals = Get-ObjectProperty $State "approvals"
+  Set-ObjectPropertyIfMissing $approvals "works_delivery" $false
+
+  return $State
+}
+
 function Load-State([string]$Cwd, [string]$SessionId) {
   $path = Get-StatePath $Cwd $SessionId
   if (-not (Test-Path -LiteralPath $path)) {
@@ -126,13 +205,14 @@ function Load-State([string]$Cwd, [string]$SessionId) {
     return (New-DefaultState $SessionId)
   }
 
-  return $raw | ConvertFrom-Json
+  return (Ensure-StateShape ($raw | ConvertFrom-Json) $SessionId)
 }
 
 function Save-State([string]$Cwd, [string]$SessionId, $State) {
   $path = Get-StatePath $Cwd $SessionId
-  $State.updated_at = (Get-Date).ToString("o")
-  $json = $State | ConvertTo-Json -Depth 20
+  $normalized = Ensure-StateShape $State $SessionId
+  $normalized.updated_at = (Get-Date).ToString("o")
+  $json = $normalized | ConvertTo-Json -Depth 20
   Set-Content -LiteralPath $path -Value $json -Encoding UTF8
 }
 
@@ -170,6 +250,22 @@ function Get-Verdict([string]$Message) {
   return "NONE"
 }
 
+function Get-IntentPacketReady([string]$Message) {
+  if (-not $Message) {
+    return $false
+  }
+
+  return ($Message -match '## Intent Packet' -or $Message -match '## \u610f\u56fe\u5305')
+}
+
+function Get-IntentGateReady([string]$Message) {
+  if (-not $Message) {
+    return $false
+  }
+
+  return ($Message -match '## Intent Gate Packet' -or $Message -match '## \u610f\u56fe\u95f8\u95e8\u5305')
+}
+
 function Get-MemorialReady([string]$Message) {
   if (-not $Message) {
     return $false
@@ -194,7 +290,7 @@ function Get-MemorialReady([string]$Message) {
     }
   }
 
-  return $true
+  return (Get-IntentPacketReady $Message) -and (Get-IntentGateReady $Message)
 }
 
 function Write-PreToolDecision([string]$Decision, [string]$Reason) {
@@ -281,6 +377,50 @@ function Is-PlanningArtifactPath([string]$PathValue) {
   return $leaf -in @("task_plan.md", "findings.md", "progress.md")
 }
 
+function Get-LatestRunArtifactPath([string]$Cwd) {
+  $artifactDir = Join-Path $Cwd "artifacts\runs"
+  if (-not (Test-Path -LiteralPath $artifactDir -PathType Container)) {
+    return $null
+  }
+
+  $latest = Get-ChildItem -LiteralPath $artifactDir -Filter *.json -File | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+  if ($null -eq $latest) {
+    return $null
+  }
+
+  return $latest.FullName
+}
+
+function Test-RunArtifactPublicReady([string]$ArtifactPath) {
+  if (-not $ArtifactPath) {
+    return $false
+  }
+
+  if (-not (Test-Path -LiteralPath $ArtifactPath -PathType Leaf)) {
+    return $false
+  }
+
+  try {
+    $artifact = Get-Content -LiteralPath $ArtifactPath -Raw | ConvertFrom-Json
+    $verificationPacket = Get-ObjectProperty $artifact "verificationPacket"
+    $summaryPacket = Get-ObjectProperty $artifact "summaryPacket"
+    $publicationPacket = Get-ObjectProperty $artifact "publicationPacket"
+
+    $verifyPassed = [bool](Get-ObjectProperty $verificationPacket "verifyPassed" $false)
+    $summaryClosed = [bool](Get-ObjectProperty $summaryPacket "summaryClosed" $false)
+    $singleDeliverableMaintained = [bool](Get-ObjectProperty $summaryPacket "singleDeliverableMaintained" $false)
+    $deliverableChainClosed = [bool](Get-ObjectProperty $summaryPacket "deliverableChainClosed" $false)
+    $consolidatedDeliverablePresent = [bool](Get-ObjectProperty $summaryPacket "consolidatedDeliverablePresent" $false)
+    $publicReady = [bool](Get-ObjectProperty $summaryPacket "publicReady" $false)
+    $publicReadyEvidence = Get-ObjectProperty $publicationPacket "publicReadyEvidence" @()
+    $evidenceCount = if ($null -eq $publicReadyEvidence) { 0 } elseif ($publicReadyEvidence -is [System.Array]) { $publicReadyEvidence.Count } elseif ($publicReadyEvidence -is [System.Collections.IEnumerable] -and -not ($publicReadyEvidence -is [string])) { @($publicReadyEvidence).Count } elseif ([string]$publicReadyEvidence) { 1 } else { 0 }
+
+    return $verifyPassed -and $summaryClosed -and $singleDeliverableMaintained -and $deliverableChainClosed -and $consolidatedDeliverablePresent -and $publicReady -and ($evidenceCount -gt 0)
+  } catch {
+    return $false
+  }
+}
+
 try {
   $inputData = Read-HookInput
   $cwdValue = Get-ObjectProperty $inputData "cwd"
@@ -293,13 +433,14 @@ try {
       Write-DebugLog $cwd $Mode $sessionId "session context requested"
       $contextParts = [System.Collections.Generic.List[string]]::new()
       $contextParts.Add("Governed order: for substantial work, open the docket first, then draft with Zhongshu, review with Menxia, and only then unlock Works Delivery.")
+      $contextParts.Add("Meta layer: before heavy execution, lock intent through an intent packet and intent gate packet. Do not treat unstated assumptions as settled authority.")
       $contextParts.Add("Capability ladder: local skills and plugins first, then find-skills, then approved marketplaces if a gap remains.")
       $contextParts.Add("Only Works Delivery may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md.")
+      $contextParts.Add("Public-ready law: implementation finished does not automatically mean ready for outward publication. Verification and summary closure must be explicit.")
 
-      $spSkillPath  = Join-Path $env:USERPROFILE ".claude\skills\superpowers"
+      $spSkillPath = Join-Path $env:USERPROFILE ".claude\skills\superpowers"
       $spPluginPath = Join-Path $env:USERPROFILE ".claude\plugins\superpowers"
-      $superpowersInstalled = (Test-Path -LiteralPath $spSkillPath -PathType Container) -or `
-                              (Test-Path -LiteralPath $spPluginPath -PathType Container)
+      $superpowersInstalled = (Test-Path -LiteralPath $spSkillPath -PathType Container) -or (Test-Path -LiteralPath $spPluginPath -PathType Container)
 
       if ($superpowersInstalled) {
         $contextParts.Add("Superpowers is active. Use its skills at the correct governance stage as defined in references/superpowers-integration.md: brainstorming at intake, writing-plans after the memorial, executing-plans and subagent-driven-development for delivery, systematic-debugging for incidents, verification-before-completion and requesting-code-review before close-out.")
@@ -313,17 +454,28 @@ try {
 
     "reset" {
       Write-DebugLog $cwd $Mode $sessionId "reset state"
-      $state = New-DefaultState $sessionId
+      $state = New-DefaultState $SessionId
       Save-State $cwd $sessionId $state
       exit 0
     }
 
     "record-zhongshu" {
       $state = Load-State $cwd $sessionId
-      $drafted = Get-MemorialReady ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
-      Write-DebugLog $cwd $Mode $sessionId ("record zhongshu drafted={0}" -f $drafted)
+      $message = [string](Get-ObjectProperty $inputData "last_assistant_message" "")
+      $drafted = Get-MemorialReady $message
+      $intentPacket = Get-IntentPacketReady $message
+      $intentGate = Get-IntentGateReady $message
+      Write-DebugLog $cwd $Mode $sessionId ("record zhongshu drafted={0} intent_packet={1} intent_gate={2}" -f $drafted, $intentPacket, $intentGate)
       $state.memorial.drafted = $drafted
+      $state.memorial.intent_packet = $intentPacket
+      $state.memorial.intent_gate = $intentGate
       $state.memorial.updated_at = (Get-Date).ToString("o")
+      $state.gates.intent_locked = $intentPacket
+      $state.gates.intent_gate_resolved = $intentGate
+      $state.gates.memorial_ready = $drafted
+      $state.meta.stage_state = "DRAFT"
+      $state.meta.gate_state = if ($drafted) { "REVIEW_OPEN" } else { "INTENT_OPEN" }
+      $state.meta.authority_state = "REVIEW_ONLY"
       Save-State $cwd $sessionId $state
       exit 0
     }
@@ -337,6 +489,10 @@ try {
       $state.menxia.approved = $approved
       $state.menxia.updated_at = (Get-Date).ToString("o")
       $state.approvals.works_delivery = $approved
+      $state.gates.review_ready = $approved
+      $state.meta.stage_state = "REVIEW"
+      $state.meta.gate_state = if ($approved) { "WORKS_UNLOCKED" } else { "WORKS_LOCKED" }
+      $state.meta.authority_state = if ($approved) { "WORKS_UNLOCKED" } else { "REVIEW_ONLY" }
       Save-State $cwd $sessionId $state
       exit 0
     }
@@ -347,19 +503,19 @@ try {
       Write-DebugLog $cwd $Mode $sessionId ("annotate agent={0}" -f $agentType)
 
       if ($agentType -eq "zhongshu-agent") {
-        Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Draft the memorial only. Include at least ## Objective, ## Recommended Mode, and ## Deliverables. Do not execute."
+        Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
         exit 0
       }
 
       if ($agentType -eq "menxia-agent") {
-        Write-AdditionalContext "SubagentStart" "Review only. Return an explicit ## Verdict with one of: APPROVE, CONDITIONAL, RETURN, REJECT. Only APPROVE unlocks Works Delivery."
+        Write-AdditionalContext "SubagentStart" "Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict with one of: APPROVE, CONDITIONAL, RETURN, REJECT. Only APPROVE unlocks Works Delivery."
         exit 0
       }
 
       if ($agentType -eq "works-delivery-agent") {
         $approved = [bool]$state.approvals.works_delivery
         if ($approved) {
-          Write-AdditionalContext "SubagentStart" "Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions."
+          Write-AdditionalContext "SubagentStart" "Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
         } else {
           Write-AdditionalContext "SubagentStart" "Menxia approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
         }
@@ -376,7 +532,7 @@ try {
       Write-DebugLog $cwd $Mode $sessionId ("guard agent subagent_type={0} memorial={1} approved={2}" -f $subagentType, [bool]$state.memorial.drafted, [bool]$state.approvals.works_delivery)
 
       if ($subagentType -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
-        Write-PreToolDecision "deny" "Menxia review is blocked until Zhongshu has produced a formal memorial for this petition."
+        Write-PreToolDecision "deny" "Menxia review is blocked until Zhongshu has produced a formal memorial with intent lock for this petition."
         exit 0
       }
 
@@ -412,7 +568,17 @@ try {
 
         if ($toolName -eq "Bash") {
           $commandText = [string](Get-ObjectProperty $toolInput "command" "")
-          if (Is-MutatingBash $CommandText) {
+          if ($agentType -eq "rites-protocol-agent" -and $commandText -match 'lark-cli\s+im\s+\+messages-send\b') {
+            $artifactPath = Get-LatestRunArtifactPath $cwd
+            $publicReady = Test-RunArtifactPublicReady $artifactPath
+            Write-DebugLog $cwd $Mode $sessionId ("publication notify check artifact={0} public_ready={1}" -f $artifactPath, $publicReady)
+            if (-not $publicReady) {
+              Write-PreToolDecision "deny" "Lark IM notification is blocked until a governed run artifact proves public-ready closure. Update the latest artifacts/runs/*.json summaryPacket and publicationPacket first, or downgrade to plan/doc-only publication."
+              exit 0
+            }
+          }
+
+          if (Is-MutatingBash $commandText) {
             Write-PreToolDecision "deny" "Mutating workspace commands are reserved for Works Delivery after Menxia approval. Other offices may inspect and plan only."
             exit 0
           }
@@ -432,7 +598,7 @@ try {
 
       if ($toolName -eq "Bash") {
         $commandText = [string](Get-ObjectProperty $toolInput "command" "")
-        if (Is-MutatingBash $CommandText) {
+        if (Is-MutatingBash $commandText) {
           Write-PreToolDecision "deny" "Works Delivery may not run mutating commands yet because Menxia has not approved this petition."
           exit 0
         }

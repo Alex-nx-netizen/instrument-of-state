@@ -1,15 +1,26 @@
 # Governance Playbook
 
-This playbook defines where official skills and market acquisition belong in the constitution of `instrument-of-state`.
+This playbook defines how `instrument-of-state` should run a governed task now that the project has both:
 
-For a user-facing, stage-based explanation of the same process, read `imperial-workflow.md`.
-For the mandatory task board shown to users, read `imperial-stage-board.md`.
-For auxiliary `superpowers` routing, read `superpowers-integration.md`.
-For UI-facing petitions, read `frontend-governance.md`.
+- a public court workflow
+- a hidden meta-governance layer
+
+Read `constitutional-rules.md` for doctrine.
+Read `meta-governance-layer.md` for the hidden state and packet model.
+Read `evolution-writeback.md` for memory and writeback law.
+Read `run-artifact-protocol.md` when you want the packet chain to persist as a governed run artifact.
 
 ## Core idea
 
-Do not treat every task as immediate execution. Treat complex work as a governed proceeding with a case file, a capability ladder, and stage gates.
+Do not treat every task as immediate execution.
+Treat substantial work as a governed proceeding with:
+
+- a docket
+- an intent lock
+- a capability ladder
+- lawful review and execution gates
+- a public-ready gate
+- a writeback decision
 
 ## Phase 0: Open the docket
 
@@ -17,132 +28,162 @@ For any task that is multi-step, repository-affecting, cross-functional, or like
 
 1. Invoke `planning-with-files`.
 2. Maintain these files as the state docket:
-   - `task_plan.md`: current plan, phase, blockers, explicit next step
-   - `findings.md`: evidence, repository discoveries, external research, capability matches
-   - `progress.md`: execution log, decisions, completed actions
-3. Treat these files as governance artifacts, not delivery artifacts. They may be updated before Menxia approval.
+   - `task_plan.md`
+   - `findings.md`
+   - `progress.md`
+3. Treat these as governance artifacts, not delivery artifacts.
+4. When the task is substantial, risky, publishable, or multi-ministry, create a governed run artifact by copying `contracts/run-artifact.template.json` into `artifacts/runs/`.
 
-This is where the official planning skill belongs: under Shangshu as a mandatory prelude for substantial work.
+## Phase 1: Lock intent
 
-## Phase 1: Capability discovery ladder
+Before heavy execution, establish the logical contents of:
 
-Before installing anything new, run the capability ladder in this order:
+- `intentPacket`
+- `intentGatePacket`
+
+At minimum, lock:
+
+- the true user intent
+- success criteria
+- non-goals
+- default assumptions
+- whether ambiguity is resolved enough to proceed
+- whether user choice is still required
+
+If the intent gate is still genuinely open, stop at the cleanest decision boundary instead of pretending execution is fully authorized.
+
+## Phase 2: Capability discovery ladder
+
+Before installing anything new, run capability discovery in this order:
 
 1. Project-local skills and plugins
 2. User-local skills and plugins
-3. Global agents from `~/.claude/agents/` — detect availability, match keywords against the routing table in `global-agent-routing.md`, and register matched agents as ministry reinforcements in the team blueprint
-4. Built-in plugin skills already available in the current session
-5. `find-skills` for external skill discovery
-6. Approved GitHub plugin marketplaces via `instrument-market.cmd`
+3. Global agents from `~/.claude/agents/`
+4. Built-in session capabilities
+5. `find-skills`
+6. Approved GitHub plugin marketplaces
 7. Generic agents only when the above paths do not yield a suitable capability
 
 Record the winning capability, rejected candidates, and the reason in `findings.md`.
 
-This is where the official discovery skill belongs: under Shangshu as a formal capability search step, not as a free-floating tool each ministry uses ad hoc.
+## Phase 3: Draft the memorial
 
-When the petition is a failure, bug, or emergency diagnosis task, this phase should also inherit `systematic-debugging` discipline.
+Invoke `zhongshu-draft` after the docket and intent lock exist for substantial work.
 
-When the petition is frontend-visible, this phase should also identify:
+The memorial should become the authoritative description of:
 
-- target platform and interface surface
-- audience or primary user type
-- existing design system or brand constraints
-- responsive and accessibility exposure
-- whether the task is preservation, extension, or redesign
+- objective
+- scope
+- out-of-scope boundary
+- constraints
+- risks
+- ministries
+- mode
+- deliverables
+- capability needs
 
-## Phase 2: Draft the memorial
+The memorial should also carry the user-facing expression of the intent packet and intent gate packet.
 
-Invoke `zhongshu-draft` after the docket exists for substantial work. Zhongshu should use:
-
-- the petition
-- any relevant repository evidence
-- the planning docket if present
-- capability findings gathered in Phase 1
-
-The memorial should become the authoritative description of objective, scope, risks, deliverables, ministries, mode, and capability needs.
-
-When the petition is frontend-visible, Zhongshu should also encode:
-
-- the UI surfaces involved
-- the experience goal
-- the visual or interaction direction
-- responsive expectations
-- accessibility obligations
-
-## Phase 3: Review the memorial
+## Phase 4: Review the memorial
 
 Invoke `menxia-review` only after a real memorial exists.
 
-Menxia should explicitly test:
+Menxia should test:
 
-- whether the memorial is complete enough to govern
+- whether intent was actually locked
 - whether planning was skipped for work that needed it
 - whether capability discovery respected the local-first ladder
-- whether the execution route is proportional to the task
+- whether the route is proportional to the task
+- whether publication prerequisites are visible when publication is implied
 
 Only `APPROVE` unlocks governed delivery.
 
-## Phase 4: Dispatch ministries
+## Phase 5: Dispatch ministries
 
-After approval, Shangshu dispatches the minimum necessary ministries. Ministry routing is based on the memorial plus Menxia amendments.
+After approval, Shangshu dispatches the minimum necessary ministries.
 
-When multiple independent domains exist, this phase may use `dispatching-parallel-agents` or `subagent-driven-development` rather than one monolithic execution stream.
+The dispatch order should make explicit:
 
-When the petition is frontend-visible:
+- selected ministries
+- owner responsibility
+- capability decision
+- rollback posture where relevant
+- publication posture
 
-- discover and use the best available frontend capability tools through the standard capability ladder (global agents → session skills → find-skills → marketplace)
-- route to `works-delivery`
-- normally route to `justice-compliance` for accessibility, interaction, and responsive gates
-- route to `rites-protocol` when the interface needs formal handoff, screenshots, demos, stakeholder publication, or release communication
+When multiple independent domains exist, prefer parallel ministry work over one monolithic execution stream.
 
-## Phase 5: Deliver, verify, and report
+## Phase 6: Deliver and verify
 
 If delivery is required, route to `works-delivery`.
 
-- `works-delivery` may land artifacts
-- `justice-compliance` defines proof and gates
-- `progress.md` should continue to reflect major milestones
-- `verification-before-completion` should gate any completion claim
-- `requesting-code-review` should be used when the delivery is major, risky, or merge-bound
+During or after delivery:
 
-For frontend-visible delivery, the report should also make clear:
+- `justice-compliance` should define or check evidence
+- `progress.md` should reflect major milestones
+- verification should happen before any completion claim
 
-- what visual direction or system was followed
-- how accessibility and responsive behavior were checked
-- whether the result preserved an existing design language or introduced a new one deliberately
+For risky work, verification should include:
 
-## Phase 6: Publish and hand off
+- evidence gathered
+- tests or checks performed
+- open findings
+- rollback level if execution drifted
+
+## Phase 7: Decide public-ready status
+
+Before any outward-ready summary, release note, or publication:
+
+1. confirm verification has passed
+2. confirm summary closure
+3. confirm one primary deliverable still exists
+4. confirm the deliverable chain is closed
+5. confirm a consolidated result exists
+
+If those conditions are not met:
+
+- keep the result internal
+- or downgrade to plan-only or document-only publication
+
+When a run artifact exists, record this decision in:
+
+- `verificationPacket`
+- `summaryPacket`
+- `publicationPacket`
+
+## Phase 8: Publish and hand off
 
 When the result needs institutional communication, cross-team handoff, or user-requested Feishu output:
 
 1. Route through `rites-protocol`.
 2. If Lark skills are available, use the publication stack defined in `lark-publication-protocol.md`.
-3. Publish the memorial result in the right form: document, bulletin, handoff note, or knowledge-base entry.
+3. Publish only when the public-ready gate is satisfied, or explicitly downgrade the publication mode.
 4. Ensure permissions are granted before or with notification.
 5. Notify stakeholders through the appropriate channel.
-6. Choose the close-out state explicitly: `PUBLISH_NOW`, `PUBLISH_DOC_ONLY`, `PLAN_ONLY`, or `SKIP_PUBLICATION`.
 
-This is where the Feishu or Lark workflow belongs: under Rites and Shangshu close-out, not scattered across the ministries.
+## Phase 9: Write back what was learned
 
-## Capability acquisition law
+Every governed run should end with an explicit `writebackDecision`.
 
-Search may happen before review. Installation should happen only when:
+When the answer is `writeback`, record durable learning in one or more of:
 
-1. the memorial justifies the capability,
-2. Menxia has approved the proceeding or the condition explicitly allows acquisition, and
-3. the source is local, trusted, or an approved GitHub marketplace.
+- `memory/patterns/`
+- `memory/scars/`
+- `memory/capability-gaps.md`
+- `memory/dispatch-patterns.md`
+- `references/`
+- `skills/`
+- `agents/`
+- `contracts/workflow-contract.json`
 
-Prefer the narrowest install scope that satisfies the memorial:
-
-- `project` for task-specific or repo-specific capability
-- `local` for workspace-scoped tools
-- `user` only when the capability is broadly reusable
+Prefer the templates under `memory/templates/` instead of inventing a new writeback shape from scratch.
 
 ## Stage gate summary
 
 - No governed task without a docket for substantial work
+- No heavy execution without intent lock
 - No Menxia review without a memorial
 - No Works Delivery without Menxia `APPROVE`
 - No marketplace installation before local-first discovery
-- No non-Works file landing except planning artifacts
-- No institutional publication link should be sent before access is handled or explicitly called out
+- No public-ready claim without verification and summary closure
+- No institutional publication link before access and publication gates are addressed
+- No governed close-out without a writeback decision
