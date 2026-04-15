@@ -2,7 +2,6 @@
 name: shangshu-dispatch
 description: Run a governed Three Departments and Six Ministries workflow from docket opening through intent lock, review, capability discovery, dispatch, verification, and writeback.
 argument-hint: [task or objective]
-disable-model-invocation: true
 ---
 
 # Shangshu Dispatch
