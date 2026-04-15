@@ -1,4 +1,4 @@
-param(
+﻿param(
   [Parameter(Position = 0, Mandatory = $true)]
   [string]$Mode
 )
@@ -314,6 +314,41 @@ function Write-AdditionalContext([string]$EventName, [string]$Context) {
   $payload | ConvertTo-Json -Depth 10
 }
 
+# Strip namespace prefix from agent_type strings
+function Get-AgentRole([string]$AgentType) {
+  if (-not $AgentType) { return "" }
+  $idx = $AgentType.LastIndexOf(':')
+  if ($idx -ge 0) { return $AgentType.Substring($idx + 1) }
+  return $AgentType
+}
+
+function Get-SidecarDir {
+  return Join-Path $env:TEMP "instrument-of-state-hooks"
+}
+
+function Write-AgentSidecar([string]$AgentRole, [string]$Cwd, [string]$SessionId) {
+  try {
+    $dir = Get-SidecarDir
+    if (-not (Test-Path -LiteralPath $dir)) { [IO.Directory]::CreateDirectory($dir) | Out-Null }
+    $content = "$Cwd`n$SessionId"
+    [IO.File]::WriteAllText((Join-Path $dir "$AgentRole.sidecar"), $content, [Text.Encoding]::UTF8)
+  } catch { }
+}
+
+function Read-AgentSidecar([string]$AgentRole, [ref]$CwdRef, [ref]$SessionIdRef) {
+  try {
+    $sf = Join-Path (Get-SidecarDir) "$AgentRole.sidecar"
+    if (-not (Test-Path -LiteralPath $sf)) { return }
+    $parts = [IO.File]::ReadAllText($sf, [Text.Encoding]::UTF8) -split "`n"
+    if ($parts.Count -ge 2) {
+      $sideCwd = $parts[0].Trim()
+      $sideSession = $parts[1].Trim()
+      if ($sideCwd) { $CwdRef.Value = $sideCwd }
+      if ($sideSession -and $sideSession -ne "session-unknown") { $SessionIdRef.Value = $sideSession }
+    }
+  } catch { }
+}
+
 function Is-MutatingBash([string]$CommandText) {
   if (-not $CommandText) {
     return $false
@@ -325,7 +360,7 @@ function Is-MutatingBash([string]$CommandText) {
     '(^|\s)(Move-Item|Copy-Item|Remove-Item|Set-Content|Add-Content|New-Item|Rename-Item)\b',
     '(^|\s)(sed\s+-i|perl\s+-pi)\b',
     '(^|\s)(npm\s+version|pnpm\s+version|cargo\s+fmt|go\s+fmt)\b',
-    '>|>>'
+    '\s>>?(?!\s*>)'
   )
 
   foreach ($pattern in $patterns) {
@@ -460,6 +495,7 @@ try {
     }
 
     "record-zhongshu" {
+      Read-AgentSidecar "zhongshu-agent" ([ref]$cwd) ([ref]$sessionId)
       $state = Load-State $cwd $sessionId
       $message = [string](Get-ObjectProperty $inputData "last_assistant_message" "")
       $drafted = Get-MemorialReady $message
@@ -481,6 +517,7 @@ try {
     }
 
     "record-menxia" {
+      Read-AgentSidecar "menxia-agent" ([ref]$cwd) ([ref]$sessionId)
       $state = Load-State $cwd $sessionId
       $verdict = Get-Verdict ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
       Write-DebugLog $cwd $Mode $sessionId ("record menxia verdict={0}" -f $verdict)
@@ -497,22 +534,72 @@ try {
       exit 0
     }
 
+    "record-agent-result" {
+      $toolInput = Get-ObjectProperty $inputData "tool_input"
+      $subagentType = [string](Get-ObjectProperty $toolInput "subagent_type" "")
+      $agentRole = Get-AgentRole $subagentType
+      $agentOutput = [string](Get-ObjectProperty $inputData "tool_response" "")
+      if (-not $agentOutput) { $agentOutput = [string](Get-ObjectProperty $inputData "output" "") }
+      if (-not $agentOutput) { $agentOutput = [string](Get-ObjectProperty $inputData "result" "") }
+      Write-DebugLog $cwd $Mode $sessionId ("record agent result role={0} output_len={1}" -f $agentRole, $agentOutput.Length)
+
+      if ($agentRole -eq "zhongshu-agent") {
+        $state = Load-State $cwd $sessionId
+        $drafted = Get-MemorialReady $agentOutput
+        $intentPacket = Get-IntentPacketReady $agentOutput
+        $intentGate = Get-IntentGateReady $agentOutput
+        Write-DebugLog $cwd $Mode $sessionId ("zhongshu result drafted={0} intent_packet={1} intent_gate={2}" -f $drafted, $intentPacket, $intentGate)
+        $state.memorial.drafted = $drafted
+        $state.memorial.intent_packet = $intentPacket
+        $state.memorial.intent_gate = $intentGate
+        $state.memorial.updated_at = (Get-Date).ToString("o")
+        $state.gates.intent_locked = $intentPacket
+        $state.gates.intent_gate_resolved = $intentGate
+        $state.gates.memorial_ready = $drafted
+        $state.meta.stage_state = "DRAFT"
+        $state.meta.gate_state = if ($drafted) { "REVIEW_OPEN" } else { "INTENT_OPEN" }
+        $state.meta.authority_state = "REVIEW_ONLY"
+        Save-State $cwd $sessionId $state
+      } elseif ($agentRole -eq "menxia-agent") {
+        $state = Load-State $cwd $sessionId
+        $verdict = Get-Verdict $agentOutput
+        Write-DebugLog $cwd $Mode $sessionId ("menxia result verdict={0}" -f $verdict)
+        $approved = $verdict -eq "APPROVE"
+        $state.menxia.verdict = $verdict
+        $state.menxia.approved = $approved
+        $state.menxia.updated_at = (Get-Date).ToString("o")
+        $state.approvals.works_delivery = $approved
+        $state.gates.review_ready = $approved
+        $state.meta.stage_state = "REVIEW"
+        $state.meta.gate_state = if ($approved) { "WORKS_UNLOCKED" } else { "WORKS_LOCKED" }
+        $state.meta.authority_state = if ($approved) { "WORKS_UNLOCKED" } else { "REVIEW_ONLY" }
+        Save-State $cwd $sessionId $state
+      }
+
+      exit 0
+    }
+
     "annotate-start" {
       $state = Load-State $cwd $sessionId
       $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
+      $agentRole = Get-AgentRole $agentType
       Write-DebugLog $cwd $Mode $sessionId ("annotate agent={0}" -f $agentType)
 
-      if ($agentType -eq "zhongshu-agent") {
+      if ($agentRole -in @("zhongshu-agent", "menxia-agent", "works-delivery-agent")) {
+        Write-AgentSidecar $agentRole $cwd $sessionId
+      }
+
+      if ($agentRole -eq "zhongshu-agent") {
         Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
         exit 0
       }
 
-      if ($agentType -eq "menxia-agent") {
+      if ($agentRole -eq "menxia-agent") {
         Write-AdditionalContext "SubagentStart" "Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict with one of: APPROVE, CONDITIONAL, RETURN, REJECT. Only APPROVE unlocks Works Delivery."
         exit 0
       }
 
-      if ($agentType -eq "works-delivery-agent") {
+      if ($agentRole -eq "works-delivery-agent") {
         $approved = [bool]$state.approvals.works_delivery
         if ($approved) {
           Write-AdditionalContext "SubagentStart" "Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
@@ -529,14 +616,15 @@ try {
       $state = Load-State $cwd $sessionId
       $toolInput = Get-ObjectProperty $inputData "tool_input"
       $subagentType = [string](Get-ObjectProperty $toolInput "subagent_type" "")
+      $agentRole = Get-AgentRole $subagentType
       Write-DebugLog $cwd $Mode $sessionId ("guard agent subagent_type={0} memorial={1} approved={2}" -f $subagentType, [bool]$state.memorial.drafted, [bool]$state.approvals.works_delivery)
 
-      if ($subagentType -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
+      if ($agentRole -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
         Write-PreToolDecision "deny" "Menxia review is blocked until Zhongshu has produced a formal memorial with intent lock for this petition."
         exit 0
       }
 
-      if ($subagentType -ne "works-delivery-agent") {
+      if ($agentRole -ne "works-delivery-agent") {
         exit 0
       }
 
@@ -552,12 +640,13 @@ try {
       $state = Load-State $cwd $sessionId
       $toolInput = Get-ObjectProperty $inputData "tool_input"
       $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
+      $agentRole = Get-AgentRole $agentType
       $toolName = [string](Get-ObjectProperty $inputData "tool_name" "")
       $filePath = Get-ToolFilePath $inputData
       $isPlanningArtifact = Is-PlanningArtifactPath $filePath
       Write-DebugLog $cwd $Mode $sessionId ("guard tool agent={0} tool={1} path={2}" -f $agentType, $toolName, $filePath)
 
-      if ($agentType -ne "works-delivery-agent") {
+      if ($agentRole -ne "works-delivery-agent") {
         if ($toolName -in @("Write", "Edit")) {
           if ($isPlanningArtifact) {
             exit 0
@@ -568,7 +657,7 @@ try {
 
         if ($toolName -eq "Bash") {
           $commandText = [string](Get-ObjectProperty $toolInput "command" "")
-          if ($agentType -eq "rites-protocol-agent" -and $commandText -match 'lark-cli\s+im\s+\+messages-send\b') {
+          if ($agentRole -eq "rites-protocol-agent" -and $commandText -match 'lark-cli\s+im\s+\+messages-send\b') {
             $artifactPath = Get-LatestRunArtifactPath $cwd
             $publicReady = Test-RunArtifactPublicReady $artifactPath
             Write-DebugLog $cwd $Mode $sessionId ("publication notify check artifact={0} public_ready={1}" -f $artifactPath, $publicReady)
