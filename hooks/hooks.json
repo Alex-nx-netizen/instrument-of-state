@@ -1,11 +1,11 @@
-﻿{
+{
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" session-context"",
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" session-context\"",
             "timeout": 15
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" reset""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" reset\""
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" annotate-start""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" annotate-start\""
           }
         ]
       }
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" record-zhongshu""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" record-zhongshu\""
           }
         ]
       },
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" record-menxia""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" record-menxia\""
           }
         ]
       }
@@ -58,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" guard-agent""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" guard-agent\""
           }
         ]
       },
@@ -67,7 +67,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" guard-tool""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" guard-tool\""
           }
         ]
       }
@@ -78,7 +78,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd /d /s /c ""${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd" record-agent-result""
+            "command": "cmd /d /s /c \"\"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.cmd\" record-agent-result\""
           }
         ]
       }
