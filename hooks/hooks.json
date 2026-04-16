@@ -17,7 +17,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" annotate-start"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" annotate-start",
+            "timeout": 10
           }
         ]
       }
@@ -28,7 +29,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-zhongshu"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-zhongshu",
+            "timeout": 10
           }
         ]
       },
@@ -37,7 +39,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-menxia"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-menxia",
+            "timeout": 10
           }
         ]
       },
@@ -46,7 +49,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-works-delivery"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-works-delivery",
+            "timeout": 10
           }
         ]
       }
@@ -57,7 +61,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-agent"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-agent",
+            "timeout": 10
           }
         ]
       },
@@ -66,7 +71,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-tool"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" guard-tool",
+            "timeout": 10
           }
         ]
       }
@@ -77,7 +83,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-agent-result"
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-agent-result",
+            "timeout": 10
           }
         ]
       }
