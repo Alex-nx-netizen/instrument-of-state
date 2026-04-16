@@ -359,14 +359,21 @@ function Is-MutatingBash([string]$CommandText) {
     '(^|\s)(mv|move|cp|copy|rm|del|erase|mkdir|touch)\b',
     '(^|\s)(Move-Item|Copy-Item|Remove-Item|Set-Content|Add-Content|New-Item|Rename-Item)\b',
     '(^|\s)(sed\s+-i|perl\s+-pi)\b',
-    '(^|\s)(npm\s+version|pnpm\s+version|cargo\s+fmt|go\s+fmt)\b',
-    '\s>>?(?!\s*>)'
+    '(^|\s)(npm\s+version|pnpm\s+version|cargo\s+fmt|go\s+fmt)\b'
   )
 
   foreach ($pattern in $patterns) {
     if ($CommandText -match $pattern) {
       return $true
     }
+  }
+
+  # Strip quoted strings before checking shell redirections to avoid false positives
+  # e.g., python3 -c "content='...\r\n' >nul" or bash -c "echo foo >nul"
+  $stripped = $CommandText -replace '"(?:[^"\\]|\\.)*"', '""'
+  $stripped = $stripped    -replace "'(?:[^'\\]|\\.)*'", "''"
+  if ($stripped -match '\s>>?(?!\s*(>|nul\b|/dev/null\b))') {
+    return $true
   }
 
   return $false
@@ -410,6 +417,17 @@ function Is-PlanningArtifactPath([string]$PathValue) {
 
   $leaf = [System.IO.Path]::GetFileName($PathValue)
   return $leaf -in @("task_plan.md", "findings.md", "progress.md")
+}
+
+function Test-IsProjectPath([string]$FilePath, [string]$ProjectCwd) {
+  if (-not $FilePath -or -not $ProjectCwd) { return $true }
+  try {
+    $nf = [System.IO.Path]::GetFullPath($FilePath)
+    $nc = [System.IO.Path]::GetFullPath($ProjectCwd).TrimEnd('\', '/')
+    return $nf.StartsWith($nc + '\', [System.StringComparison]::OrdinalIgnoreCase) -or
+           $nf.StartsWith($nc + '/', [System.StringComparison]::OrdinalIgnoreCase) -or
+           ($nf -ieq $nc)
+  } catch { return $true }
 }
 
 function Get-LatestRunArtifactPath([string]$Cwd) {
@@ -494,6 +512,17 @@ try {
       exit 0
     }
 
+    "soft-reset" {
+      Write-DebugLog $cwd $Mode $sessionId "soft-reset: clearing to PETITION without wiping approvals"
+      $state = Load-State $cwd $sessionId
+      $state.meta.stage_state = "PETITION"
+      $state.meta.gate_state = "INTENT_OPEN"
+      $state.meta.authority_state = "DRAFT_ONLY"
+      $state.meta.control_state = "NORMAL"
+      Save-State $cwd $sessionId $state
+      exit 0
+    }
+
     "record-zhongshu" {
       Read-AgentSidecar "zhongshu-agent" ([ref]$cwd) ([ref]$sessionId)
       $state = Load-State $cwd $sessionId
@@ -574,8 +603,55 @@ try {
         $state.meta.gate_state = if ($approved) { "WORKS_UNLOCKED" } else { "WORKS_LOCKED" }
         $state.meta.authority_state = if ($approved) { "WORKS_UNLOCKED" } else { "REVIEW_ONLY" }
         Save-State $cwd $sessionId $state
+      } elseif ($agentRole -eq "works-delivery-agent") {
+        $state = Load-State $cwd $sessionId
+        $verificationReady = $agentOutput -match '## Verification|## \u9a8c\u8bc1|verification_ready.*true|verifyPassed.*true'
+        $summaryClosed = $agentOutput -match '## Summary|## \u603b\u7ed3|summary_closed.*true|summaryClosed.*true'
+        Write-DebugLog $cwd $Mode $sessionId ("works delivery result verification_ready={0} summary_closed={1}" -f $verificationReady, $summaryClosed)
+        $state.gates.verification_ready = $verificationReady
+        $state.gates.summary_closed = $summaryClosed
+        $state.meta.stage_state = if ($summaryClosed) { "SUMMARY" } elseif ($verificationReady) { "VERIFICATION" } else { "DELIVERY" }
+        Save-State $cwd $sessionId $state
       }
 
+      exit 0
+    }
+
+    "record-works-delivery" {
+      Read-AgentSidecar "works-delivery-agent" ([ref]$cwd) ([ref]$sessionId)
+      $state = Load-State $cwd $sessionId
+      $message = [string](Get-ObjectProperty $inputData "last_assistant_message" "")
+      $verificationReady = $message -match '## Verification|## \u9a8c\u8bc1|verification_ready.*true|verifyPassed.*true'
+      $summaryClosed = $message -match '## Summary|## \u603b\u7ed3|summary_closed.*true|summaryClosed.*true'
+      Write-DebugLog $cwd $Mode $sessionId ("record works delivery verification_ready={0} summary_closed={1}" -f $verificationReady, $summaryClosed)
+      $state.gates.verification_ready = $verificationReady
+      $state.gates.summary_closed = $summaryClosed
+      $state.meta.stage_state = if ($summaryClosed) { "SUMMARY" } elseif ($verificationReady) { "VERIFICATION" } else { "DELIVERY" }
+      Save-State $cwd $sessionId $state
+      exit 0
+    }
+
+    "health" {
+      $state = Load-State $cwd $sessionId
+      $meta = Get-ObjectProperty $state "meta"
+      $gates = Get-ObjectProperty $state "gates"
+      $menxia = Get-ObjectProperty $state "menxia"
+      $approvals = Get-ObjectProperty $state "approvals"
+      $summary = [ordered]@{
+        session_id             = $sessionId
+        stage_state            = [string](Get-ObjectProperty $meta "stage_state" "PETITION")
+        control_state          = [string](Get-ObjectProperty $meta "control_state" "NORMAL")
+        gate_state             = [string](Get-ObjectProperty $meta "gate_state" "INTENT_OPEN")
+        menxia_verdict         = [string](Get-ObjectProperty $menxia "verdict" "NONE")
+        works_delivery_approved = [bool](Get-ObjectProperty $approvals "works_delivery" $false)
+        intent_locked          = [bool](Get-ObjectProperty $gates "intent_locked" $false)
+        memorial_ready         = [bool](Get-ObjectProperty $gates "memorial_ready" $false)
+        review_ready           = [bool](Get-ObjectProperty $gates "review_ready" $false)
+        verification_ready     = [bool](Get-ObjectProperty $gates "verification_ready" $false)
+        summary_closed         = [bool](Get-ObjectProperty $gates "summary_closed" $false)
+        public_ready           = [bool](Get-ObjectProperty $gates "public_ready" $false)
+      }
+      Write-AdditionalContext "health" ($summary | ConvertTo-Json -Depth 5 -Compress)
       exit 0
     }
 
@@ -645,6 +721,16 @@ try {
       $filePath = Get-ToolFilePath $inputData
       $isPlanningArtifact = Is-PlanningArtifactPath $filePath
       Write-DebugLog $cwd $Mode $sessionId ("guard tool agent={0} tool={1} path={2}" -f $agentType, $toolName, $filePath)
+
+      $meta=Get-ObjectProperty $state "meta"
+      $ss=[string](Get-ObjectProperty $meta "stage_state" "PETITION")
+      if($ss -eq "PETITION"){Write-DebugLog $cwd $Mode $sessionId "governance inactive - allow"; exit 0}
+
+      # Files outside the project directory are never subject to governance
+      if ($filePath -and -not (Test-IsProjectPath $filePath $cwd)) {
+        Write-DebugLog $cwd $Mode $sessionId ("path outside project - allow: {0}" -f $filePath)
+        exit 0
+      }
 
       if ($agentRole -ne "works-delivery-agent") {
         if ($toolName -in @("Write", "Edit")) {
