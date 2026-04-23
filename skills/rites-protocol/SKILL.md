@@ -16,9 +16,7 @@ You make sure the work is framed and presented in the right format.
 
 Read these files when relevant:
 
-- `../../references/lark-publication-protocol.md`
-- `../../references/lark-publication-templates.md`
-- `../../references/lark-publication-runbook.md`
+- `../../references/lark-publication-doctrine.md`
 - `../../references/meta-governance-layer.md`
 - `../../references/run-artifact-protocol.md`
 - `../../contracts/workflow-contract.json`

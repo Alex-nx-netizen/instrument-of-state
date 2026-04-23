@@ -16,9 +16,7 @@ Your job is to turn an already-governed result into a Lark document, the right a
 
 Read these files before acting:
 
-- `../../references/lark-publication-protocol.md`
-- `../../references/lark-publication-templates.md`
-- `../../references/lark-publication-runbook.md`
+- `../../references/lark-publication-doctrine.md`
 - `../../references/run-artifact-protocol.md`
 - `../../contracts/workflow-contract.json`
 

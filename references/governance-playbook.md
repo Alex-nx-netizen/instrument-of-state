@@ -155,7 +155,7 @@ When a run artifact exists, record this decision in:
 When the result needs institutional communication, cross-team handoff, or user-requested Feishu output:
 
 1. Route through `rites-protocol`.
-2. If Lark skills are available, use the publication stack defined in `lark-publication-protocol.md`.
+2. If Lark skills are available, use the publication stack defined in `lark-publication-doctrine.md`.
 3. Publish only when the public-ready gate is satisfied, or explicitly downgrade the publication mode.
 4. Ensure permissions are granted before or with notification.
 5. Notify stakeholders through the appropriate channel.

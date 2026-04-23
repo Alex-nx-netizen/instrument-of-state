@@ -84,6 +84,57 @@
 
 **references/*.md 计数**：19 → 17（新增 0、删除 2）。
 
+| Time | Actor | Event | Result |
+|---|---|---|---|
+| 18:00~ | Works-Delivery | B3 Agent/Skill 改名与合并；合并 personnel+revenue → resource-allocator；订正 publish-to-lark 在 rites-agent 中的表述；建立 8 个 /iostate:* 薄别名壳；修复 B2.1+B2.2 入站引用 | ✅ |
+
+### B3 交付清单
+
+**新建文件（9 份）**：
+- `agents/resource-allocator-agent.md`（合并生成，含中文交付要求；两模式宪章指向 constitutional-rules.md）
+- `skills/resource-allocator/SKILL.md`（薄壳，委派至 agent；两组输出章节按实际触发模式返回）
+- `skills/iostate-draft/SKILL.md` → 别名 zhongshu-draft
+- `skills/iostate-review/SKILL.md` → 别名 menxia-review
+- `skills/iostate-dispatch/SKILL.md` → 别名 shangshu-dispatch
+- `skills/iostate-deliver/SKILL.md` → 别名 works-delivery
+- `skills/iostate-verify/SKILL.md` → 别名 justice-compliance
+- `skills/iostate-publish/SKILL.md` → 别名 publish-to-lark（注明非独立权力中心）
+- `skills/iostate-allocate/SKILL.md` → 别名 resource-allocator（合并新生）
+- `skills/iostate-emergency/SKILL.md` → 别名 war-operations
+
+**删除文件（4 份）**：
+- `agents/personnel-routing-agent.md`
+- `agents/revenue-budgeting-agent.md`
+- `skills/personnel-routing/SKILL.md`（连带目录）
+- `skills/revenue-budgeting/SKILL.md`（连带目录）
+
+**修订文件（5 份）**：
+- `agents/rites-protocol-agent.md`：新增"publish-to-lark 的地位（订正）"段，声明其为 Rites 麾下执行 skill，而非独立 Agent/权力中心（memorial-v2 §2.3 歧义 4 / §4.1-9）
+- `skills/shangshu-dispatch/SKILL.md`：删除 `imperial-workflow.md` / `ux-response-guidelines.md` / `first-use-and-controls.md` / `task-type-templates.md` / `superpowers-integration.md` / `lark-publication-protocol.md` / `lark-publication-templates.md` 等 7 条失效引用；新增 `ux-response-doctrine.md` + `lark-publication-doctrine.md`
+- `skills/menxia-review/SKILL.md`：将 `ux-response-guidelines.md` + `first-use-and-controls.md` 两条合并指向 `ux-response-doctrine.md`
+- `skills/publish-to-lark/SKILL.md`：将 `lark-publication-protocol.md` + `lark-publication-runbook.md` + `lark-publication-templates.md` 三条合并指向 `lark-publication-doctrine.md`
+- `skills/rites-protocol/SKILL.md`：同 publish-to-lark 的三合一引用修复
+- `references/governance-playbook.md` L158：`lark-publication-protocol.md` → `lark-publication-doctrine.md`
+
+**iostate 薄别名壳计数**：8（全部含 Purpose / Deprecation / Retention / Final verification / Delegation 五段完整）。
+
+**入站引用修复（B2.1 + B2.2 遗留 11 条，全部处理）**：
+- `skills/shangshu-dispatch/SKILL.md` × 5（ux 三条 + lark 两条 + imperial-workflow 一条 + superpowers-integration 一条顺手清）
+- `skills/menxia-review/SKILL.md` × 2（ux 两条）
+- `skills/publish-to-lark/SKILL.md` × 3（lark 三条）
+- `skills/rites-protocol/SKILL.md` × 3（lark 三条）
+- `references/governance-playbook.md` L158 × 1（lark 协议引用）
+
+**plugin.json 状态**：已逐字检查，原文件不含任何将 publish-to-lark 描述为 agent-level power 的措辞；本次不编辑 plugin.json（Menxia verdict-2 条件 6 的修复点集中在 rites-protocol-agent.md，已落实）。
+
+**已知延后项（不属于 B3 scope）**：
+- `bin/instrument-guard.ps1` L488 仍引用 `superpowers-integration.md`（memorial §4.2 声明本次不动 bin；B4 可见性或 B6 收尾跟进）
+- `README.md` / `README.zh-CN.md` 中对已删 doctrines 的链接（B6 README 重写统一处理）
+- 历史 docket 文件（memorial / memorial-v2 / findings / task_plan）保留历史记录不改
+
+**agents/*.md 计数**：9 → 8（新增 1、删除 2）。
+**skills 目录计数**：11 → 18（新增 +9：resource-allocator + 8 iostate-* 别名；删除 −2：personnel-routing、revenue-budgeting）。
+
 ---
 
 ## 状态机当前快照

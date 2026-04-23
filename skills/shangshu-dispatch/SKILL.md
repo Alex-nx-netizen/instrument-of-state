@@ -14,21 +14,16 @@ Before acting, read these files:
 
 - `../../references/constitutional-rules.md`
 - `../../references/governance-playbook.md`
-- `../../references/imperial-workflow.md`
 - `../../references/meta-governance-layer.md`
 - `../../references/evolution-writeback.md`
 - `../../references/imperial-stage-board.md`
 - `../../references/team-blueprint-board.md`
 - `../../references/global-agent-routing.md`
 - `../../references/menxia-verdict-card.md`
-- `../../references/ux-response-guidelines.md`
-- `../../references/task-type-templates.md`
-- `../../references/first-use-and-controls.md`
-- `../../references/superpowers-integration.md`
+- `../../references/ux-response-doctrine.md`
 - `../../references/frontend-governance.md`
 - `../../references/market-acquisition.md`
-- `../../references/lark-publication-protocol.md`
-- `../../references/lark-publication-templates.md`
+- `../../references/lark-publication-doctrine.md`
 - `../../references/run-artifact-protocol.md`
 - `../../contracts/workflow-contract.json`
 

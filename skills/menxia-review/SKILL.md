@@ -20,8 +20,7 @@ Read these files when relevant:
 - `../../references/governance-playbook.md`
 - `../../references/meta-governance-layer.md`
 - `../../references/menxia-verdict-card.md`
-- `../../references/ux-response-guidelines.md`
-- `../../references/first-use-and-controls.md`
+- `../../references/ux-response-doctrine.md`
 - `../../contracts/workflow-contract.json`
 
 ## Task
