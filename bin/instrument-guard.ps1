@@ -278,13 +278,16 @@ function Save-State([string]$Cwd, [string]$SessionId, $State) {
 
 function Get-Verdict([string]$Message) {
   if (-not $Message) { return "NONE" }
-  # Only match the verdict inside a ## Verdict or ## 裁决 section header block
-  $sectionMatch = [regex]::Match(
-    $Message,
-    '(?ms)^#{1,3}\s*(?:Verdict|裁决)\s*\r?\n+\s*([A-Z]+)\b'
-  )
-  if ($sectionMatch.Success) {
-    $v = $sectionMatch.Groups[1].Value.ToUpperInvariant()
+  # FIX-9 (v0.6.1): scan ALL ## Verdict / ## 裁决 section headers and pick the
+  # LAST authoritative card. Previously used [regex]::Match which returned the
+  # FIRST hit — narrative preamble or long Chinese outputs that mentioned the
+  # word "verdict" before the actual card were parsed as NONE because the first
+  # match was a header without a valid verdict keyword directly beneath it.
+  $sectionPattern = '(?ms)^#{1,3}\s*(?:Verdict|裁决)\s*\r?\n+\s*([A-Z]+)\b'
+  $allMatches = [regex]::Matches($Message, $sectionPattern)
+  if ($allMatches.Count -gt 0) {
+    $last = $allMatches[$allMatches.Count - 1]
+    $v = $last.Groups[1].Value.ToUpperInvariant()
     if ($v -in @("APPROVE","CONDITIONAL","RETURN","REJECT")) { return $v }
   }
   # Fallback: look for bold/inline verdict marker **APPROVE** etc (less risky than bare word)
@@ -719,6 +722,19 @@ try {
         }
         if ($toolName -eq "Bash") {
           $commandText = [string](Get-ObjectProperty $toolInput "command" "")
+
+          # FIX-10 (v0.6.1): read-only guard self-introspection is allowed for any office.
+          # Without this, justice-compliance-agent cannot run `instrument-guard.ps1 health`
+          # as a live V5c check and is forced into static-audit-only mode. Scope is
+          # intentionally narrow: only the fixed subcommands health/session-context,
+          # and only when no shell connectors are present (no pipe, redirect, chain).
+          if ($commandText -match 'instrument-guard\.ps1\s+(health|session-context)\b' -and
+              $commandText -notmatch '[><|;]' -and
+              $commandText -notmatch '&&' -and
+              $commandText -notmatch '\|\|') {
+            Write-DebugLog $cwd $Mode $sessionId "guard self-introspection - allow"
+            exit 0
+          }
 
           # FIX-4: public_ready gate covers ALL lark-cli outbound calls, not just im +messages-send
           if ($agentRole -eq "rites-protocol-agent" -and $commandText -match '\blark-cli\b') {

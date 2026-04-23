@@ -26,6 +26,23 @@ At removal time, `grep -r "zhongshu-draft" --include='*.md'` should only match c
 
 Treat this entry as an alias shell. The actual implementation pointer is the legacy skill `zhongshu-draft` (at `skills/zhongshu-draft/SKILL.md`). Invoke that skill's execution contract with the same `$ARGUMENTS`. Do not duplicate logic here.
 
+## 批次算术校验 / Batch accounting check
+
+When writing V-check accounting in a memorial (e.g. "V1: references/*.md count, target 14"),
+use `bin/memorial-math.ps1` to validate the arithmetic before committing.
+
+Example:
+
+```
+powershell -NoProfile -File bin/memorial-math.ps1 -Start 20 -Deltas 3,-2,-2,-2
+# Output: Expected end: 17
+```
+
+Rationale: the v0.6.0 memorial-v2 stated V1 target as 14 while actual batch math
+produced 17. The drift was not caught during drafting because there was no
+auto-validation step. Always run this helper when the memorial contains
+`reference count delta` language in its V-checks.
+
 ## Input
 
 $ARGUMENTS

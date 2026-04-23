@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Governed execution based on 元 / 组织镜像 / 节奏 / 意图放大 + 发牌 doctrine layer; Three Departments + Six Ministries is the external metaphor, meta-unit doctrine is the internal spine.",
-    "version": "0.6.0"
+    "version": "0.6.1"
   },
   "plugins": [
     {
       "name": "instrument-of-state",
       "description": "Governed execution based on 元 / 组织镜像 / 节奏 / 意图放大 + 发牌 doctrine layer; Three Departments + Six Ministries is the external metaphor, meta-unit doctrine is the internal spine. v0.6.0 introduces iostate:* semantic aliases (古风 names stay as learning-side), stage-board + tool-trace visibility skills, skipPolicy/preemptPolicy cadence gates, 10-field intentPacket superposition.",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "author": {
         "name": "Drafted with Codex"
       },
