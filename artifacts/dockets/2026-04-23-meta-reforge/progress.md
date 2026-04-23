@@ -209,6 +209,44 @@
 - `powershell bin/instrument-guard.ps1 health`：exit 0；stdout 为合法 JSON（`hookSpecificOutput.additionalContext` 亦为合法 JSON 子串），表明契约 JSON 升级未破坏守护程序读取
 - V5b（/iostate:draft 差分测试）按 verdict-3 说明：B5 改动为契约与模板层，差分验证需要一次新 draft 运行才能落地 → 推迟到 B5 之后的 verdict-4 阶段处理
 
+## 2026-04-24（续）
+
+| Time | Actor | Event | Result |
+|---|---|---|---|
+| 02:15~ | Menxia (4th pass) | verdict-4 APPROVE B6 entry | ✅ |
+| 02:20~ | Works-Delivery | B6 启动：更新 plugin.json / marketplace.json 至 0.6.0；description 同步 doctrine 层语言 | ✅ |
+| 02:25~ | Works-Delivery | B6 README 双语重写：顶部 30 秒速览 + 工具箱表 + 何时使用；V8 三锚点命中；字数前 40 行 en=239 / zh=162（均 ≤300） | ✅ |
+| 02:30~ | Works-Delivery | B6 收尾清理：`bin/instrument-guard.ps1` L488 `superpowers-integration.md` 悬空引用改为指向"各 agent.md 超能力绑定小节（见 constitutional-rules.md）"；BOM 保留；缓存已同步；HMAC 8/8 过 | ✅ |
+| 02:35~ | Works-Delivery | B6 README 残留引用清理：`README.md` L287 / `README.zh-CN.md` L290 原 `imperial-workflow.md` 与 L291/L294 `lark-publication-protocol.md` 全部移除或改指新 doctrine | ✅ |
+
+### B6 交付清单
+
+**修订文件（5 份）**：
+- `.claude-plugin/plugin.json`：`version` 0.5.0 → 0.6.0；`description` 重写为 meta-reforge doctrine 层声明（长度 < 300 字符单段）
+- `.claude-plugin/marketplace.json`：`metadata.version` 0.4.1 → 0.6.0；`plugins[0].version` 0.4.1 → 0.6.0；两处 description 对齐 plugin.json
+- `bin/instrument-guard.ps1` L488：`references/superpowers-integration.md` → `each agent.md 'Superpowers binding' section (see references/constitutional-rules.md)`（BOM `EFBB BF` 保留，缓存已同步，HMAC 8/8 通过）
+- `README.md`：顶部重写 V8 合规版（lines 1-30 含 `governed execution` / toolbox skills 表 / `When to use`）；中部 skill/gate 表补录 `stage-board` / `tool-trace` / `resource-allocator` / `skipPolicy` / `preemptPolicy` 条目；References 小节去除 `imperial-workflow` 与 `lark-publication-protocol` 悬空，改指 `meta-unit-doctrine` / `cadence-doctrine` / `deal-card-doctrine` / `ux-response-doctrine` / `lark-publication-doctrine` 五份新 doctrine 与 `constitutional-rules`
+- `README.zh-CN.md`：同上，中文平行版（前 10 行含 `治理`；工具箱表含 `skills` 列；何时使用节；References 小节清理同英文）
+
+**自测结果（B6 scope 内）**：
+- `jq -r '.version' .claude-plugin/plugin.json` → `0.6.0`
+- `jq -r '.metadata.version, .plugins[0].version' .claude-plugin/marketplace.json` → `0.6.0` / `0.6.0`
+- `head -40 README.md | wc -w` → `239` ≤ 300 ✅
+- `head -40 README.zh-CN.md | wc -w` → `162` ≤ 300 ✅
+- V8 锚点 1（前 10 行 `governed execution` / `治理`）：两份 README 均 grep 命中 ✅
+- V8 锚点 2（工具箱 skills 列）：两份 README 前 40 行均含 markdown 表且列名含 `skill(s)` ✅
+- V8 锚点 3（何时使用）：英文 `### When to use`；中文 `### 何时使用` ✅
+- `file bin/instrument-guard.ps1` → `UTF-8 (with BOM) text` ✅
+- `bin/test-guard-hmac.ps1` → 8/8 passed ✅
+- `diff bin/instrument-guard.ps1 ~/.claude/plugins/cache/instrument-of-state/instrument-of-state/0.5.0/bin/instrument-guard.ps1` → 无差异 ✅
+- 残留悬空引用：`grep -n "imperial-workflow\|lark-publication-protocol" README.md README.zh-CN.md` → 零命中 ✅
+
+**版本影响**：本 commit 落地 0.5.0 → 0.6.0 版本号；首次 v0.6.0 发布基线形成（契约层 B5 已就位，可见性 B4 已就位，命名改造 B3 已就位，doctrines B1+B2 已就位）。
+
+**已延后项（B6 scope 外，纳入 verdict-4 后的最终验收）**：
+- V1~V8 + V5b + V5c 最终回归尚未执行（预计由 Justice-Compliance 在 verdict-final 前跑齐）
+- 缓存目录 `~/.claude/plugins/cache/instrument-of-state/instrument-of-state/0.5.0/` 名称仍带旧版本号，属 Claude Code 插件管理器行为，非本 docket scope
+
 **保留邀请**：intentPacketVersion 字段本身的名字保留不变（非改名，而是 *值* 由 v1 → v2），旧运行产物 `intentPacketVersion: v1` 仍可被解析（Zhongshu 新模板产出 v2）；若未来启用严格版本校验，再在 V5 验收中加测。
 
 ---
@@ -219,6 +257,6 @@
 - **Docket opened**: ✅
 - **Memorial drafted**: ✅ v1 / ✅ v2 / ✅ v2 内补 14a
 - **Menxia review**: 🟡 verdict-1 CONDITIONAL → 🟡 verdict-2 CONDITIONAL → 🟢 verdict-3 B4-close + B5 pre-APPROVE
-- **Works delivery unlock**: 🟢 B1~B5 已交付；🔒 B6 仍锁（等 verdict-4）
+- **Works delivery unlock**: 🟢 B1~B6 已交付（verdict-4 APPROVE）；⏸ V1~V8 + V5b + V5c 最终验收待执行
 - **Verification passed**: ⏸
 - **Public-ready**: ⏸

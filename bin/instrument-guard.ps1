@@ -485,7 +485,7 @@ try {
       $spPluginPath = Join-Path $env:USERPROFILE ".claude\plugins\superpowers"
       $superpowersInstalled = (Test-Path -LiteralPath $spSkillPath -PathType Container) -or (Test-Path -LiteralPath $spPluginPath -PathType Container)
       if ($superpowersInstalled) {
-        $contextParts.Add("Superpowers is active. Use its skills at the correct governance stage as defined in references/superpowers-integration.md.")
+        $contextParts.Add("Superpowers is active. Use its skills at the correct governance stage as defined in each agent.md 'Superpowers binding' section (see references/constitutional-rules.md).")
       } else {
         $contextParts.Add("Superpowers is not installed. Install with: /plugin install superpowers@superpowers-marketplace")
       }

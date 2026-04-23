@@ -4,14 +4,14 @@
     "name": "Drafted with Codex"
   },
   "metadata": {
-    "description": "Governed execution for Claude Code with drafting, review, dispatch, delivery controls, and formal publication",
-    "version": "0.4.1"
+    "description": "Governed execution based on 元 / 组织镜像 / 节奏 / 意图放大 + 发牌 doctrine layer; Three Departments + Six Ministries is the external metaphor, meta-unit doctrine is the internal spine.",
+    "version": "0.6.0"
   },
   "plugins": [
     {
       "name": "instrument-of-state",
-      "description": "A governed execution plugin for Claude Code that applies drafting, review, dispatch, capability discovery, and specialist delivery under a Three Departments and Six Ministries model.",
-      "version": "0.4.1",
+      "description": "Governed execution based on 元 / 组织镜像 / 节奏 / 意图放大 + 发牌 doctrine layer; Three Departments + Six Ministries is the external metaphor, meta-unit doctrine is the internal spine. v0.6.0 introduces iostate:* semantic aliases (古风 names stay as learning-side), stage-board + tool-trace visibility skills, skipPolicy/preemptPolicy cadence gates, 10-field intentPacket superposition.",
+      "version": "0.6.0",
       "author": {
         "name": "Drafted with Codex"
       },

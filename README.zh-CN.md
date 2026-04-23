@@ -5,18 +5,26 @@
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
 
-**先起草，再审校，再执行；先验明，再宣示。**
-
-![插件](https://img.shields.io/badge/Claude_Code-Plugin-1f6feb?style=flat-square)
-![流程](https://img.shields.io/badge/Workflow-14%20Stages-0f766e?style=flat-square)
-![Agents](https://img.shields.io/badge/Agents-9-7c3aed?style=flat-square)
-![Skills](https://img.shields.io/badge/Skills-10-2563eb?style=flat-square)
-![Hooks](https://img.shields.io/badge/Hooks-Guarded-c2410c?style=flat-square)
-![Lark](https://img.shields.io/badge/Lark-Ready-0891b2?style=flat-square)
-
-<img src="./assets/readme/hero.svg" alt="Instrument of State hero" width="820" />
-
 </div>
+
+**Claude Code 的治理执行套件。** 内核是"元 / 组织镜像 / 节奏 / 意图放大 + 发牌"；三省六部是外显隐喻。先起草，再审校，再执行；先验明，再宣示。
+
+**30 秒速览：** `/iostate:draft` → `/iostate:review` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish`（古风别名如 `zhongshu-draft` 保留为"学习侧"）。
+
+### 工具箱（agents / skills / doctrines）
+
+| 类型 | 名称 | 角色 |
+|---|---|---|
+| agent | shangshu / menxia / zhongshu / works / justice / rites / war / resource | 官署边界 |
+| skills (iostate:*) | draft / review / dispatch / deliver / verify / publish / allocate / emergency | 语义入口 |
+| skills (可见性) | stage-board / tool-trace | 回答"我在哪 / 用过什么" |
+| doctrine | meta-unit / cadence / deal-card / ux-response / lark-publication / constitutional-rules | 内核规则 |
+
+### 何时使用
+
+- 需要"起草 → 审校 → 交付"纪律的多文件或跨角色任务
+- 必须经 `public-ready` 闸门才能发布到飞书 / Lark 的任务
+- 关注可见性（阶段看板、工具追踪）甚于原始速度的会话
 
 ---
 
@@ -37,13 +45,13 @@
 
 `instrument-of-state` 是一个 **Claude Code 插件套件**，不是单个 skill。
 
-它保留了“三省六部”的对外工作流，同时把更“元”的治理思想吸收到内部骨架里：
+它保留了"三省六部"的对外工作流，同时把更"元"的治理思想（元 / 组织镜像 / 节奏 / 意图放大 + 发牌）吸收到内部骨架里：
 
 - 中书省起草 memorial
 - 门下省审校并放行或阻断执行
 - 尚书省调度正确的部门
 - 工部未获批不得落地
-- “能执行”与“能公开宣示”分成两个闸门
+- "能执行"与"能公开宣示"分成两个闸门
 - 重要运行结果可以落成 run artifact，并把有价值的经验写回 memory
 
 换句话说，它现在是：
@@ -65,14 +73,15 @@
 
 内部现在有几层关键机制：
 
-- 执行前先锁定意图
+- 执行前先锁定意图（intentPacket v2 十字段：声明 + 放大）
 - 用隐藏状态跟踪 gate，而不是只靠文案描述
 - 对外宣示前增加 `public-ready` 闸门
+- 契约层显式声明 `skipPolicy` + `preemptPolicy`（跳过/插队需要证据，有审计留痕）
 - 用 run artifact 持久化 packet 链
 - 用 `memory/` 和模板体系做演化写回
 - 用 `contracts/workflow-contract.json` 把协议规则结构化
 
-项目不是把“三省六部”推翻重来，而是把它变得更严谨、更可验证。
+项目不是把"三省六部"推翻重来，而是把它变得更严谨、更可验证。
 
 ---
 
@@ -106,8 +115,10 @@
 然后运行主流程：
 
 ```text
-/instrument-of-state:shangshu-dispatch 重构 auth 模块，并保持可视化阶段看板。
+/iostate:dispatch 重构 auth 模块，并保持可视化阶段看板。
 ```
+
+（学习侧别名 `/instrument-of-state:shangshu-dispatch ...` 同样可用）
 
 ---
 
@@ -115,14 +126,21 @@
 
 | 命令 | 用途 |
 | --- | --- |
-| `/instrument-of-state:shangshu-dispatch <任务>` | 主入口，启动完整治理流程 |
+| `/iostate:draft <任务>` | 起草 memorial，锁定意图 |
+| `/iostate:review` | 门下省审校 |
+| `/iostate:dispatch <任务>` | 主入口，启动完整治理流程 |
+| `/iostate:deliver` | 工部交付（须审批） |
+| `/iostate:verify` | 刑部验收 |
+| `/iostate:publish` | 礼部发布（public-ready 闸门） |
+| `/iostate:allocate` | 资源调度（两种模式） |
+| `/iostate:emergency` | 兵部应急 / 插队 |
 
 示例：
 
 ```text
-/instrument-of-state:shangshu-dispatch 调查登录故障，先稳住生产，再准备正式交接说明。
-/instrument-of-state:shangshu-dispatch 重做 pricing 页面，要求风格鲜明并保持可访问性。
-/instrument-of-state:shangshu-dispatch 审核发布清单，并发布飞书交接文档。
+/iostate:dispatch 调查登录故障，先稳住生产，再准备正式交接说明。
+/iostate:dispatch 重做 pricing 页面，要求风格鲜明并保持可访问性。
+/iostate:dispatch 审核发布清单，并发布飞书交接文档。
 ```
 
 ---
@@ -131,15 +149,15 @@
 
 | 组件 | 作用 |
 | --- | --- |
-| `skills/` | `shangshu-dispatch`、`zhongshu-draft`、`menxia-review`、`works-delivery`、`publish-to-lark` 等核心流程技能 |
-| `agents/` | 尚书省、中书省、门下省、刑部、工部、礼部等执行角色 |
-| `hooks/` | 守卫机制，例如“门下未批准，工部不得落地” |
+| `skills/` | `iostate-*` 语义别名 + 古风 `shangshu-dispatch` / `zhongshu-draft` / `menxia-review` / `works-delivery` / `publish-to-lark` + 可见性 `stage-board` / `tool-trace` |
+| `agents/` | 尚书省、中书省、门下省、刑部、工部、礼部、兵部、资源调度等执行角色 |
+| `hooks/` | 守卫机制，例如"门下未批准，工部不得落地" |
 | `bin/` | guard 与 marketplace 辅助脚本 |
-| `contracts/` | 协议合同层，定义 packet、gate、rollback、`public-ready` 规则 |
+| `contracts/` | 协议合同层，定义 packet、gate、rollback、`skipPolicy`、`preemptPolicy`、`public-ready` 规则 |
 | `artifacts/runs/` | 运行工件层，复杂任务可把完整 packet 链落成 JSON 归档 |
 | `memory/` | 演化写回层，沉淀 patterns、scars、能力缺口与调度经验 |
 | `memory/templates/` | 可直接复制使用的写回模板，覆盖 pattern、scar、dispatch、writeback packet |
-| `references/` | 宪法、治理手册、工作流说明、发布协议、run artifact 协议、元治理说明 |
+| `references/` | 宪法、doctrine 系列（meta-unit / cadence / deal-card / ux-response / lark-publication）、治理手册、run artifact 协议、元治理说明 |
 | `.claude-plugin/plugin.json` | 插件清单 |
 | `.claude-plugin/marketplace.json` | marketplace 清单 |
 
@@ -160,7 +178,7 @@
 | 运行工件层 | `/artifacts/runs` | 把 governed run 落成可审计的 JSON 工件 | 重大任务的 packet 链闭合层 |
 | 记忆层 | `/memory` | 存储 patterns、scars、dispatch lessons、capability gaps | 演化写回层 |
 | 写回模板层 | `/memory/templates` | 提供可直接复用的写回模板 | 写回执行支撑层 |
-| 制度文档层 | `/references` | 宪法、治理手册、发布协议、run artifact 协议 | 为所有阶段提供规则依据 |
+| 制度文档层 | `/references` | 宪法、doctrine、治理手册、发布协议、run artifact 协议 | 为所有阶段提供规则依据 |
 | 展示资源层 | `/assets` | README 视觉资源与辅助素材 | 仅展示，不参与治理 |
 
 ### 技能与官署图
@@ -168,15 +186,16 @@
 | 技能 | 官署 | 主要职责 | 在治理链中的位置 | 主要影响的 packet / gate |
 | --- | --- | --- | --- | --- |
 | `shangshu-dispatch` | 尚书省 | 统筹整条 governed run 与最终收口 | Intake、Dispatch、Integration、Close-out | `dispatchPacket`、`summaryPacket`、`writebackPacket` |
-| `zhongshu-draft` | 中书省 | 起草 memorial 并锁定意图 | Draft | `intentPacket`、`intentGatePacket`、`memorialPacket` |
+| `zhongshu-draft` | 中书省 | 起草 memorial 并锁定意图 | Draft | `intentPacket`（10 字段）、`intentGatePacket`、`memorialPacket` |
 | `menxia-review` | 门下省 | 审校 memorial 并决定执行权限 | Review | `reviewPacket`、`menxia_review_ready`、`works_delivery_unlock` |
 | `works-delivery` | 工部 | 执行已批准的实现工作 | Delivery | 写权限、证据输入 |
 | `justice-compliance` | 刑部 | 定义或校验证据、测试、验收门 | Verification | `verificationPacket`、`public_ready` |
 | `rites-protocol` | 礼部 | 设计文书格式与对外沟通路径 | Publication planning | `publicationPacket`、`lark_publication` |
 | `publish-to-lark` | 礼部执行器 | 执行文档、权限、IM 发送链 | Publication execution | `publicationPacket`、`public_ready` 证明链 |
-| `personnel-routing` | 吏部 | 设计 owner、分工与协作路径 | Dispatch support | owner assignments |
-| `revenue-budgeting` | 户部 | 评估成本、范围与依赖压力 | Strict mode support | dispatch shaping |
-| `war-operations` | 兵部 | 处理故障、回滚姿态与应急调度 | Emergency mode | rollback posture |
+| `resource-allocator` | 资源调度 | owner 分工 / 成本范围塑形（两种模式） | Dispatch support | owner assignments、dispatch shaping |
+| `war-operations` | 兵部 | 处理故障、回滚姿态与应急调度 | Emergency mode | rollback posture、preempt |
+| `stage-board` | 可见性 | 展示当前阶段 / gate 状态 / 已用 agent / 剩余未解锁 | Visibility | 只读 |
+| `tool-trace` | 可见性 | 回放本 docket 内 agent/skill/tool 调用 | Visibility | 只读 |
 
 ### Gate 图
 
@@ -186,6 +205,8 @@
 | `works_delivery_unlock` | 合同 + 守卫 | `reviewPacket.verdict == APPROVE` | 工部 agent 启动、文件写入、变更命令 |
 | 非工部写入门 | `instrument-guard.ps1` | 只有 planning artifacts 是例外 | 非工部角色写文件 |
 | `intent_locked` | 守卫状态 | 中书省输出了意图相关章节 | 在意图未锁定时重执行 |
+| `skipPolicy` | 合同层 | 跳过需要明确证据字段（skip_reason / skip_authorized_by / skip_scope） | 静默跳阶段 |
+| `preemptPolicy` | 合同层 | P0/P1 故障触发 + 24h 内补奏折 | 无审计插队 |
 | `public_ready` | 合同层 | 验证通过、汇总闭合、交付物完整、交付链闭合、结果可整合对外说明 | 对外宣示与发布资格 |
 | `lark_publication` | 合同层 | `public_ready` 成立，且有明确发布证据与权限准备 | 直接进入发布链 |
 | Lark IM 通知门 | 守卫运行层 | 最新 run artifact 证明 `publicReady` 且含 `publicReadyEvidence` | `lark-cli im +messages-send` |
@@ -195,9 +216,10 @@
 
 ## 核心特性
 
-- **可视化阶段看板**：首屏和收口显示完整 `Imperial Stage Board`，中途改用紧凑进度摘要
-- **意图锁定**：重大任务在重执行前先沉淀 `intentPacket` 和 `intentGatePacket`
+- **可视化阶段看板**：首屏和收口显示完整 `Imperial Stage Board`，中途改用紧凑进度摘要；`stage-board` + `tool-trace` 随时回答"我在哪 / 用过什么"
+- **意图锁定（十字段）**：重大任务在重执行前沉淀"声明 + 放大"两组字段
 - **强制审批后落地**：门下省未 `APPROVE`，工部不能写文件
+- **节奏闸门**：`skipPolicy` + `preemptPolicy` 让跳过 / 插队变成显式、可审计动作
 - **Run Artifact**：治理型任务可把完整 packet 链持久化，而不只留在对话里
 - **公开就绪闸门**：代码改完不等于可以直接对外宣示或发布
 - **发布硬门禁**：`publish-to-lark` 需要明确的 `public-ready` 证据，守卫还能拦截不安全的 Lark IM 发送
@@ -257,7 +279,7 @@
 
 ## Memory 与写回模板
 
-项目现在把“演化写回”从抽象规则变成了可直接操作的模板体系。
+项目现在把"演化写回"从抽象规则变成了可直接操作的模板体系。
 
 可以直接使用：
 
@@ -287,11 +309,14 @@
 - [English README](./README.md)
 - [宪法规则](./references/constitutional-rules.md)
 - [治理手册](./references/governance-playbook.md)
-- [朝廷工作流](./references/imperial-workflow.md)
+- [元单位 Doctrine](./references/meta-unit-doctrine.md)
+- [节奏 Doctrine](./references/cadence-doctrine.md)
+- [发牌 Doctrine](./references/deal-card-doctrine.md)
+- [UX Response Doctrine](./references/ux-response-doctrine.md)
 - [元治理层](./references/meta-governance-layer.md)
 - [演化写回](./references/evolution-writeback.md)
 - [Run Artifact Protocol](./references/run-artifact-protocol.md)
-- [Lark Publication Protocol](./references/lark-publication-protocol.md)
+- [Lark Publication Doctrine](./references/lark-publication-doctrine.md)
 - [前端治理](./references/frontend-governance.md)
 - [Workflow Contract](./contracts/workflow-contract.json)
 - [Run Artifact Template](./contracts/run-artifact.template.json)

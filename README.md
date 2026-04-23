@@ -5,18 +5,26 @@
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
 
-**Govern Claude Code before it governs your repo.**
-
-![Plugin](https://img.shields.io/badge/Claude_Code-Plugin-1f6feb?style=flat-square)
-![Workflow](https://img.shields.io/badge/Workflow-14%20Stages-0f766e?style=flat-square)
-![Agents](https://img.shields.io/badge/Agents-9-7c3aed?style=flat-square)
-![Skills](https://img.shields.io/badge/Skills-10-2563eb?style=flat-square)
-![Hooks](https://img.shields.io/badge/Hooks-Guarded-c2410c?style=flat-square)
-![Lark](https://img.shields.io/badge/Lark-Ready-0891b2?style=flat-square)
-
-<img src="./assets/readme/hero.svg" alt="Instrument of State hero" width="820" />
-
 </div>
+
+**governed execution for Claude Code.** Meta-unit doctrine is the internal spine; Three Departments + Six Ministries is the external metaphor. Draft intent, review, dispatch, deliver, verify, publish — each a visible gate.
+
+**30-second speed-run:** `/iostate:draft` → `/iostate:review` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish` (古风 aliases such as `zhongshu-draft` remain as learning-side).
+
+### Toolbox (agents, skills, doctrines)
+
+| Kind | Name | Role |
+|---|---|---|
+| agent | shangshu / menxia / zhongshu / works / justice / rites / war / resource | Office boundaries |
+| skills (iostate:*) | draft, review, dispatch, deliver, verify, publish, allocate, emergency | Semantic entrypoints |
+| skills (visibility) | stage-board, tool-trace | Answer "where am I / what was used" |
+| doctrine | meta-unit, cadence, deal-card, ux-response, lark-publication, constitutional-rules | Internal rules |
+
+### When to use
+
+- Multi-file or cross-role work that needs draft → review → deliver discipline.
+- Any task that must publish to Lark only after a `public-ready` gate.
+- Sessions where visibility (stage board, tool trace) matters more than raw speed.
 
 ---
 
@@ -37,7 +45,7 @@ That may be fast, but it is fragile for real repository work, especially when th
 
 `instrument-of-state` is a **Claude Code plugin bundle** for governed execution.
 
-It keeps the public mental model of the **Three Departments and Six Ministries**, while layering a stronger **meta-governance core** underneath it:
+It keeps the public mental model of the **Three Departments and Six Ministries**, while layering a stronger **meta-governance core** underneath it (元 / 组织镜像 / 节奏 / 意图放大 + 发牌):
 
 - Zhongshu drafts the memorial
 - Menxia reviews and gates execution
@@ -62,9 +70,10 @@ This is what users see:
 
 This is what keeps the workflow stricter internally:
 
-- intent lock before heavy execution
+- intent lock before heavy execution (10-field intentPacket v2: declaration + amplification)
 - hidden governance state and gate tracking
 - explicit `public-ready` checks before outward publication
+- `skipPolicy` + `preemptPolicy` cadence gates (skip / preempt require explicit evidence)
 - governed run artifacts in JSON for packet-chain closure
 - evolution writeback into `memory/`
 - a protocol-first contract in `contracts/workflow-contract.json`
@@ -103,23 +112,32 @@ The goal is to keep the user experience readable while making the underlying gov
 Then run:
 
 ```text
-/instrument-of-state:shangshu-dispatch Refactor auth and keep a visible stage board.
+/iostate:dispatch Refactor auth and keep a visible stage board.
 ```
+
+(or the learning-side alias `/instrument-of-state:shangshu-dispatch ...`)
 
 ---
 
-## Main Command
+## Main Commands
 
 | Command | Purpose |
 | --- | --- |
-| `/instrument-of-state:shangshu-dispatch <task>` | Main governed workflow entrypoint |
+| `/iostate:draft <task>` | Draft memorial, lock intent |
+| `/iostate:review` | Menxia verdict |
+| `/iostate:dispatch <task>` | Main governed workflow entrypoint |
+| `/iostate:deliver` | Works delivery (approval-gated) |
+| `/iostate:verify` | Justice verification |
+| `/iostate:publish` | Lark publication (public-ready gate) |
+| `/iostate:allocate` | Resource allocation (two modes) |
+| `/iostate:emergency` | War operations / preempt |
 
 Example petitions:
 
 ```text
-/instrument-of-state:shangshu-dispatch Investigate the login outage, stabilize production, and prepare a formal handoff note.
-/instrument-of-state:shangshu-dispatch Redesign the pricing page with a strong visual direction and preserve accessibility.
-/instrument-of-state:shangshu-dispatch Audit the release checklist and publish a Feishu handoff document.
+/iostate:dispatch Investigate the login outage, stabilize production, and prepare a formal handoff note.
+/iostate:dispatch Redesign the pricing page with a strong visual direction and preserve accessibility.
+/iostate:dispatch Audit the release checklist and publish a Feishu handoff document.
 ```
 
 ---
@@ -128,15 +146,15 @@ Example petitions:
 
 | Component | Purpose |
 | --- | --- |
-| `skills/` | Workflow skills such as `shangshu-dispatch`, `zhongshu-draft`, `menxia-review`, `works-delivery`, and `publish-to-lark` |
-| `agents/` | Shangshu, Zhongshu, Menxia, Justice, Works, Rites, and other offices |
+| `skills/` | `iostate-*` semantic aliases, classical `shangshu-dispatch` / `zhongshu-draft` / `menxia-review` / `works-delivery` / `publish-to-lark`, and visibility skills `stage-board` / `tool-trace` |
+| `agents/` | Shangshu, Zhongshu, Menxia, Justice, Works, Rites, War, Resource-Allocator offices |
 | `hooks/` | Governance enforcement such as blocking Works before Menxia approval |
 | `bin/` | Guard and marketplace helper scripts |
-| `contracts/` | Structured governance contracts for packets, gates, rollback, and `public-ready` rules |
+| `contracts/` | Structured governance contracts for packets, gates, rollback, `skipPolicy`, `preemptPolicy`, and `public-ready` rules |
 | `artifacts/runs/` | Persisted governed run artifacts for auditable packet-chain closure |
 | `memory/` | Durable writeback for patterns, scars, dispatch knowledge, and capability gaps |
 | `memory/templates/` | Copy-ready writeback templates for patterns, scars, dispatch lessons, and writeback packets |
-| `references/` | Constitution, playbooks, workflow docs, publication law, run-artifact protocol, and meta-governance notes |
+| `references/` | Constitution, doctrines (meta-unit / cadence / deal-card / ux-response / lark-publication), playbooks, workflow docs, run-artifact protocol, and meta-governance notes |
 | `.claude-plugin/plugin.json` | Plugin manifest |
 | `.claude-plugin/marketplace.json` | Marketplace catalog manifest |
 
@@ -157,7 +175,7 @@ Example petitions:
 | Run artifacts | `/artifacts/runs` | Persists governed runs as auditable JSON artifacts | Packet-chain closure for substantial work |
 | Memory | `/memory` | Stores durable patterns, scars, dispatch lessons, and gaps | Evolution/writeback layer |
 | Writeback templates | `/memory/templates` | Ready-to-use templates for post-run capture | Writeback execution support |
-| Doctrine | `/references` | Constitution, playbooks, publication law, run-artifact protocol | Rules for every stage |
+| Doctrine | `/references` | Constitution, doctrines, playbooks, publication law, run-artifact protocol | Rules for every stage |
 | Presentation assets | `/assets` | README visuals and supporting media | Documentation/display only |
 
 ### Skill map
@@ -165,15 +183,16 @@ Example petitions:
 | Skill | Office | Main responsibility | Governance position | Main packet/gate it shapes |
 | --- | --- | --- | --- | --- |
 | `shangshu-dispatch` | Shangshu | Orchestrates the full governed run and close-out | Intake, dispatch, integration, close-out | `dispatchPacket`, `summaryPacket`, `writebackPacket` |
-| `zhongshu-draft` | Zhongshu | Drafts the memorial and locks intent | Draft | `intentPacket`, `intentGatePacket`, `memorialPacket` |
+| `zhongshu-draft` | Zhongshu | Drafts the memorial and locks intent | Draft | `intentPacket` (10 fields), `intentGatePacket`, `memorialPacket` |
 | `menxia-review` | Menxia | Reviews the memorial and decides execution authority | Review | `reviewPacket`, `menxia_review_ready`, `works_delivery_unlock` |
 | `works-delivery` | Works | Executes approved implementation work | Delivery | write authority, evidence input |
 | `justice-compliance` | Justice | Defines or checks evidence, tests, and acceptance gates | Verification | `verificationPacket`, `public_ready` |
 | `rites-protocol` | Rites | Designs publication format and outward communication posture | Publication planning | `publicationPacket`, `lark_publication` |
 | `publish-to-lark` | Rites executor | Executes document, permission, and IM delivery | Publication execution | `publicationPacket`, `public_ready` proof |
-| `personnel-routing` | Personnel | Designs ownership and task routing | Dispatch support | owner assignments |
-| `revenue-budgeting` | Revenue | Shapes cost, scope, and dependency tradeoffs | Strict-mode support | dispatch shaping |
-| `war-operations` | War | Handles incidents, rollback posture, and emergency routing | Emergency mode | rollback posture |
+| `resource-allocator` | Resource Allocation | Ownership routing and cost/scope shaping (two modes) | Dispatch support | owner assignments, dispatch shaping |
+| `war-operations` | War | Handles incidents, rollback posture, and emergency routing | Emergency mode | rollback posture, preempt |
+| `stage-board` | Visibility | Shows current stage / gate state / used agents / remaining unlocks | Visibility | read-only |
+| `tool-trace` | Visibility | Replays agent/skill/tool calls within the docket | Visibility | read-only |
 
 ### Gate map
 
@@ -183,6 +202,8 @@ Example petitions:
 | `works_delivery_unlock` | contract + guard | `reviewPacket.verdict == APPROVE` | Works agent start, file writes, mutating commands |
 | Non-Works write gate | `instrument-guard.ps1` | Only planning artifacts are exempt | File writes by non-Works actors |
 | `intent_locked` | guard state | Zhongshu output includes the intent sections | Heavy execution on hidden assumptions |
+| `skipPolicy` | contract | Skip requires explicit evidence fields (skip_reason, skip_authorized_by, skip_scope) | Silent stage skipping |
+| `preemptPolicy` | contract | P0/P1 incident triggers + mandatory post-memorial within 24h | Preempt without audit |
 | `public_ready` | contract | verification passed, summary closed, deliverable intact, chain closed, consolidated result present | Outward-ready claims and publishability |
 | `lark_publication` | contract | `public_ready` plus explicit publication evidence and access readiness | Direct publication path |
 | Lark IM notify gate | guard runtime | Latest run artifact proves `publicReady` and contains `publicReadyEvidence` | `lark-cli im +messages-send` |
@@ -192,9 +213,10 @@ Example petitions:
 
 ## Key Features
 
-- **Visible stage board**: use a full `Imperial Stage Board` at kickoff and close-out, with compact progress digests in between
-- **Intent lock**: substantial work captures intent and ambiguity before heavy execution
+- **Visible stage board**: use a full `Imperial Stage Board` at kickoff and close-out, with compact progress digests in between; `/iostate:status` via `stage-board` + `tool-trace` answers "where am I / what was used"
+- **Intent lock (10 fields)**: substantial work captures intent (declaration + amplification) before heavy execution
 - **Guarded delivery**: Works stays blocked until Menxia returns `APPROVE`
+- **Cadence gates**: `skipPolicy` + `preemptPolicy` make skip/preempt explicit and auditable
 - **Run artifacts**: governed runs can persist the packet chain as JSON instead of leaving it only in chat
 - **Public-ready gate**: implementation completion does not automatically mean it is ready to publish or announce
 - **Publication hard gate**: `publish-to-lark` now requires explicit `public-ready` proof and the guard can block unsafe Lark IM sends
@@ -284,11 +306,14 @@ These capabilities are discovered dynamically through the capability ladder, not
 - [Chinese README](./README.zh-CN.md)
 - [Constitution](./references/constitutional-rules.md)
 - [Governance Playbook](./references/governance-playbook.md)
-- [Imperial Workflow](./references/imperial-workflow.md)
+- [Meta-Unit Doctrine](./references/meta-unit-doctrine.md)
+- [Cadence Doctrine](./references/cadence-doctrine.md)
+- [Deal-Card Doctrine](./references/deal-card-doctrine.md)
+- [UX Response Doctrine](./references/ux-response-doctrine.md)
 - [Meta Governance Layer](./references/meta-governance-layer.md)
 - [Evolution Writeback](./references/evolution-writeback.md)
 - [Run Artifact Protocol](./references/run-artifact-protocol.md)
-- [Lark Publication Protocol](./references/lark-publication-protocol.md)
+- [Lark Publication Doctrine](./references/lark-publication-doctrine.md)
 - [Frontend Governance](./references/frontend-governance.md)
 - [Workflow Contract](./contracts/workflow-contract.json)
 - [Run Artifact Template](./contracts/run-artifact.template.json)
