@@ -21,7 +21,8 @@
 | 15:30~ | Menxia (2nd pass) | 复审 memorial-v2，出 **verdict-2 = CONDITIONAL**（7/8 已落实；R2 缺 intentPacket 字段覆盖/叠加裁决；B1~B4 可开工，B5 前需补 14a + verdict-3）| ✅ |
 | 15:40~ | Coordinator (Zhongshu) | memorial-v2 内补 §4.1-14a（叠加式裁决）+ §5 V5c + V5b 改进 + V2a 正则化 + 订正索引追加 | ✅ |
 | 16:00~ | Works-Delivery | B1 commit prep | 3 new doctrines written | ✅ |
-| NEXT | Coordinator | 暂存 + 提交 B1（`reforge(B1): add meta/cadence/deal-card doctrines`）| ⏸ |
+| 16:10~ | Coordinator | 暂存 + 提交 B1（`reforge(B1): add meta/cadence/deal-card doctrines`）| ✅ |
+| 16:30~ | Works-Delivery | B2.1 UX doctrines 合并 → `ux-response-doctrine.md`（合并 3 → 1，删源文件 3 份）| ✅ |
 
 ### B1 交付清单
 
@@ -30,6 +31,13 @@
 - `E:\ai\study\instrument-of-state\references\deal-card-doctrine.md`（206 行，含 `## 三判断` / `## Three Checks` 独立 H2）
 
 **自测结果**：V2a 全部 7 个正则单独验证通过；V1 当前计数 references/*.md = 23（B2 合并批次后将最终达到 14）；references 目录条目数 = 24（23 md + 1 json）。
+
+### B2.1 交付清单
+
+- 新增 `E:\ai\study\instrument-of-state\references\ux-response-doctrine.md`：合并 3 → 1，保留全部唯一规则，新增 "Relation to other doctrines" 子节（与 cadence / deal-card / meta-unit 至少三条交叉引用）与 Meta-Unit Self-Check（四判断逐条通过）。
+- 删除 `references/ux-response-guidelines.md` / `references/first-use-and-controls.md` / `references/task-type-templates.md`。
+- 入站引用盘点（B3/B6 处理）：`skills/shangshu-dispatch/SKILL.md` L24~L26、`skills/menxia-review/SKILL.md` L23~L24 仍指向被删文件；`references/deal-card-doctrine.md` L205 已前瞻性地指向 `ux-response-doctrine.md`，无需改。`artifacts/dockets/2026-04-23-meta-reforge/` 内 memorial/findings 为历史记录，不改。
+- **references/*.md 计数**：23 → 21（新增 1、删除 3）。
 
 ---
 
