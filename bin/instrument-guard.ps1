@@ -115,6 +115,13 @@ function Release-StateLock($LockStream, [string]$StatePath) {
 }
 
 # ── FIX-7: HMAC helpers ───────────────────────────────────────────────────────
+# FIX-8 (guard-hotfix 2026-04-23): Canonical body derives from the parsed object
+# on both save and load. Previous implementation used raw-file regex reconstruction
+# on load, which failed because Set-Content -Encoding UTF8 wrote a BOM and
+# CRLF line endings that the pre-sig body (computed from ConvertTo-Json output)
+# did not contain. The canonical form is compressed JSON of the object with
+# _sig property removed; that form is deterministic across save and load because
+# both sides call ConvertTo-Json on the same object shape.
 
 function Get-StateHmac([string]$JsonBody) {
   $key   = [System.Text.Encoding]::UTF8.GetBytes("instrument-of-state-guard-v1")
@@ -126,6 +133,19 @@ function Get-StateHmac([string]$JsonBody) {
 function Test-StateHmac([string]$JsonBody, [string]$Signature) {
   if (-not $Signature) { return $false }
   return (Get-StateHmac $JsonBody) -eq $Signature
+}
+
+# FIX-8: Canonical HMAC body — object-derived, compressed, _sig-stripped.
+# Both Save-State and Load-State compute HMAC against this canonical form.
+function Get-StateCanonicalBody($Object) {
+  if ($null -eq $Object) { return "" }
+  # Round-trip via JSON to strip PSCustomObject type decorations and normalize numbers
+  $asJson   = $Object | ConvertTo-Json -Depth 20 -Compress
+  $reparsed = $asJson | ConvertFrom-Json
+  if ($reparsed.PSObject.Properties.Match("_sig").Count -gt 0) {
+    $reparsed.PSObject.Properties.Remove("_sig")
+  }
+  return ($reparsed | ConvertTo-Json -Depth 20 -Compress)
 }
 
 # ── Default state ─────────────────────────────────────────────────────────────
@@ -217,10 +237,10 @@ function Load-State([string]$Cwd, [string]$SessionId) {
   if (-not $raw.Trim()) { return (New-DefaultState $SessionId) }
   try {
     $obj = $raw | ConvertFrom-Json
-    # FIX-7: Verify HMAC signature when present
+    # FIX-8: Verify HMAC using object-derived canonical body (not raw string reconstruction)
     $sig = Get-ObjectProperty $obj "_sig" ""
     if ($sig) {
-      $body = $raw -replace '"_sig"\s*:\s*"[^"]*",?\s*', '' -replace ',\s*}', '}'
+      $body = Get-StateCanonicalBody $obj
       if (-not (Test-StateHmac $body $sig)) {
         Write-DebugLog $Cwd "load-state" $SessionId "HMAC mismatch — resetting to default state"
         return (New-DefaultState $SessionId)
@@ -242,8 +262,10 @@ function Save-State([string]$Cwd, [string]$SessionId, $State) {
     if ($normalized.PSObject.Properties.Match("_sig").Count -gt 0) {
       $normalized.PSObject.Properties.Remove("_sig")
     }
-    $body = $normalized | ConvertTo-Json -Depth 20
-    # FIX-7: Attach HMAC
+    # FIX-8: HMAC computed on canonical body (compressed JSON, _sig-free).
+    # Load-State verifies using the same canonical body function, so round-trip holds
+    # regardless of file BOM, line endings, or indentation choices.
+    $body = Get-StateCanonicalBody $normalized
     $sig  = Get-StateHmac $body
     $normalized | Add-Member -NotePropertyName "_sig" -NotePropertyValue $sig -Force
     $normalized | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $path -Encoding UTF8
