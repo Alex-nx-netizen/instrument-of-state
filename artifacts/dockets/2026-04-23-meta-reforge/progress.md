@@ -89,6 +89,7 @@
 | 18:00~ | Works-Delivery | B3 Agent/Skill 改名与合并；合并 personnel+revenue → resource-allocator；订正 publish-to-lark 在 rites-agent 中的表述；建立 8 个 /iostate:* 薄别名壳；修复 B2.1+B2.2 入站引用 | ✅ |
 | 18:30~ | Menxia (3rd pass) | 对 B3 commit `a77fad4` 出具裁决 **CONDITIONAL**：指出 shangshu 工具白名单仍含已删 agent、team-blueprint-board 仍列 8/9 行旧模板、deal-card-doctrine L205 仍含 `ux-response-guidelines.md` 字面量三项缺口；同意以追加子提交 B3.1 精准修补后转 APPROVE | ✅ |
 | 18:45~ | Works-Delivery | B3.1 追加子提交：修复 `agents/shangshu-agent.md` L4 工具白名单（去 personnel-routing/revenue-budgeting，加 resource-allocator-agent）；合并 `references/team-blueprint-board.md` 蓝图模板与模型分配表中 personnel+revenue 两行为 Resource Allocation 单行（9→8）；重写 `references/deal-card-doctrine.md` L205 去除 `ux-response-guidelines.md` / `first-use-and-controls` / `task-type-templates` 文件名字面量，改为叙述形式；授权链 = Menxia verdict-3 CONDITIONAL→APPROVE（B3.1 scope only） | ✅ |
+| 01:35~ | Works-Delivery | B4 可见性三件套：新建 `skills/stage-board/SKILL.md` + `skills/tool-trace/SKILL.md`；`bin/instrument-guard.ps1` 两处增强（session-context 尾部附 Available toolbox 枚举；annotate-start 三角色 guidance 前缀 "Now invoking X because Y"）；`agents/shangshu-agent.md` L46-47 术语同步；BOM 保留；8/8 HMAC 通过；插件缓存已同步 | ✅ |
 
 ### B3 交付清单
 
@@ -137,6 +138,42 @@
 **agents/*.md 计数**：9 → 8（新增 1、删除 2）。
 **skills 目录计数**：11 → 18（新增 +9：resource-allocator + 8 iostate-* 别名；删除 −2：personnel-routing、revenue-budgeting）。
 
+### B4 交付清单
+
+**新建文件（2 份）**：
+- `skills/stage-board/SKILL.md`（82 行；frontmatter `context: fork` / `user-invocable: true` / `allowed-tools: Read Bash Grep Glob`；含五步读取流程 + 闸门矩阵表 + Meta-Unit Self-Check 五特征四判断两节独立 H3）
+- `skills/tool-trace/SKILL.md`（82 行；frontmatter 同形；含五步时间轴重建流程 + Meta-Unit Self-Check）
+
+**修订文件（3 份）**：
+- `bin/instrument-guard.ps1`：
+  - `session-context` 模式（原 L484~L494）：在 `Write-AdditionalContext "SessionStart" ...` 之前追加 7 行 `try/catch` 块，枚举 `agents/*.md` / `skills/iostate-*` / `references/*-doctrine.md`，向 `$contextParts` 追加一条 `Available toolbox: agents=[...] | iostate-aliases=[...] | doctrines=[...]`。
+  - `annotate-start` 模式（原 L650~L666）：三条角色 guidance 原地前缀：
+    - zhongshu → `Now invoking Zhongshu because memorial drafting is required. <旧文>`
+    - menxia → `Now invoking Menxia because the memorial is ready for review. <旧文>`
+    - works-delivery（approved）→ `Now invoking Works-Delivery because Menxia approved — executing. <旧文>`
+    - works-delivery（未批）→ `Now invoking Works-Delivery because a delivery attempt was requested — but approval is absent. <旧文>`
+  - 行数 763 → 770；首四字节仍为 `EFBB BF70`（UTF-8 BOM 保留）。
+- `agents/shangshu-agent.md` L46-47：`吏部（分工）` / `户部（成本）` → `资源调度（分工模式）` / `资源调度（预算模式）`（B3 Menxia 关闭注中的美观订正，零结构改动）
+- `artifacts/dockets/2026-04-23-meta-reforge/progress.md`：新增 B4 行与本交付清单段
+
+**Hook 未改动**：
+- `hooks/hooks.json` 未触碰（契约层改动属 B5 范畴）
+- `contracts/*` 未触碰
+- `README*.md` / `.claude-plugin/plugin.json` 未触碰（B6 收尾处理）
+
+**自测结果**：
+- `bin/test-guard-hmac.ps1`：8/8 通过
+- `echo {} | powershell -NoProfile -File bin/instrument-guard.ps1 session-context` 输出尾部含 `Available toolbox: agents=[... 8 份 ...] | iostate-aliases=[... 8 份 ...] | doctrines=[cadence-doctrine, deal-card-doctrine, lark-publication-doctrine, meta-unit-doctrine, ux-response-doctrine]`
+- `diff bin/instrument-guard.ps1 ~/.claude/plugins/cache/instrument-of-state/instrument-of-state/0.5.0/bin/instrument-guard.ps1`：无输出（缓存已同步）
+
+**V4（可见性验收）对应情况**：
+- `ls skills/stage-board/SKILL.md` ✅ 存在 82 行 > 30
+- `ls skills/tool-trace/SKILL.md` ✅ 存在 82 行 > 30
+- session-context 输出含 `Available toolbox:` ✅
+- SubagentStart 注入含 `Now invoking` 人话格式 ✅（三角色四分支均加 prefix）
+
+**skills 目录计数**：18 → 20（新增 +2：stage-board、tool-trace；无删除）。
+
 ---
 
 ## 状态机当前快照
@@ -145,6 +182,6 @@
 - **Docket opened**: ✅
 - **Memorial drafted**: ✅ v1 / ✅ v2 / ✅ v2 内补 14a
 - **Menxia review**: 🟡 verdict-1 CONDITIONAL → 🟡 verdict-2 CONDITIONAL（放行 B1~B4）→ verdict-3 B5-pre 待出
-- **Works delivery unlock**: 🟢 B1~B4 解锁（等用户启动）；🔴 B5 仍锁
+- **Works delivery unlock**: 🟢 B1~B4 已交付；🔴 B5 仍锁（等 verdict-3）
 - **Verification passed**: ⏸
 - **Public-ready**: ⏸

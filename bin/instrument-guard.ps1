@@ -489,6 +489,13 @@ try {
       } else {
         $contextParts.Add("Superpowers is not installed. Install with: /plugin install superpowers@superpowers-marketplace")
       }
+      # B4: append Available toolbox enumeration for user visibility
+      try {
+        $agents = (Get-ChildItem -Path (Join-Path $cwd "agents") -Filter "*.md" -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName }) -join ", "
+        $iostate = (Get-ChildItem -Path (Join-Path $cwd "skills") -Filter "iostate-*" -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }) -join ", "
+        $doctrines = (Get-ChildItem -Path (Join-Path $cwd "references") -Filter "*-doctrine.md" -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName }) -join ", "
+        $contextParts.Add("Available toolbox: agents=[${agents}] | iostate-aliases=[${iostate}] | doctrines=[${doctrines}]") | Out-Null
+      } catch {}
       Write-AdditionalContext "SessionStart" ($contextParts -join " ")
       exit 0
     }
@@ -648,19 +655,19 @@ try {
         Write-AgentSidecar $agentRole $cwd $sessionId
       }
       if ($agentRole -eq "zhongshu-agent") {
-        Write-AdditionalContext "SubagentStart" "Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
+        Write-AdditionalContext "SubagentStart" "Now invoking Zhongshu because memorial drafting is required. Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
         exit 0
       }
       if ($agentRole -eq "menxia-agent") {
-        Write-AdditionalContext "SubagentStart" "Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict section with exactly one of: APPROVE, CONDITIONAL, RETURN, REJECT on its own line. Only APPROVE unlocks Works Delivery."
+        Write-AdditionalContext "SubagentStart" "Now invoking Menxia because the memorial is ready for review. Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict section with exactly one of: APPROVE, CONDITIONAL, RETURN, REJECT on its own line. Only APPROVE unlocks Works Delivery."
         exit 0
       }
       if ($agentRole -eq "works-delivery-agent") {
         $approved = [bool]$state.approvals.works_delivery
         if ($approved) {
-          Write-AdditionalContext "SubagentStart" "Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
+          Write-AdditionalContext "SubagentStart" "Now invoking Works-Delivery because Menxia approved — executing. Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
         } else {
-          Write-AdditionalContext "SubagentStart" "Menxia approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
+          Write-AdditionalContext "SubagentStart" "Now invoking Works-Delivery because a delivery attempt was requested — but approval is absent. Menxia approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
         }
         exit 0
       }
