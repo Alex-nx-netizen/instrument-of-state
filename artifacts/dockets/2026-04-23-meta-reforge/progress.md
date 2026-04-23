@@ -251,12 +251,42 @@
 
 ---
 
+## 2026-04-24（闭幕）
+
+| Time | Actor | Event | Result |
+|---|---|---|---|
+| 02:45~ | Menxia (5th/final pass) | **verdict-final = APPROVE**（全部 6 批次交付 + B3.1 追加 + guard-hotfix 前置；Justice-Compliance 11/11 PASS；两条非阻塞 P3 文档注记：V1 计数漂移 14→17；V5c Justice 运行态人体工学）| ✅ |
+| 02:50~ | Works-Delivery | Docket 闭幕三件套：progress.md 闭幕行 + state-machine snapshot 更新；`verdict-final-menxia.md` 落盘；`memory/patterns/meta-reforge-learnings-2026-04-23.md` 写回 | ✅ |
+
+### 闭幕摘要
+
+**Commit 阶梯（B1 `2bb6638` → B6 `116f283`；附 guard-hotfix `5b548fa`+`f10ed91`）**：
+
+| # | Commit | Message |
+|---|---|---|
+| 1 | 2bb6638 | reforge(B1): add meta/cadence/deal-card doctrines |
+| 2 | 2361fd8 | docket(meta-reforge): open + memorial v1+v2 + verdicts 1+2 |
+| 3 | 5b548fa | fix(guard): HMAC roundtrip via canonical body |
+| 4 | f10ed91 | docs(scar): backfill commit SHA in HMAC roundtrip scar |
+| 5 | 472a19f | reforge(B2.1): merge UX doctrines |
+| 6 | 7ebd22d | reforge(B2.2): merge lark publication doctrines |
+| 7 | ab0e808 | reforge(B2.3): constitutional ministries merge + superpowers inline |
+| 8 | a77fad4 | reforge(B3): rename + merge — resource-allocator, iostate:* aliases |
+| 9 | 7243c2f | reforge(B3.1): fix shangshu tool whitelist + blueprint template + deal-card cross-ref |
+| 10 | f32c665 | reforge(B4): visibility trio — stage-board, tool-trace, hook visibility |
+| 11 | 4165d07 | reforge(B5): contract upgrade + generator sync |
+| 12 | 116f283 | reforge(B6): v0.6.0 + README rewrite + final ref cleanup |
+
+**最终结语**：Docket 2026-04-23-meta-reforge closed. v0.6.0 ready. Lark publication pending explicit user public-ready authorization.
+
+---
+
 ## 状态机当前快照
 
 - **Intent lock**: ✅ locked（C 方向 + 允许改名 + 可见性优先）
 - **Docket opened**: ✅
 - **Memorial drafted**: ✅ v1 / ✅ v2 / ✅ v2 内补 14a
-- **Menxia review**: 🟡 verdict-1 CONDITIONAL → 🟡 verdict-2 CONDITIONAL → 🟢 verdict-3 B4-close + B5 pre-APPROVE
-- **Works delivery unlock**: 🟢 B1~B6 已交付（verdict-4 APPROVE）；⏸ V1~V8 + V5b + V5c 最终验收待执行
-- **Verification passed**: ⏸
-- **Public-ready**: ⏸
+- **Menxia review**: ✅ verdict-1 CONDITIONAL → verdict-2 CONDITIONAL → verdict-2-final CONDITIONAL（memorial 14a 前置）→ verdict-3 B4-close + B5 pre-APPROVE → verdict-4 APPROVE B6 entry → verdict-4-corrected → **verdict-5 = verdict-final APPROVE**（全路径 APPROVE 贯通）
+- **Works delivery unlock**: ✅ B1~B6 全部交付（B3 以 B3.1 追加子提交消化 CONDITIONAL；guard-hotfix 作为前置基础设施先行落地）
+- **Verification passed**: ✅ Justice-Compliance 11/11 PASS（两条非阻塞 P3 文档注记：V1 计数漂移 14→17；V5c 守护程序架构性限制 Justice 跑实时 health——feature not defect）
+- **Public-ready**: 🟡 待用户显式 public-ready 授权后方可 Lark 公开（遵循 `references/lark-publication-doctrine.md` 公开闸门律）
