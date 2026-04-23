@@ -23,6 +23,7 @@
 | 16:00~ | Works-Delivery | B1 commit prep | 3 new doctrines written | ✅ |
 | 16:10~ | Coordinator | 暂存 + 提交 B1（`reforge(B1): add meta/cadence/deal-card doctrines`）| ✅ |
 | 16:30~ | Works-Delivery | B2.1 UX doctrines 合并 → `ux-response-doctrine.md`（合并 3 → 1，删源文件 3 份）| ✅ |
+| 17:00~ | Works-Delivery | B2.2 Lark 发布 doctrines 合并 → `lark-publication-doctrine.md`（合并 3 → 1，删源文件 3 份）| ✅ |
 
 ### B1 交付清单
 
@@ -38,6 +39,20 @@
 - 删除 `references/ux-response-guidelines.md` / `references/first-use-and-controls.md` / `references/task-type-templates.md`。
 - 入站引用盘点（B3/B6 处理）：`skills/shangshu-dispatch/SKILL.md` L24~L26、`skills/menxia-review/SKILL.md` L23~L24 仍指向被删文件；`references/deal-card-doctrine.md` L205 已前瞻性地指向 `ux-response-doctrine.md`，无需改。`artifacts/dockets/2026-04-23-meta-reforge/` 内 memorial/findings 为历史记录，不改。
 - **references/*.md 计数**：23 → 21（新增 1、删除 3）。
+
+### B2.2 交付清单
+
+- 新增 `E:\ai\study\instrument-of-state\references\lark-publication-doctrine.md`：合并 `lark-publication-protocol` + `lark-publication-runbook` + `lark-publication-templates` 三文为一，以"本 doctrine 治理什么"开篇明示飞书/Lark 对外发布通道的管辖范围；按 Section A 协议 / Section B 执行序列 / Section C 模板 组织；新增 "Relation to other doctrines" 子节（与 cadence / deal-card / ux-response / run-artifact-protocol / meta-governance-layer 共五条交叉引用）；新增 Meta-Unit Self-Check（四判断逐条通过）。保留全部唯一规则：公开闸门律、权限律、通知律、失败处理律、四值决策矩阵、文档标题范式、主文档骨架、权限矩阵、IM 模板、公开闸门证据块（JSON + 中文双版本）。
+- 删除 `references/lark-publication-protocol.md` / `references/lark-publication-runbook.md` / `references/lark-publication-templates.md`。
+- 入站引用盘点（B3/B6 处理）：
+  - `skills/publish-to-lark/SKILL.md` L19~L21（三条引用指向被删文件）
+  - `skills/rites-protocol/SKILL.md` L19~L21（三条引用指向被删文件）
+  - `skills/shangshu-dispatch/SKILL.md` L30~L31（两条引用指向被删文件）
+  - `references/governance-playbook.md` L158（指向 `lark-publication-protocol.md`）
+  - `README.md` L291（外部链接）
+  - `README.zh-CN.md` L294（外部链接）
+  - `artifacts/dockets/2026-04-23-meta-reforge/` 内 memorial/memorial-v2/findings 为历史记录，不改。
+- **references/*.md 计数**：21 → 19（新增 1、删除 3）。
 
 ---
 
