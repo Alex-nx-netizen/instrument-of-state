@@ -60,7 +60,7 @@ ending — verification only depends on the parsed object shape.
 
 ## Reference
 
-- Commit: `6aa8b79`
+- Commit: `5b548fa`
 - Project: `bin/instrument-guard.ps1` lines ~117-271
 - Parent docket unblocked: `2026-04-23-meta-reforge` B2.1
 
