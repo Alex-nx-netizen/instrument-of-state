@@ -13,8 +13,14 @@ Under that public model, the project now also keeps a hidden meta-governance lay
 - public-ready closure rules
 - evolution writeback
 
+The doctrine of presentation is therefore twofold:
+
+- court language on the outside, so the user always sees a lawful proceeding
+- protocol language on the inside, so the plugin keeps a strict state skeleton
+- hard gates bind both layers: execution and publication remain separate gates
+- durable writeback closes every meaningful run
+
 Read `governance-playbook.md` for the operating sequence.
-Read `imperial-workflow.md` for the user-facing court explanation.
 Read `meta-governance-layer.md` for the hidden protocol layer.
 Read `evolution-writeback.md` for writeback law.
 Read `frontend-governance.md` when the matter is UI-facing.
@@ -96,13 +102,17 @@ For substantial work, the intended constitutional order is:
 
 ## The six ministries
 
-### Personnel Routing
+### Resource Allocation
 
-- Scope: ownership, assignees, role design, decomposition, handoff, accountability.
+- Scope: unified ownership-and-cost governance. Covers both personnel concerns (ownership, assignees, reviewer chains, decomposition, handoff, accountability) and budgeting concerns (cost, time, token budget, blast radius, priority, dependency inventory).
+- Constitutional note: this ministry operates in two modes inside one office — a personnel mode when the petition is about who owns and reviews the work, and a budgeting mode when the petition is about cost, sequencing, or dependency load. A single memorial may invoke both modes in one dispatch.
 
-### Revenue Budgeting
+### 资源调度（中文表述）
 
-- Scope: cost, time, token budget, blast radius, priority, dependency inventory.
+- 职责：统一的"分工 + 预算"治理。对内拆分为两种工作模式：
+  - 分工模式（吏部侧）——归属、分派、评审链、任务切分、交接、问责
+  - 预算模式（户部侧）——成本、时限、token 预算、影响半径、优先级、依赖盘点
+- 宪法注记：一次奏折可在同一次发令中同时触发两种模式；不得将"资源调度"降格为单一模式的别名。
 
 ### Rites Protocol
 
@@ -141,7 +151,7 @@ Flow:
 Use for migrations, architecture changes, security-sensitive work, public releases, data changes, or tasks spanning multiple systems.
 
 Extra obligations:
-1. Revenue Budgeting must assess cost, scope, and dependency load.
+1. Resource Allocation (budgeting mode) must assess cost, scope, and dependency load; personnel mode engages if ownership or partitioning is non-trivial.
 2. Justice Compliance must define evidence, rollback posture, and public-ready gates.
 3. Works Delivery cannot begin until Menxia issues `APPROVE`.
 4. Publication may happen only after verification and summary closure.
@@ -222,9 +232,8 @@ The constitution is not only advisory. It should be enforced as far as the platf
 
 - Any implementation task that changes code should route to Works Delivery.
 - Any high-risk code task should also route to Justice Compliance.
-- Any large or costly task should also route to Revenue Budgeting.
+- Any large, costly, or ownership-ambiguous task should route to Resource Allocation (which internally selects the budgeting mode, the personnel mode, or both).
 - Any release, announcement, policy note, or PR ritual should route to Rites Protocol.
-- Any staffing or decomposition question should route to Personnel Routing.
 - Any deployment or incident question should route to War Operations.
 - Any frontend-visible task should route to Works Delivery and should normally route to Justice Compliance as well.
 

@@ -24,6 +24,7 @@
 | 16:10~ | Coordinator | 暂存 + 提交 B1（`reforge(B1): add meta/cadence/deal-card doctrines`）| ✅ |
 | 16:30~ | Works-Delivery | B2.1 UX doctrines 合并 → `ux-response-doctrine.md`（合并 3 → 1，删源文件 3 份）| ✅ |
 | 17:00~ | Works-Delivery | B2.2 Lark 发布 doctrines 合并 → `lark-publication-doctrine.md`（合并 3 → 1，删源文件 3 份）| ✅ |
+| 17:30~ | Works-Delivery | B2.3 宪章同步（六部合并 Personnel+Revenue → Resource Allocation）+ 吸收 imperial-workflow 原则 + 各 agent.md 内嵌 superpowers 绑定 + 删除 imperial-workflow.md & superpowers-integration.md | ✅ |
 
 ### B1 交付清单
 
@@ -53,6 +54,35 @@
   - `README.zh-CN.md` L294（外部链接）
   - `artifacts/dockets/2026-04-23-meta-reforge/` 内 memorial/memorial-v2/findings 为历史记录，不改。
 - **references/*.md 计数**：21 → 19（新增 1、删除 3）。
+
+### B2.3 交付清单
+
+- 修订 `references/constitutional-rules.md`：
+  - **六部条目合并**（verdict-1 条件 2）：原 "Personnel Routing" 与 "Revenue Budgeting" 两条独立条目合并为单条 "Resource Allocation"，附中文平行段"资源调度（中文表述）"，声明两种工作模式（分工模式 / 预算模式）可在一次奏折中共同触发；总条目数维持六部不变。
+  - **下游同步**：Strict mode 的 "Revenue Budgeting must assess..." 与 "Minimum routing rules" 中 "should route to Revenue Budgeting / Personnel Routing" 两行改写为 "Resource Allocation（两种模式）"统一入口。
+  - **吸收 imperial-workflow 原则**：在开篇的引用清单之前新增"两层呈现"原则块（court language on the outside / protocol language on the inside / hard gates bind both layers / durable writeback closes every run）；从引用清单中移除 `imperial-workflow.md` 条目（文件本身删除）。
+- 各 agent.md 新增 `## 超能力绑定（Superpowers binding）` 小节（9 份全覆盖）：
+  - shangshu-agent：brainstorming / dispatching-parallel-agents / subagent-driven-development
+  - zhongshu-agent：writing-plans
+  - war-operations-agent：systematic-debugging
+  - justice-compliance-agent：verification-before-completion / requesting-code-review / receiving-code-review / test-driven-development
+  - works-delivery-agent：subagent-driven-development / executing-plans / systematic-debugging / test-driven-development / verification-before-completion / using-git-worktrees
+  - menxia-agent / rites-protocol-agent：无专属映射，引用 `rules/common/agents.md`
+  - personnel-routing-agent / revenue-budgeting-agent：无专属映射，并注明 B3 将被合并为 resource-allocator（审计留痕目的保留此次编辑）
+- 删除 `references/imperial-workflow.md`（原则已融入宪章）+ `references/superpowers-integration.md`（映射表已内嵌至各 agent.md）。
+
+**宪法 diff 关注点（供 Justice-Compliance 宪章 diff 审）**：
+- 六部段结构从 "Personnel Routing → Revenue Budgeting → Rites Protocol → War Operations → Justice Compliance → Works Delivery" 改为 "Resource Allocation（含中英双段）→ Rites Protocol → War Operations → Justice Compliance → Works Delivery"；六条未变。
+- Resource Allocation 条目的"两种模式"写法是**治理中立**的，与 B3 即将创建的 `agents/resource-allocator-agent.md` 兼容（本 commit 不预先描述 agent 实现细节）。
+- 开篇新增"两层呈现 + 硬闸门 + 写回"原则块，用以代替被删除的 `imperial-workflow.md` 中不属于纯过程细节的核心原则。
+
+**入站引用盘点（B3/B4/B6 处理）**：
+- `README.md` L287 / `README.zh-CN.md` L290 仍指向 `imperial-workflow.md`（B6 README 重写时一并处理）
+- `bin/instrument-guard.ps1` L488 仍引用 `superpowers-integration.md`（memorial §4.2 声明本次不动 bin；需在 B4 可见性或 B6 收尾中跟进，Works-Delivery 不越权修复）
+- `skills/shangshu-dispatch/SKILL.md` L17 / L27 指向两份被删文件（B3/B4 改名批次同步处理）
+- 历史文件（docket 内 memorial/memorial-v2/findings/task_plan）为历史记录，不改
+
+**references/*.md 计数**：19 → 17（新增 0、删除 2）。
 
 ---
 

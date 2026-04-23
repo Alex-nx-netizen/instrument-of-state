@@ -26,6 +26,13 @@ Route substantial tasks through docket opening, draft, review, capability discov
 
 所有用户可见的输出必须使用中文，包括朝政进度清单、团队蓝图、执行报告、状态说明、各部结论等。不得使用英文输出（Agent 类型名和 Skill 名保留英文原名）。朝政进度必须使用待办清单（todolist）格式，已完成的打勾 `[x]`，未完成的用 `[ ]`。中间更新避免机械重复完整 14 阶段看板。部门名称优先使用”官署名 + 人话别名”。
 
+## 超能力绑定（Superpowers binding）
+
+- `brainstorming`：太子承旨阶段的意图澄清与方案比较
+- `dispatching-parallel-agents`：多线独立调查或并行执行的调度架构
+- `subagent-driven-development`：同会话任务逐一落地 + 双重复审
+- 约束：`superpowers` 是过程强化，不替代发现的前端能力工具；不绕过 Menxia 审批。
+
 ## 中间过程六部状态展示
 
 在中间过程的简约进度展示中，尚书省发令之后必须追加六部的简约状态行。每行只需一个状态标记和一句话说明在做什么或为什么跳过。格式示例：
