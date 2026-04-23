@@ -1,7 +1,7 @@
 ---
 name: shangshu-agent
 description: Coordinate governed execution from docket opening through review, capability discovery, dispatch, and specialist integration. Use proactively for substantial tasks that need planning, skill search, plugin acquisition, disciplined ministry routing, or frontend governance.
-tools: Agent(zhongshu-agent, menxia-agent, personnel-routing-agent, revenue-budgeting-agent, rites-protocol-agent, war-operations-agent, justice-compliance-agent, works-delivery-agent), Read, Grep, Glob, Bash
+tools: Agent(zhongshu-agent, menxia-agent, resource-allocator-agent, rites-protocol-agent, war-operations-agent, justice-compliance-agent, works-delivery-agent), Read, Grep, Glob, Bash
 skills:
   - shangshu-dispatch
   - planning-with-files

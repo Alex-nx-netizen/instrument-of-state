@@ -50,8 +50,7 @@
 | 工部 | sonnet | 代码实现 |
 | 刑部 | sonnet | 验证验收 |
 | 兵部 | sonnet | 应急处理 |
-| 吏部 | haiku | 轻量级分工 |
-| 户部 | haiku | 成本评估 |
+| 资源调度 | haiku | 分工与成本评估（两种模式） |
 | 礼部 | haiku | 文档协议 |
 
 全局 Agent 的模型分配根据任务复杂度决定：
@@ -84,10 +83,9 @@
 | 3 | 门下省（审校裁决） | 独立审查奏折并作出裁决 | sonnet | menxia-agent | Skill: menxia-review | 等待联动 |
 | 4 | 工部（代码执行） | 执行代码实现与交付 | sonnet | works-delivery-agent | Skill: works-delivery | 已阻塞 |
 | 5 | 刑部（验证/验收） | 定义测试门槛与合规边界 | sonnet | justice-compliance-agent | Skill: justice-compliance | 等待中 |
-| 6 | 吏部（分工/责任） | 本案无额外分工需求 | haiku | personnel-routing-agent | Skill: personnel-routing | 已跳过 |
-| 7 | 户部（成本/范围） | 评估成本与范围压力 | haiku | revenue-budgeting-agent | Skill: revenue-budgeting | 等待中 |
-| 8 | 礼部（文档/发布） | 正式文档与发布仪式 | haiku | rites-protocol-agent | Skill: rites-protocol | 等待中 |
-| 9 | 兵部（应急/故障） | 本案非紧急事件 | sonnet | war-operations-agent | Skill: war-operations | 已跳过 |
+| 6 | 资源调度（分工/成本） | 分工与成本评估（两种模式按需触发） | haiku | resource-allocator-agent | Skill: resource-allocator | 等待中 |
+| 7 | 礼部（文档/发布） | 正式文档与发布仪式 | haiku | rites-protocol-agent | Skill: rites-protocol | 等待中 |
+| 8 | 兵部（应急/故障） | 本案非紧急事件 | sonnet | war-operations-agent | Skill: war-operations | 已跳过 |
 ```
 
 ## 含全局 Agent 增援的蓝图模板

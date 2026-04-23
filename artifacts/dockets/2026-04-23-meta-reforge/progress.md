@@ -87,6 +87,8 @@
 | Time | Actor | Event | Result |
 |---|---|---|---|
 | 18:00~ | Works-Delivery | B3 Agent/Skill 改名与合并；合并 personnel+revenue → resource-allocator；订正 publish-to-lark 在 rites-agent 中的表述；建立 8 个 /iostate:* 薄别名壳；修复 B2.1+B2.2 入站引用 | ✅ |
+| 18:30~ | Menxia (3rd pass) | 对 B3 commit `a77fad4` 出具裁决 **CONDITIONAL**：指出 shangshu 工具白名单仍含已删 agent、team-blueprint-board 仍列 8/9 行旧模板、deal-card-doctrine L205 仍含 `ux-response-guidelines.md` 字面量三项缺口；同意以追加子提交 B3.1 精准修补后转 APPROVE | ✅ |
+| 18:45~ | Works-Delivery | B3.1 追加子提交：修复 `agents/shangshu-agent.md` L4 工具白名单（去 personnel-routing/revenue-budgeting，加 resource-allocator-agent）；合并 `references/team-blueprint-board.md` 蓝图模板与模型分配表中 personnel+revenue 两行为 Resource Allocation 单行（9→8）；重写 `references/deal-card-doctrine.md` L205 去除 `ux-response-guidelines.md` / `first-use-and-controls` / `task-type-templates` 文件名字面量，改为叙述形式；授权链 = Menxia verdict-3 CONDITIONAL→APPROVE（B3.1 scope only） | ✅ |
 
 ### B3 交付清单
 

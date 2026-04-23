@@ -202,5 +202,5 @@ Does the timing match the user's mental rhythm — at gate transitions, stage en
 
 - `cadence-doctrine.md`：cadence 是上游总开关（"此时能发吗"），deal-card 是下游过滤器（"这张够格吗"）。
 - `meta-unit-doctrine.md`：发牌的发起者必须是合格元；非元不得发牌。
-- `ux-response-guidelines.md` / `ux-response-doctrine.md`（B2.1 后）：UX 语气规范在发牌形态之上施加额外约束（用户可见语气）。
+- `ux-response-doctrine.md`：UX 语气规范在发牌形态之上施加额外约束（用户可见语气）。该 doctrine 在 B2.1 中由三份前身 UX 文档（语气规范 / 首次使用与控制 / 任务类型模板）合并而成，成为单一治理入口。
 - `meta-governance-layer.md`：意图层 / 闸门层 / 验证层都受发牌三判断约束。
