@@ -61,12 +61,18 @@ $ARGUMENTS
 
 ## 意图包
 
-明确写出：
+明确写出（v2 共十项）：
 
-- 真正用户意图
-- 成功标准
-- 非目标
-- 默认假设
+- 真正用户意图（trueUserIntent）
+- 成功标准（successCriteria）
+- 非目标（nonGoals）
+- 默认假设（defaultAssumptions）
+- 意图包版本（intentPacketVersion，默认 v2）
+- 责任主体（owner）
+- 时机（when）
+- 触点（touchpoint）
+- 成功信号（success）
+- 调整路径（adjustPath）
 
 ## 意图闸门包
 

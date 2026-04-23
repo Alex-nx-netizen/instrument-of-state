@@ -23,7 +23,12 @@
     "defaultAssumptions": [
       "<assumption 1>"
     ],
-    "intentPacketVersion": "v1"
+    "intentPacketVersion": "v2",
+    "owner": "<owner identity>",
+    "when": "<timing or schedule>",
+    "touchpoint": "<touchpoint or surface>",
+    "success": "<success signal>",
+    "adjustPath": "<adjustment path if signal deviates>"
   },
   "intentGatePacket": {
     "ambiguitiesResolved": false,

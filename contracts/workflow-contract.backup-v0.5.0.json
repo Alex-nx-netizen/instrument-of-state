@@ -75,12 +75,7 @@
         "successCriteria",
         "nonGoals",
         "defaultAssumptions",
-        "intentPacketVersion",
-        "owner",
-        "when",
-        "touchpoint",
-        "success",
-        "adjustPath"
+        "intentPacketVersion"
       ]
     },
     "intentGatePacket": {
@@ -214,29 +209,5 @@
     "skills",
     "agents",
     "contracts/workflow-contract.json"
-  ],
-  "skipPolicy": {
-    "description": "Rules governing which stages may be skipped under which evidence.",
-    "skippable_stages": [
-      "menxia",
-      "justice"
-    ],
-    "skip_requires_evidence": true,
-    "evidence_fields": [
-      "skip_reason",
-      "skip_authorized_by",
-      "skip_scope"
-    ],
-    "audit_trail": "required"
-  },
-  "preemptPolicy": {
-    "description": "Rules under which war-operations may preempt the normal chain.",
-    "preempt_triggers": [
-      "P0_incident",
-      "P1_data_loss_risk",
-      "production_outage"
-    ],
-    "preempt_scope": "single_action_with_post_hoc_memorial",
-    "preempt_audit_requirement": "mandatory_post_memorial_within_24h"
-  }
+  ]
 }

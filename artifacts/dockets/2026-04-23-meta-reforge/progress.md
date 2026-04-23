@@ -174,6 +174,43 @@
 
 **skills 目录计数**：18 → 20（新增 +2：stage-board、tool-trace；无删除）。
 
+## 2026-04-24
+
+| Time | Actor | Event | Result |
+|---|---|---|---|
+| 01:40~ | Menxia (3rd pass) | verdict-3 双裁决：B4 close + B5 pre-APPROVE（7 条 binding） | ✅ |
+| 01:45~ | Works-Delivery | B5 启动：备份 `contracts/workflow-contract.json` → `.backup-v0.5.0.json` | ✅ |
+| 01:50~ | Works-Delivery | B5 契约升级：新增 `skipPolicy` + `preemptPolicy` 两个顶层节点；`intentPacket.fields` 5 → 10（保留原 5 项 + 新增 owner/when/touchpoint/success/adjustPath）；模板中 `intentPacketVersion` 默认值 v1 → v2 | ✅ |
+| 01:55~ | Works-Delivery | B5 生成器同步：`contracts/run-artifact.template.json` 意图包占位位升级至 10 字段 v2；`skills/zhongshu-draft/SKILL.md` 意图包小节展示十字段 | ✅ |
+| 02:00~ | Works-Delivery | B5 守护程序检查：`bin/instrument-guard.ps1` session-context 模式未含 intentPacket 字段字面引用（仅通用 "intent packet" 叙述），按 verdict-3 binding 4 保持不改 | ✅ |
+| 02:05~ | Works-Delivery | B5 验证：3 个 JSON 文件全部有效；`powershell bin/instrument-guard.ps1 health` exit 0 + 输出合法 JSON | ✅ |
+
+### B5 交付清单
+
+**修订文件（3 份）**：
+- `contracts/workflow-contract.json`：
+  - `protocols.intentPacket.fields` 字段数组：5 → 10（追加式，保留原 5 项顺序不变），新 5 项顺序为 `owner`、`when`、`touchpoint`、`success`、`adjustPath`（严格按 verdict-3 binding 3）
+  - 根层新增 `skipPolicy` 节点（snake_case 字段遵循现有 schema 约定）：`description` / `skippable_stages=[menxia, justice]` / `skip_requires_evidence=true` / `evidence_fields=[skip_reason, skip_authorized_by, skip_scope]` / `audit_trail=required`
+  - 根层新增 `preemptPolicy` 节点：`description` / `preempt_triggers=[P0_incident, P1_data_loss_risk, production_outage]` / `preempt_scope=single_action_with_post_hoc_memorial` / `preempt_audit_requirement=mandatory_post_memorial_within_24h`
+- `contracts/run-artifact.template.json`：`intentPacket` 占位位升级至 10 字段（保留原 5 项占位位，追加 5 项新占位位），`intentPacketVersion` 默认值 `v1` → `v2`
+- `skills/zhongshu-draft/SKILL.md`：`## 意图包` 小节由 4 项列表升级至 10 项列表，明示中文名 + 英文键名对应关系；Zhongshu 今后起草意图包会按十字段产出
+
+**新建文件（1 份）**：
+- `contracts/workflow-contract.backup-v0.5.0.json`（B5 回滚基线，原契约完整副本，文件名严格按 verdict-3 binding 1）
+
+**未触碰（按 verdict-3 binding 4/5 明令）**：
+- `bin/instrument-guard.ps1`：全文 grep `trueUserIntent|successCriteria|nonGoals|defaultAssumptions|intentPacketVersion|intentPacket` 零命中（session-context 仅叙述性提及 "intent packet"），按 binding 4 保持不动
+- `hooks/hooks.json` / `.claude-plugin/plugin.json` / `marketplace.json` / `README*.md` / `agents/` 全员保持不动
+- 守护程序缓存 (`~/.claude/plugins/cache/...`)：因守护程序未修改，无需同步
+
+**验证证据**：
+- `contracts/workflow-contract.json`：JSON 解析通过；根层 keys 包含 `contract_version / public_model / meta_layer / state_model / protocols / run_artifact / gates / rollback_levels / writeback_targets / skipPolicy / preemptPolicy`
+- `contracts/run-artifact.template.json`：JSON 解析通过；`intentPacket` 含 10 键 + `intentPacketVersion=v2`
+- `powershell bin/instrument-guard.ps1 health`：exit 0；stdout 为合法 JSON（`hookSpecificOutput.additionalContext` 亦为合法 JSON 子串），表明契约 JSON 升级未破坏守护程序读取
+- V5b（/iostate:draft 差分测试）按 verdict-3 说明：B5 改动为契约与模板层，差分验证需要一次新 draft 运行才能落地 → 推迟到 B5 之后的 verdict-4 阶段处理
+
+**保留邀请**：intentPacketVersion 字段本身的名字保留不变（非改名，而是 *值* 由 v1 → v2），旧运行产物 `intentPacketVersion: v1` 仍可被解析（Zhongshu 新模板产出 v2）；若未来启用严格版本校验，再在 V5 验收中加测。
+
 ---
 
 ## 状态机当前快照
@@ -181,7 +218,7 @@
 - **Intent lock**: ✅ locked（C 方向 + 允许改名 + 可见性优先）
 - **Docket opened**: ✅
 - **Memorial drafted**: ✅ v1 / ✅ v2 / ✅ v2 内补 14a
-- **Menxia review**: 🟡 verdict-1 CONDITIONAL → 🟡 verdict-2 CONDITIONAL（放行 B1~B4）→ verdict-3 B5-pre 待出
-- **Works delivery unlock**: 🟢 B1~B4 已交付；🔴 B5 仍锁（等 verdict-3）
+- **Menxia review**: 🟡 verdict-1 CONDITIONAL → 🟡 verdict-2 CONDITIONAL → 🟢 verdict-3 B4-close + B5 pre-APPROVE
+- **Works delivery unlock**: 🟢 B1~B5 已交付；🔒 B6 仍锁（等 verdict-4）
 - **Verification passed**: ⏸
 - **Public-ready**: ⏸
