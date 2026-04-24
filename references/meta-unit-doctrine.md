@@ -12,8 +12,8 @@
 
 在本插件里，"元"的典型实例：
 
-- 一个 agent（如 `menxia-agent`）
-- 一个 skill（如 `works-delivery`）
+- 一个 agent（如 `review-agent`）
+- 一个 skill（如 `deliver`）
 - 一个 reference doctrine（如本文件）
 - `workflow-contract.json` 里的一个顶级节点（如 `skipPolicy`）
 - `hooks.json` 里的一个 hook 触发器
@@ -40,7 +40,7 @@
 
 ## Five Traits
 
-The English mirror of the same doctrine, for use by Justice-Compliance regex checks and for non-Chinese readers.
+The English mirror of the same doctrine, for use by verify regex checks and for non-Chinese readers.
 
 A meta-unit MUST satisfy all five traits simultaneously:
 
@@ -79,13 +79,13 @@ These traits are in tension. "Small enough" and "Reusable" pull in opposite dire
 若本元写死了当次任务的特殊参数，无法用于相近的另一场景，则本元不成熟。本判断对应**五特征 · 可复用**。
 
 **评级约定**：
-- 前两问（独立 + 定位）答不出 → **还不是元**：拒绝入库，退回 Zhongshu 重写。
+- 前两问（独立 + 定位）答不出 → **还不是元**：拒绝入库，退回 draft 阶段重写。
 - 后两问（替换 + 复用）答不出 → **还不够成熟**：允许入库但标 `maturity: low`，并记录到 `memory/` 作为 capability-gap。
 - 四问全过 → **合格元**：正常注册。
 
 ## Four Checks
 
-English mirror of the same four questions (required by Justice-Compliance regex):
+English mirror of the same four questions (required by verify regex):
 
 ### Check 1 — Independence
 > Taken on its own, can you state what it is responsible for?
@@ -108,7 +108,7 @@ If replacing it demands simultaneous edits across multiple unrelated units, forc
 If this unit hard-codes the specific parameters of one occasion and cannot serve a neighboring occasion, it is not yet mature. Maps to **Trait · Reusable**.
 
 **Grading convention**:
-- First two checks fail → **not yet a meta-unit**: reject, return to Zhongshu.
+- First two checks fail → **not yet a meta-unit**: reject, return to the draft stage.
 - Last two checks fail → **immature meta-unit**: admit with `maturity: low` tag; log into `memory/` as capability-gap.
 - All four pass → **qualified meta-unit**: register normally.
 
@@ -118,24 +118,24 @@ If this unit hard-codes the specific parameters of one occasion and cannot serve
 
 以下示例演示如何把本 doctrine 用在现有构件上。
 
-### 示例 A — `menxia-agent`（合格的元）
+### 示例 A — `review-agent`（合格的元）
 
 | 判断 | 回答 |
 |---|---|
-| 独立 | 是。职责陈述："对 memorial 出 4 选 1 裁决（APPROVE / CONDITIONAL / REMAND / REJECT）"；不需要先理解 Works-Delivery 的内部即可说清 |
-| 定位 | 是。凡"审查阶段被错误放行/错误拦截"的故障都归属 menxia |
-| 替换代价 | 可控。若换一个"审查官"实现，只要仍按 `menxia-verdict-card.md` 模板出卡，上游 Works 无需改动 |
+| 独立 | 是。职责陈述："对 memorial 出 4 选 1 裁决（APPROVE / CONDITIONAL / RETURN / REJECT）"；不需要先理解 deliver 的内部即可说清 |
+| 定位 | 是。凡"审查阶段被错误放行/错误拦截"的故障都归属 review |
+| 替换代价 | 可控。若换一个"审查官"实现，只要仍按 `review-verdict-card.md` 模板出卡，上游 deliver 无需改动 |
 | 复用 | 高。每个 docket 都复用它 |
 
 结论：四问全过，合格元。
 
-### 示例 B — `publish-to-lark`（被降格为 skill 后才合格）
+### 示例 B — `publish`（作为 skill 是合格的元）
 
-**作为 agent 时**：独立性不足——它的职责（发消息）其实是 `rites-protocol` 的一个具体触点；把它列为 agent 会让"权力中心"与"执行工具"串味。判断 1 不通过。
+**作为独立权力中心时**：独立性不足——它的职责（发消息）其实是 publish（宣示/礼部）部的一个具体触点；把它列为独立官署会让"权力中心"与"执行工具"串味。判断 1 不通过。
 
-**作为 skill 时**：独立性回归——它是 rites-protocol 麾下的执行工具，职责陈述清晰（"把 publication packet 推到飞书"），边界是"飞书 API 调用"这一层。四问全过。
+**作为 skill 时**：独立性回归——它是 publish 部麾下的执行工具，职责陈述清晰（"把 publication packet 推到飞书"），边界是"飞书 API 调用"这一层。四问全过。
 
-本 docket §4.1-9 即据此裁决：`publish-to-lark` 保持 skill 身份，不再被任何文档表述为独立权力中心。
+v0.7.0 命名统一后，`publish` 作为本部 skill 明确归属本部署，不再被任何文档表述为独立权力中心。
 
 ### 示例 C — 合并前的 `personnel-routing` 与 `revenue-budgeting`（各自都不成熟）
 
@@ -143,7 +143,7 @@ If this unit hard-codes the specific parameters of one occasion and cannot serve
 - 判断 4（复用）：实际任务中"派谁干"与"给多少预算"几乎从未单独出现，总是成对出现 → 两个 agent 各自的"下次复用"都只是对方的半截
 - 判断 3（替换）：替换任一方时，另一方的引用必然同时修改
 
-结论：两问不过 → 还不够成熟，应合并为 `resource-allocator`。本 docket §4.1-8 即此合并动作。
+结论：两问不过 → 还不够成熟，应合并为 `allocate`。本 docket §4.1-8 即此合并动作。
 
 ### 示例 D — 假想反例：`temp-docstring-fixer` skill
 
@@ -162,9 +162,9 @@ If this unit hard-codes the specific parameters of one occasion and cannot serve
 
 ## 与治理链条的绑定
 
-- **Zhongshu（起草）**：每次新建 agent / skill / reference 时，必须在文件开头或 frontmatter 注明已过四判断（可用"Meta-Unit Self-Check"小节）。
-- **Menxia（审议）**：在 verdict-card 里加一行"四判断复核："，对作者的自检结果出意见。
-- **Justice-Compliance（验收）**：在可证伪清单中新增一条"所有新建元具备 Meta-Unit Self-Check 小节"（未来 docket 追加）。
+- **Draft（起草）**：每次新建 agent / skill / reference 时，必须在文件开头或 frontmatter 注明已过四判断（可用"Meta-Unit Self-Check"小节）。
+- **Review（审议）**：在 verdict-card 里加一行"四判断复核："，对作者的自检结果出意见。
+- **Verify（验收）**：在可证伪清单中新增一条"所有新建元具备 Meta-Unit Self-Check 小节"（未来 docket 追加）。
 - **evolution-writeback**：判断 3 或判断 4 失败但仍入库的元，必须写回 `memory/` 作为 `capability-gap`，供下次回顾时纳入合并候选。
 
 ---

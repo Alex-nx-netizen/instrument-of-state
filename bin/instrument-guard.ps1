@@ -52,20 +52,20 @@ function Set-ObjectPropertyIfMissing($Object, [string]$Name, $Value) {
 # ── Directory helpers ─────────────────────────────────────────────────────────
 
 function Ensure-StateDirectory([string]$Cwd) {
-  $dir = Join-Path $Cwd ".claude\instrument-of-state\state"
+  $dir = Join-Path $Cwd ".claude\iostate\state"
   if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
   return $dir
 }
 
 function Ensure-LogDirectory([string]$Cwd) {
-  $dir = Join-Path $Cwd ".claude\instrument-of-state\logs"
+  $dir = Join-Path $Cwd ".claude\iostate\logs"
   if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
   return $dir
 }
 
 # FIX-1: Sidecar files now live inside the project directory, not %TEMP%.
 function Get-SidecarDir([string]$Cwd) {
-  $dir = Join-Path $Cwd ".claude\instrument-of-state\state\sidecars"
+  $dir = Join-Path $Cwd ".claude\iostate\state\sidecars"
   if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
   return $dir
 }
@@ -124,7 +124,7 @@ function Release-StateLock($LockStream, [string]$StatePath) {
 # both sides call ConvertTo-Json on the same object shape.
 
 function Get-StateHmac([string]$JsonBody) {
-  $key   = [System.Text.Encoding]::UTF8.GetBytes("instrument-of-state-guard-v1")
+  $key   = [System.Text.Encoding]::UTF8.GetBytes("iostate-guard-v1")
   $data  = [System.Text.Encoding]::UTF8.GetBytes($JsonBody)
   $hmac  = [System.Security.Cryptography.HMACSHA256]::new($key)
   return [System.Convert]::ToBase64String($hmac.ComputeHash($data))
@@ -479,10 +479,10 @@ try {
     "session-context" {
       Write-DebugLog $cwd $Mode $sessionId "session context requested"
       $contextParts = [System.Collections.Generic.List[string]]::new()
-      $contextParts.Add("Governed order: for substantial work, open the docket first, then draft with Zhongshu, review with Menxia, and only then unlock Works Delivery.")
+      $contextParts.Add("Governed order: for substantial work, open the docket first, then draft, then review, and only then unlock deliver.")
       $contextParts.Add("Meta layer: before heavy execution, lock intent through an intent packet and intent gate packet. Do not treat unstated assumptions as settled authority.")
       $contextParts.Add("Capability ladder: local skills and plugins first, then find-skills, then approved marketplaces if a gap remains.")
-      $contextParts.Add("Only Works Delivery may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md.")
+      $contextParts.Add("Only the deliver office may land governed file changes. The only exception is planning artifacts: task_plan.md, findings.md, and progress.md.")
       $contextParts.Add("Public-ready law: implementation finished does not automatically mean ready for outward publication. Verification and summary closure must be explicit.")
       $spSkillPath  = Join-Path $env:USERPROFILE ".claude\skills\superpowers"
       $spPluginPath = Join-Path $env:USERPROFILE ".claude\plugins\superpowers"
@@ -492,12 +492,12 @@ try {
       } else {
         $contextParts.Add("Superpowers is not installed. Install with: /plugin install superpowers@superpowers-marketplace")
       }
-      # B4: append Available toolbox enumeration for user visibility
+      # v0.7.0: append Available toolbox enumeration for user visibility
       try {
         $agents = (Get-ChildItem -Path (Join-Path $cwd "agents") -Filter "*.md" -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName }) -join ", "
-        $iostate = (Get-ChildItem -Path (Join-Path $cwd "skills") -Filter "iostate-*" -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }) -join ", "
+        $skills = (Get-ChildItem -Path (Join-Path $cwd "skills") -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }) -join ", "
         $doctrines = (Get-ChildItem -Path (Join-Path $cwd "references") -Filter "*-doctrine.md" -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName }) -join ", "
-        $contextParts.Add("Available toolbox: agents=[${agents}] | iostate-aliases=[${iostate}] | doctrines=[${doctrines}]") | Out-Null
+        $contextParts.Add("Available toolbox: agents=[${agents}] | skills=[${skills}] | doctrines=[${doctrines}]") | Out-Null
       } catch {}
       Write-AdditionalContext "SessionStart" ($contextParts -join " ")
       exit 0
@@ -520,14 +520,14 @@ try {
       exit 0
     }
 
-    "record-zhongshu" {
-      Read-AgentSidecar "zhongshu-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
+    "record-draft" {
+      Read-AgentSidecar "draft-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
       $state       = Load-State $cwd $sessionId
       $message     = [string](Get-ObjectProperty $inputData "last_assistant_message" "")
       $drafted     = Get-MemorialReady $message
       $intentPkt   = Get-IntentPacketReady $message
       $intentGate  = Get-IntentGateReady $message
-      Write-DebugLog $cwd $Mode $sessionId ("record zhongshu drafted={0} intent_packet={1} intent_gate={2}" -f $drafted, $intentPkt, $intentGate)
+      Write-DebugLog $cwd $Mode $sessionId ("record draft drafted={0} intent_packet={1} intent_gate={2}" -f $drafted, $intentPkt, $intentGate)
       $state.memorial.drafted       = $drafted
       $state.memorial.intent_packet = $intentPkt
       $state.memorial.intent_gate   = $intentGate
@@ -542,11 +542,11 @@ try {
       exit 0
     }
 
-    "record-menxia" {
-      Read-AgentSidecar "menxia-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
+    "record-review" {
+      Read-AgentSidecar "review-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
       $state   = Load-State $cwd $sessionId
       $verdict = Get-Verdict ([string](Get-ObjectProperty $inputData "last_assistant_message" ""))
-      Write-DebugLog $cwd $Mode $sessionId ("record menxia verdict={0}" -f $verdict)
+      Write-DebugLog $cwd $Mode $sessionId ("record review verdict={0}" -f $verdict)
       $approved = $verdict -eq "APPROVE"
       $state.menxia.verdict    = $verdict
       $state.menxia.approved   = $approved
@@ -569,7 +569,7 @@ try {
       if (-not $agentOutput) { $agentOutput = [string](Get-ObjectProperty $inputData "result" "") }
       Write-DebugLog $cwd $Mode $sessionId ("record agent result role={0} output_len={1}" -f $agentRole, $agentOutput.Length)
 
-      if ($agentRole -eq "zhongshu-agent") {
+      if ($agentRole -eq "draft-agent") {
         $state = Load-State $cwd $sessionId
         $drafted   = Get-MemorialReady $agentOutput
         $intentPkt = Get-IntentPacketReady $agentOutput
@@ -585,10 +585,10 @@ try {
         $state.meta.gate_state     = if ($drafted) { "REVIEW_OPEN" } else { "INTENT_OPEN" }
         $state.meta.authority_state = "REVIEW_ONLY"
         Save-State $cwd $sessionId $state
-      } elseif ($agentRole -eq "menxia-agent") {
+      } elseif ($agentRole -eq "review-agent") {
         $state   = Load-State $cwd $sessionId
         $verdict = Get-Verdict $agentOutput
-        Write-DebugLog $cwd $Mode $sessionId ("menxia result verdict={0}" -f $verdict)
+        Write-DebugLog $cwd $Mode $sessionId ("review result verdict={0}" -f $verdict)
         $approved = $verdict -eq "APPROVE"
         $state.menxia.verdict    = $verdict
         $state.menxia.approved   = $approved
@@ -599,7 +599,7 @@ try {
         $state.meta.gate_state     = if ($approved) { "WORKS_UNLOCKED" } else { "WORKS_LOCKED" }
         $state.meta.authority_state = if ($approved) { "WORKS_UNLOCKED" } else { "REVIEW_ONLY" }
         Save-State $cwd $sessionId $state
-      } elseif ($agentRole -eq "works-delivery-agent") {
+      } elseif ($agentRole -eq "deliver-agent") {
         $state = Load-State $cwd $sessionId
         $verificationReady = $agentOutput -match '(?ms)^#{1,3}\s*(?:Verification|验证)\b|verification_ready.*true|verifyPassed.*true'
         $summaryClosed     = $agentOutput -match '(?ms)^#{1,3}\s*(?:Summary|总结)\b|summary_closed.*true|summaryClosed.*true'
@@ -611,13 +611,13 @@ try {
       exit 0
     }
 
-    "record-works-delivery" {
-      Read-AgentSidecar "works-delivery-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
+    "record-deliver" {
+      Read-AgentSidecar "deliver-agent" $cwd ([ref]$cwd) ([ref]$sessionId)
       $state   = Load-State $cwd $sessionId
       $message = [string](Get-ObjectProperty $inputData "last_assistant_message" "")
       $verificationReady = $message -match '(?ms)^#{1,3}\s*(?:Verification|验证)\b|verification_ready.*true|verifyPassed.*true'
       $summaryClosed     = $message -match '(?ms)^#{1,3}\s*(?:Summary|总结)\b|summary_closed.*true|summaryClosed.*true'
-      Write-DebugLog $cwd $Mode $sessionId ("record works delivery verification_ready={0} summary_closed={1}" -f $verificationReady, $summaryClosed)
+      Write-DebugLog $cwd $Mode $sessionId ("record deliver verification_ready={0} summary_closed={1}" -f $verificationReady, $summaryClosed)
       $state.gates.verification_ready = $verificationReady
       $state.gates.summary_closed     = $summaryClosed
       $state.meta.stage_state = if ($summaryClosed) { "SUMMARY" } elseif ($verificationReady) { "VERIFICATION" } else { "DELIVERY" }
@@ -654,23 +654,23 @@ try {
       $agentType = [string](Get-ObjectProperty $inputData "agent_type" "")
       $agentRole = Get-AgentRole $agentType
       Write-DebugLog $cwd $Mode $sessionId ("annotate agent={0}" -f $agentType)
-      if ($agentRole -in @("zhongshu-agent","menxia-agent","works-delivery-agent")) {
+      if ($agentRole -in @("draft-agent","review-agent","deliver-agent")) {
         Write-AgentSidecar $agentRole $cwd $sessionId
       }
-      if ($agentRole -eq "zhongshu-agent") {
-        Write-AdditionalContext "SubagentStart" "Now invoking Zhongshu because memorial drafting is required. Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
+      if ($agentRole -eq "draft-agent") {
+        Write-AdditionalContext "SubagentStart" "Now invoking Draft because memorial drafting is required. Use planning artifacts if they exist. Draft the memorial only. Include at least ## Intent Packet or ## 意图包, ## Intent Gate Packet or ## 意图闸门包, ## Objective or ## 目标, ## Recommended Mode or ## 建议模式, and ## Deliverables or ## 交付物. Do not execute."
         exit 0
       }
-      if ($agentRole -eq "menxia-agent") {
-        Write-AdditionalContext "SubagentStart" "Now invoking Menxia because the memorial is ready for review. Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict section with exactly one of: APPROVE, CONDITIONAL, RETURN, REJECT on its own line. Only APPROVE unlocks Works Delivery."
+      if ($agentRole -eq "review-agent") {
+        Write-AdditionalContext "SubagentStart" "Now invoking Review because the memorial is ready for review. Review only. Inspect both the memorial content and the protocol gates. Return an explicit ## Verdict section with exactly one of: APPROVE, CONDITIONAL, RETURN, REJECT on its own line. Only APPROVE unlocks Deliver."
         exit 0
       }
-      if ($agentRole -eq "works-delivery-agent") {
+      if ($agentRole -eq "deliver-agent") {
         $approved = [bool]$state.approvals.works_delivery
         if ($approved) {
-          Write-AdditionalContext "SubagentStart" "Now invoking Works-Delivery because Menxia approved — executing. Menxia approval is on record. Works Delivery may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
+          Write-AdditionalContext "SubagentStart" "Now invoking Deliver because Review approved — executing. Review approval is on record. Deliver may execute only within the approved memorial and conditions. Include delivery evidence and a writeback suggestion in your return."
         } else {
-          Write-AdditionalContext "SubagentStart" "Now invoking Works-Delivery because a delivery attempt was requested — but approval is absent. Menxia approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
+          Write-AdditionalContext "SubagentStart" "Now invoking Deliver because a delivery attempt was requested — but approval is absent. Review approval is not on record yet. Inspection is allowed, but write access and mutating commands will remain blocked."
         }
         exit 0
       }
@@ -683,13 +683,13 @@ try {
       $subType   = [string](Get-ObjectProperty $toolInput "subagent_type" "")
       $agentRole = Get-AgentRole $subType
       Write-DebugLog $cwd $Mode $sessionId ("guard agent subagent_type={0} memorial={1} approved={2}" -f $subType, [bool]$state.memorial.drafted, [bool]$state.approvals.works_delivery)
-      if ($agentRole -eq "menxia-agent" -and -not [bool]$state.memorial.drafted) {
-        Write-PreToolDecision "deny" "Menxia review is blocked until Zhongshu has produced a formal memorial with intent lock for this petition."
+      if ($agentRole -eq "review-agent" -and -not [bool]$state.memorial.drafted) {
+        Write-PreToolDecision "deny" "Review is blocked until Draft has produced a formal memorial with intent lock for this petition."
         exit 0
       }
-      if ($agentRole -ne "works-delivery-agent") { exit 0 }
+      if ($agentRole -ne "deliver-agent") { exit 0 }
       if (-not [bool]$state.approvals.works_delivery) {
-        Write-PreToolDecision "deny" "Works Delivery is not unlocked because Menxia has not approved this petition yet."
+        Write-PreToolDecision "deny" "Deliver is not unlocked because Review has not approved this petition yet."
         exit 0
       }
       exit 0
@@ -714,17 +714,17 @@ try {
         exit 0
       }
 
-      if ($agentRole -ne "works-delivery-agent") {
+      if ($agentRole -ne "deliver-agent") {
         if ($toolName -in @("Write","Edit")) {
           if ($isPlanningArtifact) { exit 0 }
-          Write-PreToolDecision "deny" "Governed file writes are reserved for Works Delivery. Other offices may inspect and advise, but may not write files."
+          Write-PreToolDecision "deny" "Governed file writes are reserved for Deliver. Other offices may inspect and advise, but may not write files."
           exit 0
         }
         if ($toolName -eq "Bash") {
           $commandText = [string](Get-ObjectProperty $toolInput "command" "")
 
           # FIX-10 (v0.6.1): read-only guard self-introspection is allowed for any office.
-          # Without this, justice-compliance-agent cannot run `instrument-guard.ps1 health`
+          # Without this, verify-agent cannot run `instrument-guard.ps1 health`
           # as a live V5c check and is forced into static-audit-only mode. Scope is
           # intentionally narrow: only the fixed subcommands health/session-context,
           # and only when no shell connectors are present (no pipe, redirect, chain).
@@ -737,7 +737,7 @@ try {
           }
 
           # FIX-4: public_ready gate covers ALL lark-cli outbound calls, not just im +messages-send
-          if ($agentRole -eq "rites-protocol-agent" -and $commandText -match '\blark-cli\b') {
+          if ($agentRole -eq "publish-agent" -and $commandText -match '\blark-cli\b') {
             $isReadOnlyLark = $commandText -match 'lark-cli\s+(doc\s+get|wiki\s+get|im\s+(list|get)|calendar\s+get)\b'
             if (-not $isReadOnlyLark) {
               $artifactPath = Get-LatestRunArtifactPath $cwd
@@ -751,7 +751,7 @@ try {
           }
 
           if (Is-MutatingBash $commandText) {
-            Write-PreToolDecision "deny" "Mutating workspace commands are reserved for Works Delivery after Menxia approval. Other offices may inspect and plan only."
+            Write-PreToolDecision "deny" "Mutating workspace commands are reserved for Deliver after Review approval. Other offices may inspect and plan only."
             exit 0
           }
         }
@@ -761,13 +761,13 @@ try {
       if ([bool]$state.approvals.works_delivery) { exit 0 }
 
       if ($toolName -in @("Write","Edit")) {
-        Write-PreToolDecision "deny" "Works Delivery may not write files yet because Menxia has not approved this petition."
+        Write-PreToolDecision "deny" "Deliver may not write files yet because Review has not approved this petition."
         exit 0
       }
       if ($toolName -eq "Bash") {
         $commandText = [string](Get-ObjectProperty $toolInput "command" "")
         if (Is-MutatingBash $commandText) {
-          Write-PreToolDecision "deny" "Works Delivery may not run mutating commands yet because Menxia has not approved this petition."
+          Write-PreToolDecision "deny" "Deliver may not run mutating commands yet because Review has not approved this petition."
           exit 0
         }
       }

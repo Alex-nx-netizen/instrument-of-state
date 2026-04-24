@@ -1,6 +1,6 @@
 # Evolution Writeback
 
-This file defines how `instrument-of-state` captures learning after a governed run.
+This file defines how the `iostate` plugin captures learning after a governed run.
 
 The court should not merely finish a task.
 It should also decide whether that task produced something worth preserving.

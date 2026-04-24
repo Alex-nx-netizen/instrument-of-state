@@ -1,6 +1,6 @@
 <div align="center">
 
-# Instrument of State
+# iostate
 
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
@@ -9,22 +9,34 @@
 
 **governed execution for Claude Code.** Meta-unit doctrine is the internal spine; Three Departments + Six Ministries is the external metaphor. Draft intent, review, dispatch, deliver, verify, publish — each a visible gate.
 
-**30-second speed-run:** `/iostate:draft` → `/iostate:review` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish` (古风 aliases such as `zhongshu-draft` remain as learning-side).
+**30-second speed-run:** `/iostate:draft` -> `/iostate:review` -> `/iostate:deliver` -> `/iostate:verify` -> `/iostate:publish`.
 
 ### Toolbox (agents, skills, doctrines)
 
 | Kind | Name | Role |
 |---|---|---|
-| agent | shangshu / menxia / zhongshu / works / justice / rites / war / resource | Office boundaries |
-| skills (iostate:*) | draft, review, dispatch, deliver, verify, publish, allocate, emergency | Semantic entrypoints |
+| agent | draft / review / dispatch / deliver / verify / publish / allocate / emergency | Office boundaries |
+| skills (commands) | draft, review, dispatch, deliver, verify, publish, allocate, emergency | Governed execution entrypoints |
 | skills (visibility) | stage-board, tool-trace | Answer "where am I / what was used" |
 | doctrine | meta-unit, cadence, deal-card, ux-response, lark-publication, constitutional-rules | Internal rules |
 
 ### When to use
 
-- Multi-file or cross-role work that needs draft → review → deliver discipline.
+- Multi-file or cross-role work that needs draft -> review -> deliver discipline.
 - Any task that must publish to Lark only after a `public-ready` gate.
 - Sessions where visibility (stage board, tool trace) matters more than raw speed.
+
+---
+
+## What's new in v0.7.0 (Breaking)
+
+v0.7.0 is a hard cutover. The plugin itself is renamed and all legacy command names are removed.
+
+- Plugin name: `instrument-of-state` -> `iostate`
+- Commands: classical 古风 names (`zhongshu-draft`, `menxia-review`, `shangshu-dispatch`, `works-delivery`, `justice-compliance`, `publish-to-lark`, `resource-allocator`, `war-operations`) are fully removed. Use the verb-form commands below.
+- Migration: users on v0.6.x must `/plugin uninstall instrument-of-state` and then `/plugin install iostate` from the marketplace.
+
+What is preserved: the Three Departments + Six Ministries mental model, the meta-governance layer, verdict semantics, scar/pattern templates, run artifact shape.
 
 ---
 
@@ -43,14 +55,14 @@ That may be fast, but it is fragile for real repository work, especially when th
 
 ## What This Project Is
 
-`instrument-of-state` is a **Claude Code plugin bundle** for governed execution.
+`iostate` is a **Claude Code plugin bundle** for governed execution.
 
 It keeps the public mental model of the **Three Departments and Six Ministries**, while layering a stronger **meta-governance core** underneath it (元 / 组织镜像 / 节奏 / 意图放大 + 发牌):
 
-- Zhongshu drafts the memorial
-- Menxia reviews and gates execution
-- Shangshu dispatches the right ministries
-- Works cannot land governed changes before approval
+- draft produces the memorial
+- review issues the verdict that gates execution
+- dispatch routes the right ministries
+- deliver cannot land governed changes before approval
 - publication is gated separately from execution
 - meaningful runs can persist artifacts and write durable learning back into memory
 
@@ -89,12 +101,12 @@ The goal is to keep the user experience readable while making the underlying gov
 | 1 | Emperor Decree | User submits the petition |
 | 2 | Crown Prince Intake | Classifies mode, scope, and escalation |
 | 3 | Jinyiwei Recon | Opens the docket, gathers evidence, and searches capability |
-| 4 | Zhongshu | Drafts the memorial and locks intent |
-| 5 | Menxia | Reviews the memorial and clears or blocks execution |
-| 6 | Shangshu | Dispatches the right ministries |
+| 4 | Draft (classical: 中书省) | Drafts the memorial and locks intent |
+| 5 | Review (classical: 门下省) | Reviews the memorial and clears or blocks execution |
+| 6 | Dispatch (classical: 尚书省) | Dispatches the right ministries |
 | 7 | Six Ministries | Execute only what is needed |
 | 8 | Memorial Return | Integrates results, verification, and closure |
-| 9 | Rites Publication | Publishes to Lark only when lawful |
+| 9 | Publication | Publishes to Lark only when lawful |
 
 <div align="center">
   <img src="./assets/readme/workflow.svg" alt="Imperial workflow diagram" width="920" />
@@ -106,7 +118,7 @@ The goal is to keep the user experience readable while making the underlying gov
 
 ```text
 /plugin marketplace add Dick1109/instrument-of-state
-/plugin install instrument-of-state
+/plugin install iostate
 ```
 
 Then run:
@@ -115,8 +127,6 @@ Then run:
 /iostate:dispatch Refactor auth and keep a visible stage board.
 ```
 
-(or the learning-side alias `/instrument-of-state:shangshu-dispatch ...`)
-
 ---
 
 ## Main Commands
@@ -124,13 +134,15 @@ Then run:
 | Command | Purpose |
 | --- | --- |
 | `/iostate:draft <task>` | Draft memorial, lock intent |
-| `/iostate:review` | Menxia verdict |
+| `/iostate:review` | Review verdict |
 | `/iostate:dispatch <task>` | Main governed workflow entrypoint |
-| `/iostate:deliver` | Works delivery (approval-gated) |
-| `/iostate:verify` | Justice verification |
+| `/iostate:deliver` | Deliver approved work (approval-gated) |
+| `/iostate:verify` | Evidence, tests, acceptance gates |
 | `/iostate:publish` | Lark publication (public-ready gate) |
 | `/iostate:allocate` | Resource allocation (two modes) |
-| `/iostate:emergency` | War operations / preempt |
+| `/iostate:emergency` | Incident / preempt |
+| `/iostate:stage-board` | Visibility: current stage + gate state |
+| `/iostate:tool-trace` | Visibility: replay invocation timeline |
 
 Example petitions:
 
@@ -146,9 +158,9 @@ Example petitions:
 
 | Component | Purpose |
 | --- | --- |
-| `skills/` | `iostate-*` semantic aliases, classical `shangshu-dispatch` / `zhongshu-draft` / `menxia-review` / `works-delivery` / `publish-to-lark`, and visibility skills `stage-board` / `tool-trace` |
-| `agents/` | Shangshu, Zhongshu, Menxia, Justice, Works, Rites, War, Resource-Allocator offices |
-| `hooks/` | Governance enforcement such as blocking Works before Menxia approval |
+| `skills/` | 8 canonical skills (draft, review, dispatch, deliver, verify, publish, allocate, emergency) + 2 visibility skills (stage-board, tool-trace) |
+| `agents/` | 8 agents matching the skill namespace (draft-agent, review-agent, dispatch-agent, deliver-agent, verify-agent, publish-agent, allocate-agent, emergency-agent) |
+| `hooks/` | Governance enforcement such as blocking deliver before review approval |
 | `bin/` | Guard and marketplace helper scripts |
 | `contracts/` | Structured governance contracts for packets, gates, rollback, `skipPolicy`, `preemptPolicy`, and `public-ready` rules |
 | `artifacts/runs/` | Persisted governed run artifacts for auditable packet-chain closure |
@@ -182,15 +194,14 @@ Example petitions:
 
 | Skill | Office | Main responsibility | Governance position | Main packet/gate it shapes |
 | --- | --- | --- | --- | --- |
-| `shangshu-dispatch` | Shangshu | Orchestrates the full governed run and close-out | Intake, dispatch, integration, close-out | `dispatchPacket`, `summaryPacket`, `writebackPacket` |
-| `zhongshu-draft` | Zhongshu | Drafts the memorial and locks intent | Draft | `intentPacket` (10 fields), `intentGatePacket`, `memorialPacket` |
-| `menxia-review` | Menxia | Reviews the memorial and decides execution authority | Review | `reviewPacket`, `menxia_review_ready`, `works_delivery_unlock` |
-| `works-delivery` | Works | Executes approved implementation work | Delivery | write authority, evidence input |
-| `justice-compliance` | Justice | Defines or checks evidence, tests, and acceptance gates | Verification | `verificationPacket`, `public_ready` |
-| `rites-protocol` | Rites | Designs publication format and outward communication posture | Publication planning | `publicationPacket`, `lark_publication` |
-| `publish-to-lark` | Rites executor | Executes document, permission, and IM delivery | Publication execution | `publicationPacket`, `public_ready` proof |
-| `resource-allocator` | Resource Allocation | Ownership routing and cost/scope shaping (two modes) | Dispatch support | owner assignments, dispatch shaping |
-| `war-operations` | War | Handles incidents, rollback posture, and emergency routing | Emergency mode | rollback posture, preempt |
+| `dispatch` | Dispatch (尚书) | Orchestrates the full governed run and close-out | Intake, dispatch, integration, close-out | `dispatchPacket`, `summaryPacket`, `writebackPacket` |
+| `draft` | Draft (中书) | Drafts the memorial and locks intent | Draft | `intentPacket` (10 fields), `intentGatePacket`, `memorialPacket` |
+| `review` | Review (门下) | Reviews the memorial and decides execution authority | Review | `reviewPacket`, review_ready, deliver_unlock |
+| `deliver` | Deliver (工部) | Executes approved implementation work | Delivery | write authority, evidence input |
+| `verify` | Verify (刑部) | Defines or checks evidence, tests, and acceptance gates | Verification | `verificationPacket`, `public_ready` |
+| `publish` | Publish (礼部) | Executes document, permission, and IM delivery to Lark | Publication | `publicationPacket`, `public_ready` proof |
+| `allocate` | Allocate (吏户) | Ownership routing and cost/scope shaping (two modes) | Dispatch support | owner assignments, dispatch shaping |
+| `emergency` | Emergency (兵部) | Handles incidents, rollback posture, and emergency routing | Emergency mode | rollback posture, preempt |
 | `stage-board` | Visibility | Shows current stage / gate state / used agents / remaining unlocks | Visibility | read-only |
 | `tool-trace` | Visibility | Replays agent/skill/tool calls within the docket | Visibility | read-only |
 
@@ -198,10 +209,10 @@ Example petitions:
 
 | Gate | Source | What must be true | What it blocks |
 | --- | --- | --- | --- |
-| `menxia_review_ready` | `workflow-contract.json` | `intentPacket`, `intentGatePacket`, and `memorialPacket` exist | Review before a real memorial |
-| `works_delivery_unlock` | contract + guard | `reviewPacket.verdict == APPROVE` | Works agent start, file writes, mutating commands |
-| Non-Works write gate | `instrument-guard.ps1` | Only planning artifacts are exempt | File writes by non-Works actors |
-| `intent_locked` | guard state | Zhongshu output includes the intent sections | Heavy execution on hidden assumptions |
+| review_ready | `workflow-contract.json` | `intentPacket`, `intentGatePacket`, and `memorialPacket` exist | Review before a real memorial |
+| deliver_unlock | contract + guard | `reviewPacket.verdict == APPROVE` | Deliver agent start, file writes, mutating commands |
+| Non-deliver write gate | `instrument-guard.ps1` | Only planning artifacts are exempt | File writes by non-deliver actors |
+| intent_locked | guard state | Draft output includes the intent sections | Heavy execution on hidden assumptions |
 | `skipPolicy` | contract | Skip requires explicit evidence fields (skip_reason, skip_authorized_by, skip_scope) | Silent stage skipping |
 | `preemptPolicy` | contract | P0/P1 incident triggers + mandatory post-memorial within 24h | Preempt without audit |
 | `public_ready` | contract | verification passed, summary closed, deliverable intact, chain closed, consolidated result present | Outward-ready claims and publishability |
@@ -213,15 +224,15 @@ Example petitions:
 
 ## Key Features
 
-- **Visible stage board**: use a full `Imperial Stage Board` at kickoff and close-out, with compact progress digests in between; `/iostate:status` via `stage-board` + `tool-trace` answers "where am I / what was used"
+- **Visible stage board**: full stage board at kickoff and close-out, compact progress digests in between; `/iostate:stage-board` + `/iostate:tool-trace` answer "where am I / what was used"
 - **Intent lock (10 fields)**: substantial work captures intent (declaration + amplification) before heavy execution
-- **Guarded delivery**: Works stays blocked until Menxia returns `APPROVE`
+- **Guarded delivery**: Deliver stays blocked until Review returns `APPROVE`
 - **Cadence gates**: `skipPolicy` + `preemptPolicy` make skip/preempt explicit and auditable
 - **Run artifacts**: governed runs can persist the packet chain as JSON instead of leaving it only in chat
 - **Public-ready gate**: implementation completion does not automatically mean it is ready to publish or announce
-- **Publication hard gate**: `publish-to-lark` now requires explicit `public-ready` proof and the guard can block unsafe Lark IM sends
+- **Publication hard gate**: `publish` requires explicit `public-ready` proof and the guard can block unsafe Lark IM sends
 - **Local-first capability search**: local skills/plugins -> global agents -> `find-skills` -> marketplace
-- **Lark publication**: Rites can create docs, grant access, send IM, and publish to Wiki
+- **Lark publication**: the publish office can create docs, grant access, send IM, and publish to Wiki
 - **Evolution writeback**: durable patterns, scars, dispatch lessons, and capability gaps can be written back after meaningful runs
 - **Frontend governance**: UI work discovers the best frontend tools through the capability ladder
 
@@ -253,7 +264,7 @@ This makes the hidden meta layer inspectable after the chat ends.
 
 ## Publication and Lark
 
-When formal communication is needed, Rites can:
+When formal communication is needed, the publish office can:
 
 1. create the document
 2. grant access
@@ -266,7 +277,7 @@ Publication now observes a strict `public-ready` gate, so the project can distin
 - complete enough to verify
 - safe to present outward
 
-`publish-to-lark` prefers a governed run artifact as the proof source, and the guard can deny `lark-cli im +messages-send` if the latest run artifact does not prove public-ready closure.
+`publish` prefers a governed run artifact as the proof source, and the guard can deny `lark-cli im +messages-send` if the latest run artifact does not prove public-ready closure.
 
 <div align="center">
   <img src="./assets/readme/publication-chain.svg" alt="Lark publication chain" width="920" />

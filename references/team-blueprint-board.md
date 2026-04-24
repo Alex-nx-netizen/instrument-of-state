@@ -1,6 +1,6 @@
 # 团队蓝图
 
-当 `shangshu-dispatch` 准备用户可见的回复时，除了朝政进度清单，还必须展示团队蓝图表。
+当 `dispatch` 技能准备用户可见的回复时，除了朝政进度清单，还必须展示团队蓝图表。
 
 团队蓝图与朝政进度互补：
 
@@ -22,7 +22,7 @@
 2. `角色名`：官署中文名 + 人话别名，例如 `尚书省（调度执行）`
 3. `具体职责`：本次任务中该角色的具体职责描述
 4. `模型`：`opus` / `sonnet` / `haiku`
-5. `Agent 类型`：实际调用的 agent subagent_type，例如 `shangshu-agent`、`Code Reviewer`、`Security Engineer`
+5. `Agent 类型`：实际调用的 agent subagent_type，例如 `dispatch-agent`、`Code Reviewer`、`Security Engineer`
 6. `调用方式`：`Skill: skill-name` 表示通过 Skill 调用，`Type: subagent-type` 表示通过 Agent 类型调用
 7. `当前状态`：该角色在本次任务中的状态
 
@@ -44,14 +44,14 @@
 
 | 官署 | 默认模型 | 理由 |
 |------|---------|------|
-| 尚书省 | opus | 总调度，需要最深推理 |
-| 中书省 | sonnet | 结构化起草 |
-| 门下省 | sonnet | 独立审查 |
-| 工部 | sonnet | 代码实现 |
-| 刑部 | sonnet | 验证验收 |
-| 兵部 | sonnet | 应急处理 |
-| 资源调度 | haiku | 分工与成本评估（两种模式） |
-| 礼部 | haiku | 文档协议 |
+| dispatch（调度 / 尚书省） | opus | 总调度，需要最深推理 |
+| draft（起草 / 中书省） | sonnet | 结构化起草 |
+| review（审校 / 门下省） | sonnet | 独立审查 |
+| deliver（交付 / 工部） | sonnet | 代码实现 |
+| verify（验证 / 刑部） | sonnet | 验证验收 |
+| emergency（应急 / 兵部） | sonnet | 应急处理 |
+| allocate（资源调度） | haiku | 分工与成本评估（两种模式） |
+| publish（宣示 / 礼部） | haiku | 文档协议 |
 
 全局 Agent 的模型分配根据任务复杂度决定：
 
@@ -78,14 +78,14 @@
 
 | # | 角色名 | 具体职责 | 模型 | Agent 类型 | 调用方式 | 当前状态 |
 |---|--------|---------|------|-----------|---------|---------|
-| 1 | 尚书省（调度执行） | 总调度、流程管控与最终整合 | opus | shangshu-agent | Skill: shangshu-dispatch | 执行中 |
-| 2 | 中书省（起草方案） | 将请示转化为正式奏折 | sonnet | zhongshu-agent | Skill: zhongshu-draft | 等待中 |
-| 3 | 门下省（审校裁决） | 独立审查奏折并作出裁决 | sonnet | menxia-agent | Skill: menxia-review | 等待联动 |
-| 4 | 工部（代码执行） | 执行代码实现与交付 | sonnet | works-delivery-agent | Skill: works-delivery | 已阻塞 |
-| 5 | 刑部（验证/验收） | 定义测试门槛与合规边界 | sonnet | justice-compliance-agent | Skill: justice-compliance | 等待中 |
-| 6 | 资源调度（分工/成本） | 分工与成本评估（两种模式按需触发） | haiku | resource-allocator-agent | Skill: resource-allocator | 等待中 |
-| 7 | 礼部（文档/发布） | 正式文档与发布仪式 | haiku | rites-protocol-agent | Skill: rites-protocol | 等待中 |
-| 8 | 兵部（应急/故障） | 本案非紧急事件 | sonnet | war-operations-agent | Skill: war-operations | 已跳过 |
+| 1 | dispatch（调度执行） | 总调度、流程管控与最终整合 | opus | dispatch-agent | Skill: dispatch | 执行中 |
+| 2 | draft（起草方案） | 将请示转化为正式奏折 | sonnet | draft-agent | Skill: draft | 等待中 |
+| 3 | review（审校裁决） | 独立审查奏折并作出裁决 | sonnet | review-agent | Skill: review | 等待联动 |
+| 4 | deliver（代码执行） | 执行代码实现与交付 | sonnet | deliver-agent | Skill: deliver | 已阻塞 |
+| 5 | verify（验证/验收） | 定义测试门槛与合规边界 | sonnet | verify-agent | Skill: verify | 等待中 |
+| 6 | allocate（分工/成本） | 分工与成本评估（两种模式按需触发） | haiku | allocate-agent | Skill: allocate | 等待中 |
+| 7 | publish（文档/发布） | 正式文档与发布仪式 | haiku | publish-agent | Skill: publish | 等待中 |
+| 8 | emergency（应急/故障） | 本案非紧急事件 | sonnet | emergency-agent | Skill: emergency | 已跳过 |
 ```
 
 ## 含全局 Agent 增援的蓝图模板
@@ -97,15 +97,15 @@
 
 | # | 角色名 | 具体职责 | 模型 | Agent 类型 | 调用方式 | 当前状态 |
 |---|--------|---------|------|-----------|---------|---------|
-| 1 | 尚书省（调度执行） | 总调度与流程管控 | opus | shangshu-agent | Skill: shangshu-dispatch | 执行中 |
-| 2 | 中书省（起草方案） | 起草前端重构方案 | sonnet | zhongshu-agent | Skill: zhongshu-draft | 已完成 |
-| 3 | 门下省（审校裁决） | 审查重构方案合理性 | sonnet | menxia-agent | Skill: menxia-review | 已完成 |
-| 4 | 工部（代码执行） | 前端组件重构实现 | sonnet | works-delivery-agent | Skill: works-delivery | 执行中 |
-| 5 | 工部增援·前端专家 | React 组件与性能优化 | sonnet | Frontend Developer | Type: Frontend Developer | 等待联动 |
-| 6 | 工部增援·架构师 | 系统架构与模块边界设计 | opus | Backend Architect | Type: Backend Architect | 已完成 |
-| 7 | 刑部（验证/验收） | 测试覆盖与验收门槛 | sonnet | justice-compliance-agent | Skill: justice-compliance | 等待中 |
-| 8 | 刑部增援·安全工程师 | 安全审查与漏洞扫描 | sonnet | Security Engineer | Type: Security Engineer | 待命 |
-| 9 | 刑部增援·代码审查 | 代码质量与最佳实践审查 | sonnet | Code Reviewer | Type: Code Reviewer | 待命 |
+| 1 | dispatch（调度执行） | 总调度与流程管控 | opus | dispatch-agent | Skill: dispatch | 执行中 |
+| 2 | draft（起草方案） | 起草前端重构方案 | sonnet | draft-agent | Skill: draft | 已完成 |
+| 3 | review（审校裁决） | 审查重构方案合理性 | sonnet | review-agent | Skill: review | 已完成 |
+| 4 | deliver（代码执行） | 前端组件重构实现 | sonnet | deliver-agent | Skill: deliver | 执行中 |
+| 5 | deliver 增援·前端专家 | React 组件与性能优化 | sonnet | Frontend Developer | Type: Frontend Developer | 等待联动 |
+| 6 | deliver 增援·架构师 | 系统架构与模块边界设计 | opus | Backend Architect | Type: Backend Architect | 已完成 |
+| 7 | verify（验证/验收） | 测试覆盖与验收门槛 | sonnet | verify-agent | Skill: verify | 等待中 |
+| 8 | verify 增援·安全工程师 | 安全审查与漏洞扫描 | sonnet | Security Engineer | Type: Security Engineer | 待命 |
+| 9 | verify 增援·代码审查 | 代码质量与最佳实践审查 | sonnet | Code Reviewer | Type: Code Reviewer | 待命 |
 ```
 
 ## 简报蓝图模板
@@ -117,9 +117,9 @@
 
 | # | 角色名 | 当前状态 | 变化说明 |
 |---|--------|---------|---------|
-| 2 | 中书省（起草方案） | 已完成 | 奏折已提交 |
-| 3 | 门下省（审校裁决） | 执行中 | 正在审查奏折 |
-| 4 | 工部（代码执行） | 等待联动 | 等待门下省裁决 |
+| 2 | draft（起草方案） | 已完成 | 奏折已提交 |
+| 3 | review（审校裁决） | 执行中 | 正在审查奏折 |
+| 4 | deliver（代码执行） | 等待联动 | 等待审校裁决 |
 ```
 
 ## 规则

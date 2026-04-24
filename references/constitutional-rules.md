@@ -82,27 +82,29 @@ For substantial work, the intended constitutional order is:
 
 ## The three departments
 
-### Zhongshu
+### Draft (起草官署 / zhongshu)
 
 - Role: originate the memorial.
 - Output: a draft with objective, scope, assumptions, intent packet, intent gate packet, risks, deliverables, and capability needs.
 - Forbidden acts: approving the memorial, claiming final legitimacy, or directly executing multi-step work.
 
-### Menxia
+### Review (审校官署 / menxia)
 
 - Role: review and remonstrate.
 - Output: `APPROVE`, `CONDITIONAL`, `RETURN`, or `REJECT`, plus protocol and gate findings.
 - Forbidden acts: silently rewriting the memorial and executing it as if approved.
 
-### Shangshu
+### Dispatch (调度官署 / shangshu)
 
 - Role: govern the proceeding, dispatch approved work, integrate ministry outputs, and decide whether the result may be publicly surfaced.
 - Output: the execution order, routing plan, capability decision, publication decision, and final report.
-- Forbidden acts: bypassing Menxia in normal mode, skipping the capability ladder, or treating an unverified result as public-ready.
+- Forbidden acts: bypassing review in normal mode, skipping the capability ladder, or treating an unverified result as public-ready.
+
+Historical note: the three departments carried the classical names zhongshu (中书省, drafting), menxia (门下省, reviewing), shangshu (尚书省, dispatching). v0.7.0 keeps the classical semantics while surfacing the simpler verb-based command names.
 
 ## The six ministries
 
-### Resource Allocation
+### Allocate (资源调度)
 
 - Scope: unified ownership-and-cost governance. Covers both personnel concerns (ownership, assignees, reviewer chains, decomposition, handoff, accountability) and budgeting concerns (cost, time, token budget, blast radius, priority, dependency inventory).
 - Constitutional note: this ministry operates in two modes inside one office — a personnel mode when the petition is about who owns and reviews the work, and a budgeting mode when the petition is about cost, sequencing, or dependency load. A single memorial may invoke both modes in one dispatch.
@@ -114,23 +116,23 @@ For substantial work, the intended constitutional order is:
   - 预算模式（户部侧）——成本、时限、token 预算、影响半径、优先级、依赖盘点
 - 宪法注记：一次奏折可在同一次发令中同时触发两种模式；不得将"资源调度"降格为单一模式的别名。
 
-### Rites Protocol
+### Publish (宣示 / 礼部)
 
 - Scope: form, ceremony, document style, external communication, ADR and PR ritual, publication packaging.
-- Constitutional note: Rites does not make a result public-ready on its own. It packages a result that has already cleared the required gates.
+- Constitutional note: the publish ministry does not make a result public-ready on its own. It packages a result that has already cleared the required gates.
 
-### War Operations
+### Emergency (应急 / 兵部)
 
 - Scope: incidents, urgent response, rollout, rollback, deployment, CI/CD instability.
 
-### Justice Compliance
+### Verify (验证 / 刑部)
 
 - Scope: review, evidence, test gates, security, policy, acceptance, traceability, public-ready verification.
 
-### Works Delivery
+### Deliver (交付 / 工部)
 
 - Scope: implementation, code changes, scripts, automation, documentation production.
-- Constitutional note: Works Delivery is the only ministry allowed to land governed file changes, apart from planning artifacts.
+- Constitutional note: deliver is the only ministry allowed to land governed file changes, apart from planning artifacts.
 
 ## Operating modes
 
@@ -139,21 +141,21 @@ For substantial work, the intended constitutional order is:
 Use for most planned work.
 
 Flow:
-1. Shangshu opens the docket when needed.
+1. Dispatch opens the docket when needed.
 2. Intent is locked.
-3. Zhongshu drafts.
-4. Menxia reviews.
-5. Shangshu dispatches the needed ministries.
-6. Shangshu returns a unified result.
+3. Draft produces the memorial.
+4. Review issues the verdict.
+5. Dispatch routes the needed ministries.
+6. Dispatch returns a unified result.
 
 ### Strict mode
 
 Use for migrations, architecture changes, security-sensitive work, public releases, data changes, or tasks spanning multiple systems.
 
 Extra obligations:
-1. Resource Allocation (budgeting mode) must assess cost, scope, and dependency load; personnel mode engages if ownership or partitioning is non-trivial.
-2. Justice Compliance must define evidence, rollback posture, and public-ready gates.
-3. Works Delivery cannot begin until Menxia issues `APPROVE`.
+1. Allocate (budgeting mode) must assess cost, scope, and dependency load; personnel mode engages if ownership or partitioning is non-trivial.
+2. Verify must define evidence, rollback posture, and public-ready gates.
+3. Deliver cannot begin until Review issues `APPROVE`.
 4. Publication may happen only after verification and summary closure.
 
 ### Emergency mode
@@ -161,15 +163,15 @@ Extra obligations:
 Use only for urgent incidents, outages, P0/P1 bugs, broken CI blocking the organization, or hotfixes under time pressure.
 
 Flow:
-1. War Operations leads immediate stabilization.
-2. Shangshu may dispatch before full Menxia review if delay would worsen harm.
-3. Menxia and Justice Compliance must perform post-action review after stabilization.
+1. Emergency leads immediate stabilization.
+2. Dispatch may route work before full review if delay would worsen harm.
+3. Review and Verify must perform post-action review after stabilization.
 4. The final report must clearly mark what was fast-tracked.
 5. Public-ready status still requires explicit closure; emergency speed does not erase publication law.
 
 ## Official skill integration
 
-The constitution explicitly recognizes these process instruments under Shangshu:
+The constitution explicitly recognizes these process instruments under Dispatch:
 
 - `planning-with-files`: opens and maintains the docket
 - `find-skills`: performs external skill discovery before marketplace acquisition
@@ -222,20 +224,20 @@ Prefer the reusable templates under `memory/templates/` instead of inventing a n
 The constitution is not only advisory. It should be enforced as far as the platform allows:
 
 1. Each new petition resets memorial and execution authority state.
-2. Menxia may not start until Zhongshu has produced a real memorial.
-3. Works Delivery remains blocked until Menxia issues `APPROVE`.
+2. Review may not start until Draft has produced a real memorial.
+3. Deliver remains blocked until Review issues `APPROVE`.
 4. `CONDITIONAL`, `RETURN`, and `REJECT` do not authorize file landing.
-5. Non-Works actors should be blocked from governed file changes and mutating shell commands, except for planning artifacts.
-6. Rites should not publish links outward unless access and public-ready gates are satisfied or explicitly downgraded.
+5. Non-Deliver actors should be blocked from governed file changes and mutating shell commands, except for planning artifacts.
+6. Publish should not send links outward unless access and public-ready gates are satisfied or explicitly downgraded.
 
 ## Minimum routing rules
 
-- Any implementation task that changes code should route to Works Delivery.
-- Any high-risk code task should also route to Justice Compliance.
-- Any large, costly, or ownership-ambiguous task should route to Resource Allocation (which internally selects the budgeting mode, the personnel mode, or both).
-- Any release, announcement, policy note, or PR ritual should route to Rites Protocol.
-- Any deployment or incident question should route to War Operations.
-- Any frontend-visible task should route to Works Delivery and should normally route to Justice Compliance as well.
+- Any implementation task that changes code should route to Deliver.
+- Any high-risk code task should also route to Verify.
+- Any large, costly, or ownership-ambiguous task should route to Allocate (which internally selects the budgeting mode, the personnel mode, or both).
+- Any release, announcement, policy note, or PR ritual should route to Publish.
+- Any deployment or incident question should route to Emergency.
+- Any frontend-visible task should route to Deliver and should normally route to Verify as well.
 
 ## Output constitution
 

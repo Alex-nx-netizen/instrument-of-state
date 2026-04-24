@@ -8,7 +8,7 @@
     "governanceFlow": "governed_task",
     "createdAt": "<ISO-8601>",
     "updatedAt": "<ISO-8601>",
-    "ownerOffice": "shangshu",
+    "ownerOffice": "dispatch",
     "surfaceState": "internal_only",
     "notes": []
   },
@@ -52,7 +52,7 @@
       "<risk>"
     ],
     "ministries": [
-      "works-delivery"
+      "deliver"
     ],
     "mode": "standard",
     "deliverables": [

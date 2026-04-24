@@ -6,7 +6,7 @@
     "core_rules": [
       "Intent must be locked before heavy execution.",
       "Capability search must be explicit before acquisition.",
-      "Review must clear the execution gate before Works Delivery writes.",
+      "Review must clear the execution gate before Deliver writes.",
       "Verification and summary closure must clear the public-ready gate before publication.",
       "Every governed run must end with an explicit writeback decision."
     ]
@@ -218,8 +218,8 @@
   "skipPolicy": {
     "description": "Rules governing which stages may be skipped under which evidence.",
     "skippable_stages": [
-      "menxia",
-      "justice"
+      "review",
+      "verify"
     ],
     "skip_requires_evidence": true,
     "evidence_fields": [
@@ -230,7 +230,7 @@
     "audit_trail": "required"
   },
   "preemptPolicy": {
-    "description": "Rules under which war-operations may preempt the normal chain.",
+    "description": "Rules under which the emergency office may preempt the normal chain.",
     "preempt_triggers": [
       "P0_incident",
       "P1_data_loss_risk",

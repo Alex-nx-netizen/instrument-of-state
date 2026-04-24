@@ -13,7 +13,7 @@
     ],
     "SubagentStart": [
       {
-        "matcher": "zhongshu-agent|menxia-agent|works-delivery-agent",
+        "matcher": "draft-agent|review-agent|deliver-agent",
         "hooks": [
           {
             "type": "command",
@@ -25,31 +25,31 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "zhongshu-agent",
+        "matcher": "draft-agent",
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-zhongshu",
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-draft",
             "timeout": 10
           }
         ]
       },
       {
-        "matcher": "menxia-agent",
+        "matcher": "review-agent",
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-menxia",
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-review",
             "timeout": 10
           }
         ]
       },
       {
-        "matcher": "works-delivery-agent",
+        "matcher": "deliver-agent",
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-works-delivery",
+            "command": "powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/bin/instrument-guard.ps1\" record-deliver",
             "timeout": 10
           }
         ]

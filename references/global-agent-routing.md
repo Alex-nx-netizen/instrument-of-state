@@ -1,6 +1,6 @@
 # 全局 Agent 路由
 
-本文件定义 `instrument-of-state` 如何检测并集成用户在 `~/.claude/agents/` 目录下配置的全局 Agent。
+本文件定义 `iostate` 插件如何检测并集成用户在 `~/.claude/agents/` 目录下配置的全局 Agent。
 
 ## 核心原则
 
@@ -37,17 +37,17 @@
 
 | 全局 Agent 目录 | 主要映射部门 | 次要映射部门 |
 |----------------|-------------|-------------|
-| `engineering/` | 工部（代码执行） | 刑部（验证/验收） |
-| `testing/` | 刑部（验证/验收） | — |
-| `design/` | 工部（代码执行） | 礼部（文档/发布） |
-| `product/` | 中书省（起草方案） | 吏部（分工/责任） |
-| `project-management/` | 吏部（分工/责任） | 户部（成本/范围） |
-| `sales/` | 礼部（文档/发布） | — |
-| `marketing/` | 礼部（文档/发布） | — |
-| `paid-media/` | 礼部（文档/发布） | 户部（成本/范围） |
-| `support/` | 户部（成本/范围） | 礼部（文档/发布） |
+| `engineering/` | deliver（代码执行） | verify（验证/验收） |
+| `testing/` | verify（验证/验收） | — |
+| `design/` | deliver（代码执行） | publish（文档/发布） |
+| `product/` | draft（起草方案） | allocate（分工/责任） |
+| `project-management/` | allocate（分工/责任） | allocate（成本/范围） |
+| `sales/` | publish（文档/发布） | — |
+| `marketing/` | publish（文档/发布） | — |
+| `paid-media/` | publish（文档/发布） | allocate（成本/范围） |
+| `support/` | allocate（成本/范围） | publish（文档/发布） |
 | `specialized/` | 按具体 agent 判断 | — |
-| `academic/` | 中书省（起草方案） | — |
+| `academic/` | draft（起草方案） | — |
 | `spatial-computing/` | 工部（代码执行） | — |
 | `game-development/` | 工部（代码执行） | — |
 
@@ -198,15 +198,15 @@ Agent(
 格式：`<所属部门>增援·<角色简称>`
 
 示例：
-- `工部增援·前端专家`
-- `刑部增援·安全工程师`
-- `刑部增援·代码审查`
-- `礼部增援·技术文档`
-- `户部增援·财务分析`
+- `deliver 增援·前端专家`
+- `verify 增援·安全工程师`
+- `verify 增援·代码审查`
+- `publish 增援·技术文档`
+- `allocate 增援·财务分析`
 
 ## 运行时检测流程
 
-在 shangshu-dispatch 的太子承旨阶段，执行以下步骤：
+在 dispatch 技能的意图承接阶段，执行以下步骤：
 
 1. 使用 `Glob` 检查 `~/.claude/agents/` 是否存在且非空。
 2. 如果存在，扫描子目录获取 agent 文件列表。
@@ -227,7 +227,7 @@ Agent(
 ## 注意事项
 
 1. 全局 Agent 是增援力量，它们在对应部门的治理框架内工作，不独立行使治理权。
-2. 一个全局 Agent 可能同时映射到多个部门（例如 DevOps Automator 可映射到工部和兵部），按实际任务需求决定归属。
+2. 一个全局 Agent 可能同时映射到多个部门（例如 DevOps Automator 可映射到 deliver 和 emergency），按实际任务需求决定归属。
 3. 关键词匹配应综合判断请示内容、奏折目标和各部职责，避免机械匹配。
 4. 当检测到相关全局 Agent 但实际不需要时，在蓝图中标记为"待命"而非直接省略，让用户知道该能力可用。
 5. 全局 Agent 的 `name` 字段是精确的调用标识，必须从文件 frontmatter 中读取，不可猜测。

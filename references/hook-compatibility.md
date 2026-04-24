@@ -14,7 +14,7 @@
 2. `instrument-guard.cmd` 再调用 `instrument-guard.ps1`
 3. PowerShell 以 `-NoLogo -NoProfile -NonInteractive` 启动
 4. `instrument-guard.ps1` 失败时采用 fail-open，不因守卫异常中断主流程
-5. 守卫日志写入 `.claude/instrument-of-state/logs/hook-debug.log`
+5. 守卫日志写入 `.claude/iostate/logs/hook-debug.log`
 
 ## 用户可见文案
 
@@ -45,7 +45,7 @@
 
 检查：
 
-`E:\ai\study\instrument-of-state\.claude\instrument-of-state\logs\hook-debug.log`
+`E:\ai\study\instrument-of-state\.claude\iostate\logs\hook-debug.log`
 
 重点看：
 

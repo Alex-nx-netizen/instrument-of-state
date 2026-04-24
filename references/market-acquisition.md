@@ -80,4 +80,4 @@ If confidence is weak or the source is not known:
 
 ## Constitutional reminder
 
-Marketplace acquisition expands state capacity. It does not bypass Menxia review or Justice gates.
+Marketplace acquisition expands state capacity. It does not bypass review or verify gates.

@@ -70,7 +70,7 @@ Does the timing match the user's mental rhythm — at gate transitions, stage en
 
 以下是符合三判断的真实发牌场景。
 
-### 正例 1 — Menxia verdict 出具后的发牌
+### 正例 1 — review verdict 出具后的发牌
 
 **发牌内容**：
 > 门下省对 memorial-v2 出具 **CONDITIONAL**。
@@ -178,11 +178,11 @@ Does the timing match the user's mental rhythm — at gate transitions, stage en
 
 ## 与治理链条的绑定
 
-- **Zhongshu**：起草 memorial 与发布草案时，每一段"请用户决定"的位置都要过三判断。
-- **Menxia**：verdict-card 本身就是一次发牌，其"下一步指令"节要满足清晰度。
-- **Works-Delivery**：批次结束向用户交付摘要时，摘要本身就是一张牌。
+- **draft**：起草 memorial 与发布草案时，每一段"请用户决定"的位置都要过三判断。
+- **review**：verdict-card 本身就是一次发牌，其"下一步指令"节要满足清晰度。
+- **deliver**：批次结束向用户交付摘要时，摘要本身就是一张牌。
 - **Hook 层**：SessionStart / SubagentStart 的人话输出每次都过一次三判断的最小版（至少满足"减少不确定性"）。
-- **war-operations**：插队态下的"先动作后补手续"也要在动作完成后立即发牌告知用户。
+- **emergency**：插队态下的"先动作后补手续"也要在动作完成后立即发牌告知用户。
 
 ---
 

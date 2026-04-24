@@ -1,6 +1,6 @@
 # Meta Governance Layer
 
-`instrument-of-state` keeps the court model as the public surface, but governed work now also follows a hidden meta layer underneath it.
+The `iostate` plugin keeps the court model as the public surface, but governed work now also follows a hidden meta layer underneath it.
 
 This file explains that hidden layer so the plugin can absorb the stronger ideas of protocol-first AI governance without abandoning its own identity.
 

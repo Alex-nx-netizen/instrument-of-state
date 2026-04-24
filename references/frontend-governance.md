@@ -1,6 +1,6 @@
 # Frontend Governance
 
-This file defines the mandatory handling of frontend-visible work inside `instrument-of-state`.
+This file defines the mandatory handling of frontend-visible work inside the `iostate` plugin.
 
 Read this file whenever the petition affects how a product looks, feels, moves, or is interacted with.
 

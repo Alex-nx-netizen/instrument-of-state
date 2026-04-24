@@ -1,6 +1,6 @@
 # Governance Playbook
 
-This playbook defines how `instrument-of-state` should run a governed task now that the project has both:
+This playbook defines how the `iostate` plugin should run a governed task now that the project has both:
 
 - a public court workflow
 - a hidden meta-governance layer
@@ -68,7 +68,7 @@ Record the winning capability, rejected candidates, and the reason in `findings.
 
 ## Phase 3: Draft the memorial
 
-Invoke `zhongshu-draft` after the docket and intent lock exist for substantial work.
+Invoke the `draft` skill after the docket and intent lock exist for substantial work.
 
 The memorial should become the authoritative description of:
 
@@ -86,9 +86,9 @@ The memorial should also carry the user-facing expression of the intent packet a
 
 ## Phase 4: Review the memorial
 
-Invoke `menxia-review` only after a real memorial exists.
+Invoke the `review` skill only after a real memorial exists.
 
-Menxia should test:
+Review should test:
 
 - whether intent was actually locked
 - whether planning was skipped for work that needed it
@@ -100,7 +100,7 @@ Only `APPROVE` unlocks governed delivery.
 
 ## Phase 5: Dispatch ministries
 
-After approval, Shangshu dispatches the minimum necessary ministries.
+After approval, the dispatch office routes the minimum necessary ministries.
 
 The dispatch order should make explicit:
 
@@ -114,11 +114,11 @@ When multiple independent domains exist, prefer parallel ministry work over one 
 
 ## Phase 6: Deliver and verify
 
-If delivery is required, route to `works-delivery`.
+If delivery is required, route to `deliver`.
 
 During or after delivery:
 
-- `justice-compliance` should define or check evidence
+- `verify` should define or check evidence
 - `progress.md` should reflect major milestones
 - verification should happen before any completion claim
 
@@ -154,7 +154,7 @@ When a run artifact exists, record this decision in:
 
 When the result needs institutional communication, cross-team handoff, or user-requested Feishu output:
 
-1. Route through `rites-protocol`.
+1. Route through `publish`.
 2. If Lark skills are available, use the publication stack defined in `lark-publication-doctrine.md`.
 3. Publish only when the public-ready gate is satisfied, or explicitly downgrade the publication mode.
 4. Ensure permissions are granted before or with notification.
@@ -181,8 +181,8 @@ Prefer the templates under `memory/templates/` instead of inventing a new writeb
 
 - No governed task without a docket for substantial work
 - No heavy execution without intent lock
-- No Menxia review without a memorial
-- No Works Delivery without Menxia `APPROVE`
+- No review without a memorial
+- No deliver without review `APPROVE`
 - No marketplace installation before local-first discovery
 - No public-ready claim without verification and summary closure
 - No institutional publication link before access and publication gates are addressed

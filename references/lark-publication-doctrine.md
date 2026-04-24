@@ -1,8 +1,8 @@
 # Lark 发布 Doctrine — 协议 / 执行序列 / 模板
 
-> **定位**：本 doctrine 治理 `instrument-of-state` 面向飞书（Lark / Feishu）的一切外部发布行为，包括判定是否发布、如何落地文档、如何授权、如何通知、以及何时降级。凡是要把本插件的产物推出到飞书这个"国家公报"通道上的动作，都在本 doctrine 的管辖范围内。
+> **定位**：本 doctrine 治理 `iostate` 插件面向飞书（Lark / Feishu）的一切外部发布行为，包括判定是否发布、如何落地文档、如何授权、如何通知、以及何时降级。凡是要把本插件的产物推出到飞书这个"国家公报"通道上的动作，都在本 doctrine 的管辖范围内。
 > **版本**：v0.6.0 首版（随 Meta Reforge docket `2026-04-23-meta-reforge` 合并 `lark-publication-protocol` + `lark-publication-runbook` + `lark-publication-templates` 三文而成）
-> **合宪位**：Rites Protocol 承担执行；Shangshu 承担调度判定；Menxia 仍是发布前的批准前置。本 doctrine 不绕过门下审校、刑部验证、公开闸门律。
+> **合宪位**：publish（宣示/礼部）承担执行；dispatch（调度）承担路由判定；review（审校）仍是发布前的批准前置。本 doctrine 不绕过审校、验证、公开闸门律。
 
 ---
 
@@ -82,14 +82,14 @@
 
 ### 自动发布触发条件
 
-Shangshu 通常应把发布视为必需，当：
+dispatch 通常应把发布视为必需，当：
 
 - 用户明确要求飞书/Lark 送达
 - 任务属于发布、事故、审计、交接、或治理总结
 - 任务在 `Strict` 或 `Emergency` 模式且影响多个干系方
 - 奏折明确要求干系人通知或制度留档
 
-Shangshu 通常应跳过发布，当任务完全本地化、无交接、无对外留档需要。
+dispatch 通常应跳过发布，当任务完全本地化、无交接、无对外留档需要。
 
 ### 主文档必备内容
 
@@ -127,7 +127,7 @@ IM 消息不得只是一条裸链接。至少要包含：
 
 ### 合宪定位
 
-Lark 发布由 Shangshu 调度、由 Rites Protocol 执行。
+Lark 发布由 dispatch 调度、由 publish 执行。
 它**不得绕过**门下审校、刑部验证、以及本 doctrine 的公开闸门律。
 
 ---
@@ -469,7 +469,7 @@ Lark 发布 doctrine 处于治理链条的"对外宣示"末端——它消费其
 
 1. **独立陈述检查**：本 doctrine 陈述"面向飞书的对外发布要满足公开闸门律、先授权后通知、不发裸链、失败要精确回报"——这是一条可被独立表述的规则集，不依赖具体 Lark SDK 版本或具体 skill 实现即可理解。通过。
 2. **定位检查**：治理链条中明确定位在"对外宣示"末端。它在 cadence 决定"是否该发"、deal-card 决定"发什么牌"、UX 响应 doctrine 决定"话怎么说"之后，约束"这张牌以飞书形态发出时的操作序列与文字骨架"。发布通道若未来从 Lark 换为其它（如企业微信、Slack），本 doctrine 可被整体替换，其它 doctrine 不需要联动改。通过。
-3. **替换代价检查**：替换本 doctrine 影响面限于 `publish-to-lark` skill、`rites-protocol` skill、`shangshu-dispatch` skill 中对发布栈的指向，以及两份 README 的外部链接——均为引用型依赖，修改成本可控；不牵动 cadence / deal-card / ux-response / meta-unit 的结构。耦合是向上单向依赖的。通过。
-4. **复用检查**：Section A 的公开闸门律可被任何"对外宣示"型 skill 复用（不限于 Lark）；Section B 的执行阶梯被 `publish-to-lark` 和 `rites-protocol` 共享；Section C 的标题范式、主文档骨架、IM 模板、公开闸门证据块被 `shangshu-dispatch` 调度时直接套用。复用面覆盖 ≥3 个 skill。通过。
+3. **替换代价检查**：替换本 doctrine 影响面限于 `publish` skill、`dispatch` skill 中对发布栈的指向，以及两份 README 的外部链接——均为引用型依赖，修改成本可控；不牵动 cadence / deal-card / ux-response / meta-unit 的结构。耦合是向上单向依赖的。通过。
+4. **复用检查**：Section A 的公开闸门律可被任何"对外宣示"型 skill 复用（不限于 Lark）；Section B 的执行阶梯被 `publish` skill 继承；Section C 的标题范式、主文档骨架、IM 模板、公开闸门证据块被 `dispatch` 调度时直接套用。复用面覆盖多个 skill。通过。
 
 四条全部通过，本 doctrine 作为独立元单位合格。

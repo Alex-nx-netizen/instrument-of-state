@@ -195,7 +195,7 @@ function Get-KnownMarketplaces {
 function Get-GitHubJson([string]$Repo, [string]$ContentPath) {
   $uri = "https://api.github.com/repos/$Repo/contents/$ContentPath"
   $headers = @{
-    "User-Agent" = "instrument-of-state"
+    "User-Agent" = "iostate"
     "Accept" = "application/vnd.github+json"
   }
 
