@@ -1,15 +1,29 @@
 <div align="center">
 
-# iostate / 国之重器
+# iostate / 治理执行运行时
 
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
 
 </div>
 
-**Claude Code 的治理执行套件。** 内核是"元 / 组织镜像 / 节奏 / 意图放大 + 发牌"；三省六部是外显隐喻。先起草，再审校，再执行；先验明，再宣示。
+**Claude Code 的治理执行运行时。** 把一次会话拆成 6 个可审计的闸门：起草 → 审校 → 调度 → 交付 → 验明 → 发布。每道闸门都有意图包、进入条件、证据要求和回滚级别；任何越级执行都被 hook 层硬拦截。
 
-**30 秒速览：** `/iostate:draft` → `/iostate:review` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish`。
+**它在解决什么**
+
+- 把"我让 AI 干活"升级为"我对 AI 的每一步都能问责"
+- 把 intent 模糊、scope 漂移、审校被跳过、code-change 没经验收这四类沉默失败前置到闸门上
+- 可见性优先：阶段看板、工具追踪、hook 日志全透明
+
+**核心能力**
+
+- **意图闸门**：heavy execution 之前强制锁定 intent packet + intent gate packet
+- **最小权力原则**：只有交付部可落地受治理文件变更（planning artifact 例外）
+- **能力发现阶梯**：本地 skills → `find-skills` → 认可的 marketplace，三步留痕
+- **公开就绪律**：验明通过 ≠ 可以对外宣示，publish 是独立闸门
+- **可证伪验收**：verify 要求证据链，不是自述"完成"
+
+**30 秒速览：** `/iostate:draft` → `/iostate:review` → `/iostate:dispatch` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish`
 
 ### 工具箱（agents / 技能 / doctrines）
 

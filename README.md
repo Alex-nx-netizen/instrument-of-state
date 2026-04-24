@@ -1,15 +1,29 @@
 <div align="center">
 
-# iostate
+# iostate / Governed Execution Runtime
 
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
 
 </div>
 
-**governed execution for Claude Code.** Meta-unit doctrine is the internal spine; Three Departments + Six Ministries is the external metaphor. Draft intent, review, dispatch, deliver, verify, publish — each a visible gate.
+**A governed execution runtime for Claude Code.** Split one session into six auditable gates: draft → review → dispatch → deliver → verify → publish. Every gate carries an intent packet, entry conditions, evidence requirements, and a rollback level; any out-of-order execution is hard-blocked at the hook layer.
 
-**30-second speed-run:** `/iostate:draft` -> `/iostate:review` -> `/iostate:deliver` -> `/iostate:verify` -> `/iostate:publish`.
+**What it solves**
+
+- Turns "I ask the AI to do the work" into "I can hold the AI accountable at every step"
+- Surfaces four silent failure modes to the gate layer: fuzzy intent, scope drift, skipped review, unverified code-change
+- Visibility first: stage board, tool trace, and hook logs are all transparent
+
+**Core capabilities**
+
+- **Intent gate**: heavy execution requires a locked intent packet + intent gate packet
+- **Minimum-authority rule**: only the Deliver office may land governed file changes (planning artifacts excepted)
+- **Capability ladder**: local skills → `find-skills` → approved marketplaces, every step recorded
+- **Public-ready law**: verification pass ≠ publication right; publish is an independent gate
+- **Falsifiable acceptance**: Verify demands an evidence chain, not a self-claimed "done"
+
+**30-second speed-run:** `/iostate:draft` → `/iostate:review` → `/iostate:dispatch` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish`
 
 ### Toolbox (agents, skills, doctrines)
 
