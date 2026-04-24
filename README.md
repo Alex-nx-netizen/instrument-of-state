@@ -1,13 +1,23 @@
 <div align="center">
 
-# iostate / Governed Execution Runtime
+# iostate / Governed Execution Plugin for Claude Code
 
 [![English](https://img.shields.io/badge/Docs-English-1f6feb?style=for-the-badge)](./README.md)
 [![中文文档](https://img.shields.io/badge/Docs-%E4%B8%AD%E6%96%87-0f766e?style=for-the-badge)](./README.zh-CN.md)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-7c3aed?style=for-the-badge)](https://docs.claude.com/en/docs/claude-code/plugins)
+[![Governed Execution](https://img.shields.io/badge/Governed-Execution-0ea5e9?style=for-the-badge)](#what-this-project-is)
+
+[![version](https://img.shields.io/badge/version-0.7.0-2563eb)](./.claude-plugin/plugin.json)
+[![license](https://img.shields.io/badge/license-Apache--2.0-green.svg)](./LICENSE)
+[![platform](https://img.shields.io/badge/platform-Claude%20Code-7c3aed)](https://docs.claude.com/en/docs/claude-code/plugins)
+[![status](https://img.shields.io/badge/status-stable%20(v0.7.0)-0ea5e9)](./artifacts/dockets/2026-04-24-v0.7.0-cutover/progress.md)
+
+[![last commit](https://img.shields.io/github/last-commit/Alex-nx-netizen/instrument-of-state?color=blue)](https://github.com/Alex-nx-netizen/instrument-of-state/commits/main)
+[![issues](https://img.shields.io/github/issues/Alex-nx-netizen/instrument-of-state?color=orange)](https://github.com/Alex-nx-netizen/instrument-of-state/issues)
 
 </div>
 
-**A governed execution runtime for Claude Code.** Split one session into six auditable gates: draft → review → dispatch → deliver → verify → publish. Every gate carries an intent packet, entry conditions, evidence requirements, and a rollback level; any out-of-order execution is hard-blocked at the hook layer.
+**A governed execution plugin for Claude Code.** Split one session into six auditable gates: draft → review → dispatch → deliver → verify → publish. Every gate carries an intent packet, entry conditions, evidence requirements, and a rollback level; any out-of-order execution is hard-blocked at the hook layer.
 
 **What it solves**
 
@@ -24,6 +34,13 @@
 - **Falsifiable acceptance**: Verify demands an evidence chain, not a self-claimed "done"
 
 **30-second speed-run:** `/iostate:draft` → `/iostate:review` → `/iostate:dispatch` → `/iostate:deliver` → `/iostate:verify` → `/iostate:publish`
+
+### Who is this for?
+
+- Teams using Claude Code where multi-file, cross-role, or publishable work must survive an audit later.
+- Individual engineers who want a visible process (stage board, tool trace) instead of one opaque AI pass.
+- Maintainers of production repos where "AI declared done" is not enough — evidence and gate passage are required.
+- Authors preparing outward-facing artifacts (Lark/Feishu docs, releases) that must clear a public-ready gate before leaving the session.
 
 ### Toolbox (agents, skills, doctrines)
 
@@ -81,6 +98,16 @@ It keeps the public mental model of the **Three Departments and Six Ministries**
 - meaningful runs can persist artifacts and write durable learning back into memory
 
 This is a plugin bundle, not a single skill.
+
+---
+
+## What It Is NOT
+
+- Not a standalone runtime or process — it is a Claude Code plugin that layers governance onto your existing session.
+- Not a single skill — it is a bundle of 10 skills + 8 agents + guard hooks + contracts.
+- Not a code generator — it is a discipline layer that makes existing AI execution auditable.
+- Not a replacement for human review — it is a structure that makes human review enforceable.
+- Not coupled to any one LLM — it is bound to Claude Code as the host, but the governance shape is model-agnostic.
 
 ---
 

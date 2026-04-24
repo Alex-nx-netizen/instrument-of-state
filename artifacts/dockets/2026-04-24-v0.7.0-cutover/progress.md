@@ -100,9 +100,46 @@ Part 11 最终 5 项校验结果：
 | 4 | `plugin.json` vs `marketplace.json` name 对齐 | ✅ 均为 `"iostate"` |
 | 5 | `hooks.json` matcher 对齐新 agent 名 | ✅ 无旧 matcher |
 
-## Part 12：commit + push + tag + release
+## Part 12：commit + push + tag + release ✅
 
-（进行中 — 由当前 session 在 B3 全链路授权下执行）
+- Commit 1：`ce7782a` `reforge(v0.7.0): hard rename — plugin iostate, verb-form commands`（55 文件，646 insertions / 844 deletions，git 自动识别 17 个 renames）
+- Commit 2（follow-up）：`dd60f7f` `fix(docs): update README marketplace install owner to Alex-nx-netizen`（README.md:120 + README.zh-CN.md:123，用户名切换）
+- Tag：`v0.7.0`（annotated，HEAD = dd60f7f）
+- Push：`origin/main` `61dc0df..dd60f7f` + tag `v0.7.0` → `github.com/Alex-nx-netizen/instrument-of-state`
+- Release：<https://github.com/Alex-nx-netizen/instrument-of-state/releases/tag/v0.7.0>（含 breaking 说明、migration 指令、验证清单）
+
+## Part 13：README 二轮修订（2026-04-24 后续）
+
+petition：用户要求 (a) 替换副标题"治理执行运行时"为更贴合本项目的名称，(b) 重写 README.md / README.zh-CN.md 以更准确地描述当前项目，(c) 在标题下方扩充类似 shields.io 的彩色徽章行（用户参考了一张外部项目 166k stars 的截图）。
+
+**事实校准（不可造假）**：
+
+| 维度 | 真实值 | 用户参考图中的虚假项 |
+|---|---|---|
+| License | Apache-2.0 | 图中显示 MIT — 不可照抄 |
+| 语言 | PowerShell + Markdown + JSON（175 .md / 38 .json / 8 .ps1） | 图中 TS/Python/Go/Java/Perl — 本项目不存在 |
+| Stars | 0 | 图中 166k — 不可造假 |
+| Forks | 0 | 图中 26k — 不可造假 |
+| Contributors | 1 | 图中 159 — 不可造假 |
+| Weekly downloads | 无统计 | 图中 1.9k/week — 不可造假 |
+| Owner | Alex-nx-netizen | — |
+| 最新 Release | v0.7.0（2026-04-24） | — |
+| Repo description | "Govern Claude Code before it governs your repo." | — |
+
+执行序：docket → draft → review → deliver → verify → 收口。
+
+**执行结果（2026-04-24 收口）**：
+
+- **副标题 (EN)**：`iostate / Governed Execution Plugin for Claude Code`（README.md:3）
+- **副标题 (CN)**：`iostate / Claude Code 治理执行插件`（README.zh-CN.md:3）
+- **tagline**：`runtime` → `plugin` / `运行时` → `插件`（行 20）
+- **徽章行**：2 枚 → 10 枚，三行混排（for-the-badge 4 枚 + flat 4 枚 + dynamic 2 枚），stars 明确排除
+- **新增段落**：`Who is this for?` / `谁该用这个插件`（行 38-43）+ `What It Is NOT` / `它不是什么`（行 104-110 / 107-113）
+- **License 徽章**：Apache-2.0（非 MIT）
+- **未触碰文件**：`.claude-plugin/*`、hooks、agents、skills、contracts、assets、references 保持不变
+- **治理闸门**：draft → review（第 1 轮 RETURN，第 2 轮 CONDITIONAL，第 3 轮 APPROVE 但 verdict 未被 guard 识别为 NONE，第 4 轮重发 guard-parseable APPROVE 成功解锁）→ deliver（10 次 Edit 零偏离）
+- **疤痕写回候选**：`Get-Verdict` 正则对"批准（APPROVE）"形式不识别，需要 `## 裁决\n\nAPPROVE` 格式；review 输出模板应显式 guard-parseable 化
+- **模式写回候选**：字面锁定 + 锚点上下文 是 README-class 交付的首选合约形态，可阻断 deliver 层文学化漂移
 
 ## 备注 — 本批次 scope 变更轨迹
 
