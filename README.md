@@ -117,7 +117,7 @@ The goal is to keep the user experience readable while making the underlying gov
 ## Quick Start
 
 ```text
-/plugin marketplace add Dick1109/instrument-of-state
+/plugin marketplace add Alex-nx-netizen/instrument-of-state
 /plugin install iostate
 ```
 
